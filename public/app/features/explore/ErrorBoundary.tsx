@@ -19,7 +19,7 @@ export default class ErrorBoundary extends Component<{}, any> {
       // Error path
       return (
         <div className="explore-container">
-          <h3>An unexpected error happened.</h3>
+          <h3>发生意外错误.</h3>
           <details style={{ whiteSpace: 'pre-wrap' }}>
             {this.state.error && this.state.error.toString()}
             <br />

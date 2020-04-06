@@ -49,31 +49,32 @@ export class ChangePasswordForm extends PureComponent<Props, State> {
     const { ldapEnabled, authProxyEnabled } = config;
 
     if (ldapEnabled || authProxyEnabled) {
-      return <p>You cannot change password when ldap or auth proxy authentication is enabled.</p>;
+      return <p>启用ldap或auth代理身份验证时，无法更改密码.</p>;
     }
 
     return (
       <form name="userForm" className="gf-form-group">
         <div className="gf-form max-width-30">
-          <PasswordInput label="Old Password" onChange={this.onOldPasswordChange} value={oldPassword} />
+          <PasswordInput label="现用密码" onChange={this.onOldPasswordChange} value={oldPassword} />
         </div>
         <div className="gf-form max-width-30">
-          <PasswordInput label="New Password" onChange={this.onNewPasswordChange} value={newPassword} />
+          <PasswordInput label="新密码" onChange={this.onNewPasswordChange} value={newPassword} />
         </div>
         <div className="gf-form max-width-30">
-          <PasswordInput label="Confirm Password" onChange={this.onConfirmPasswordChange} value={confirmNew} />
+          <PasswordInput label="确认新密码" onChange={this.onConfirmPasswordChange} value={confirmNew} />
         </div>
         <div className="gf-form-button-row">
           <Button variant="primary" onClick={this.onSubmitChangePassword} disabled={isSaving}>
-            Change Password
+            更改密码
           </Button>
           <LinkButton variant="transparent" href={`${config.appSubUrl}/profile`}>
-            Cancel
+            取消
           </LinkButton>
         </div>
       </form>
     );
   }
+
 }
 
 export default ChangePasswordForm;

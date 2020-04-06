@@ -26,13 +26,13 @@ export interface Props {
 
 export class AlertRuleList extends PureComponent<Props, any> {
   stateFilters = [
-    { text: 'All', value: 'all' },
-    { text: 'OK', value: 'ok' },
-    { text: 'Not OK', value: 'not_ok' },
-    { text: 'Alerting', value: 'alerting' },
-    { text: 'No Data', value: 'no_data' },
-    { text: 'Paused', value: 'paused' },
-    { text: 'Pending', value: 'pending' },
+    { text: '所有', value: 'all' },
+    { text: '好', value: 'ok' },
+    { text: '不好', value: 'not_ok' },
+    { text: '警报', value: 'alerting' },
+    { text: '没有数据', value: 'no_data' },
+    { text: '暂停', value: 'paused' },
+    { text: '等待', value: 'pending' },
   ];
 
   componentDidMount() {
@@ -98,13 +98,13 @@ export class AlertRuleList extends PureComponent<Props, any> {
               <FilterInput
                 labelClassName="gf-form--has-input-icon gf-form--grow"
                 inputClassName="gf-form-input"
-                placeholder="Search alerts"
+                placeholder="搜索提醒"
                 value={search}
                 onChange={this.onSearchQueryChange}
               />
             </div>
             <div className="gf-form">
-              <label className="gf-form-label">States</label>
+              <label className="gf-form-label">状态</label>
 
               <div className="gf-form-select-wrapper width-13">
                 <select className="gf-form-input" onChange={this.onStateFilterChanged} value={this.getStateFilter()}>
@@ -114,7 +114,7 @@ export class AlertRuleList extends PureComponent<Props, any> {
             </div>
             <div className="page-action-bar__spacer" />
             <a className="btn btn-secondary" onClick={this.onOpenHowTo}>
-              How to add an alert
+              如何添加提醒
             </a>
           </div>
           <section>

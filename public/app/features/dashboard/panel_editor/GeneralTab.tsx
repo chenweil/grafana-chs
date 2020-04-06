@@ -62,7 +62,7 @@ export class GeneralTab extends PureComponent<Props> {
       <EditorTabBody heading="General" toolbarItems={[]}>
         <>
           <div ref={element => (this.element = element)} />
-          <PanelOptionsGroup title="Panel links">
+          <PanelOptionsGroup title="面板链接">
             <DataLinksEditor
               value={panel.links}
               onChange={this.onDataLinksChanged}

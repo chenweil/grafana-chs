@@ -71,7 +71,7 @@ export function saveFolder(folder: FolderState): ThunkResult<void> {
     });
 
     // this should be redux action at some point
-    appEvents.emit('alert-success', ['Folder saved']);
+    appEvents.emit('alert-success', ['文件夹已保存']);
 
     dispatch(updateLocation({ path: `${res.url}/settings` }));
   };

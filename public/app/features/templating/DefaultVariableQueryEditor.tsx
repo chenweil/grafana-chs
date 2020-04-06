@@ -26,7 +26,7 @@ export default class DefaultVariableQueryEditor extends PureComponent<VariableQu
           value={this.state.value}
           onChange={this.onChange}
           onBlur={this.onBlur}
-          placeholder="metric name or tags query"
+          placeholder="度量名称或标记查询"
           required
         />
       </div>

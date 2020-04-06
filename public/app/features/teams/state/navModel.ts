@@ -6,7 +6,7 @@ export function buildNavModel(team: Team): NavModelItem {
   const navModel = {
     img: team.avatarUrl,
     id: 'team-' + team.id,
-    subTitle: 'Manage members & settings',
+    subTitle: '管理成员和设置',
     url: '',
     text: team.name,
     breadcrumbs: [{ title: 'Teams', url: 'org/teams' }],
@@ -15,7 +15,7 @@ export function buildNavModel(team: Team): NavModelItem {
         active: false,
         icon: 'gicon gicon-team',
         id: `team-members-${team.id}`,
-        text: 'Members',
+        text: '成员',
         url: `org/teams/edit/${team.id}/members`,
       },
       {
@@ -33,7 +33,7 @@ export function buildNavModel(team: Team): NavModelItem {
       active: false,
       icon: 'fa fa-fw fa-refresh',
       id: `team-groupsync-${team.id}`,
-      text: 'External group sync',
+      text: '外部组同步',
       url: `org/teams/edit/${team.id}/groupsync`,
     });
   }

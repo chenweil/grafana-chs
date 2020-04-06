@@ -190,7 +190,7 @@ export class QueryInspector extends PureComponent<Props, State> {
     const openNodes = this.getNrOfOpenNodes();
 
     if (isLoading) {
-      return <LoadingPlaceholder text="Loading query inspector..." />;
+      return <LoadingPlaceholder text="加载查询检查器..." />;
     }
 
     return (

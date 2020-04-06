@@ -22,16 +22,16 @@ import { LS_PANEL_COPY_KEY, PANEL_BORDER } from 'app/core/constants';
 export const removePanel = (dashboard: DashboardModel, panel: PanelModel, ask: boolean) => {
   // confirm deletion
   if (ask !== false) {
-    const text2 = panel.alert ? 'Panel includes an alert rule, removing panel will also remove alert rule' : null;
-    const confirmText = panel.alert ? 'YES' : null;
+    const text2 = panel.alert ? '面板包含警报规则，删除面板也会删除警报规则' : null;
+    const confirmText = panel.alert ? 'yes' : null;
 
     appEvents.emit('confirm-modal', {
-      title: 'Remove Panel',
-      text: 'Are you sure you want to remove this panel?',
+      title: '删除面板',
+      text: '确认要删除此面板吗?',
       text2: text2,
       icon: 'fa-trash',
       confirmText: confirmText,
-      yesText: 'Remove',
+      yesText: '删除',
       onConfirm: () => removePanel(dashboard, panel, false),
     });
     return;

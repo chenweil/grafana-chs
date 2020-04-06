@@ -3,8 +3,8 @@
 <div class="page-container page-body">
    <table class="filter-table">
     <thead>
-      <th><strong>Name</strong></th>
-      <th><strong>Snapshot url</strong></th>
+      <th><strong>名称</strong></th>
+      <th><strong>快照链接</strong></th>
       <th style="width: 70px"></th>
       <th style="width: 30px"></th>
       <th style="width: 25px"></th>
@@ -17,12 +17,12 @@
         <a href="{{snapshot.url}}">{{snapshot.url}}</a>
       </td>
       <td>
-        <span class="query-keyword" ng-if="snapshot.external">External</span>
+        <span class="query-keyword" ng-if="snapshot.external">排除</span>
       </td>
       <td class="text-center">
         <a href="{{snapshot.url}}" class="btn btn-inverse btn-small">
           <i class="gicon gicon-viewer"></i>
-          View
+          查看
         </a>
       </td>
       <td  class="text-right">

@@ -52,7 +52,7 @@ export class ManageDashboardsCtrl {
   hasFilters = false;
   tagFilterOptions: any[];
   selectedTagFilter: any;
-  starredFilterOptions = [{ text: 'Filter by Starred', disabled: true }, { text: 'Yes' }, { text: 'No' }];
+  starredFilterOptions = [{ text: '根据收藏过滤', disabled: true }, { text: '是' }, { text: '否' }];
   selectedStarredFilter: any;
 
   // used when managing dashboards for a specific folder
@@ -188,24 +188,24 @@ export class ManageDashboardsCtrl {
     const data = this.getFoldersAndDashboardsToDelete();
     const folderCount = data.folderUids.length;
     const dashCount = data.dashboardUids.length;
-    let text = 'Do you want to delete the ';
+    let text = '你想删除吗？ ';
     let text2;
 
     if (folderCount > 0 && dashCount > 0) {
-      text += `selected folder${folderCount === 1 ? '' : 's'} and dashboard${dashCount === 1 ? '' : 's'}?`;
-      text2 = `All dashboards of the selected folder${folderCount === 1 ? '' : 's'} will also be deleted`;
+      text += `选择的文件夹和仪表板？`;
+      text2 = `所有文件夹的所有仪表板也将被删除`;
     } else if (folderCount > 0) {
-      text += `selected folder${folderCount === 1 ? '' : 's'} and all its dashboards?`;
+      text += `选择文件夹及其所有仪表板?`;
     } else {
-      text += `selected dashboard${dashCount === 1 ? '' : 's'}?`;
+      text += `选定的仪表板?`;
     }
 
     appEvents.emit('confirm-modal', {
-      title: 'Delete',
+      title: '删除',
       text: text,
       text2: text2,
       icon: 'fa-trash',
-      yesText: 'Delete',
+      yesText: '删除',
       onConfirm: () => {
         this.deleteFoldersAndDashboards(data.folderUids, data.dashboardUids);
       },
@@ -248,7 +248,7 @@ export class ManageDashboardsCtrl {
 
   initTagFilter() {
     return this.searchSrv.getDashboardTags().then((results: any) => {
-      this.tagFilterOptions = [{ term: 'Filter By Tag', disabled: true }].concat(results);
+      this.tagFilterOptions = [{ term: '根据标签过滤', disabled: true }].concat(results);
       this.selectedTagFilter = this.tagFilterOptions[0];
     });
   }

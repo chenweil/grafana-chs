@@ -192,7 +192,7 @@ export function grafanaAppDirective(
         switch (search.kiosk) {
           case 'tv': {
             search.kiosk = true;
-            appEvents.emit('alert-success', ['Press ESC to exit Kiosk mode']);
+            appEvents.emit('alert-success', ['请按ESC退出展厅模式']);
             break;
           }
           case '1':

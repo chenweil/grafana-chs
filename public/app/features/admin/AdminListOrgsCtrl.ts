@@ -17,9 +17,9 @@ export default class AdminListOrgsCtrl {
 
     $scope.deleteOrg = (org: any) => {
       $scope.appEvent('confirm-modal', {
-        title: 'Delete',
-        text: 'Do you want to delete organization ' + org.name + '?',
-        text2: 'All dashboards for this organization will be removed!',
+        title: '删除',
+        text: '你确定要删除 ' + org.name + '?',
+        text2: '将删除该组织的所有仪表板!',
         icon: 'fa-trash',
         yesText: 'Delete',
         onConfirm: () => {

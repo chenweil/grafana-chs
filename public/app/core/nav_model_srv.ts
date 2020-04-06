@@ -54,7 +54,7 @@ export class NavModelSrv {
 }
 
 export function getNotFoundNav(): NavModel {
-  return getWarningNav('Page not found', '404 Error');
+  return getWarningNav('页面未找到', '404 Error');
 }
 
 export function getWarningNav(text: string, subTitle?: string): NavModel {

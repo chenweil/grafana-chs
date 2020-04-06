@@ -116,7 +116,7 @@ describe('DashboardPage', () => {
     });
 
     it('Should update title', () => {
-      expect(document.title).toBe('My dashboard - Grafana');
+      expect(document.title).toBe('My dashboard - 数据中心网络设备资源监控系统');
     });
 
     it('Should render dashboard grid', () => {

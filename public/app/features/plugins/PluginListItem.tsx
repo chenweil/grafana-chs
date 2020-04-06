@@ -15,7 +15,7 @@ const PluginListItem: FC<Props> = props => {
           <div className="card-item-type">{plugin.type}</div>
           {plugin.hasUpdate && (
             <div className="card-item-notice">
-              <span bs-tooltip="plugin.latestVersion">Update available!</span>
+              <span bs-tooltip="plugin.latestVersion">更新可用！</span>
             </div>
           )}
         </div>

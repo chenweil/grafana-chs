@@ -5,7 +5,7 @@ const template = `
 	<div class="modal-header">
 		<h2 class="modal-header-title">
 			<i class="fa fa-copy"></i>
-			<span class="p-l-1">Save As...</span>
+			<span class="p-l-1">另存为...</span>
 		</h2>
 
 		<a class="modal-header-close" ng-click="ctrl.dismiss();">
@@ -16,7 +16,7 @@ const template = `
 	<form name="ctrl.saveForm" class="modal-content" novalidate>
 		<div class="p-t-2">
 			<div class="gf-form">
-				<label class="gf-form-label width-8">New name</label>
+				<label class="gf-form-label width-8">新名称</label>
 				<input type="text" class="gf-form-input" ng-model="ctrl.clone.title" give-focus="true" required aria-label="Save dashboard title field">
 			</div>
       <folder-picker initial-folder-id="ctrl.folderId"
@@ -28,7 +28,7 @@ const template = `
                        dashboard-id="ctrl.clone.id">
       </folder-picker>
       <div class="gf-form-inline">
-        <gf-form-switch class="gf-form" label="Copy tags" label-class="width-8" checked="ctrl.copyTags">
+        <gf-form-switch class="gf-form" label="复制标签" label-class="width-8" checked="ctrl.copyTags">
         </gf-form-switch>
       </div>
 		</div>
@@ -40,9 +40,9 @@ const template = `
         ng-click="ctrl.save()"
         ng-disabled="!ctrl.isValidFolderSelection"
         aria-label="Save dashboard button">
-        Save
+        保存
       </button>
-			<a class="btn-text" ng-click="ctrl.dismiss();">Cancel</a>
+			<a class="btn-text" ng-click="ctrl.dismiss();">取消</a>
 		</div>
 	</form>
 </div>

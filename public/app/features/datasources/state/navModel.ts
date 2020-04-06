@@ -9,7 +9,7 @@ export function buildNavModel(dataSource: DataSourceSettings, plugin: GenericDat
   const navModel = {
     img: pluginMeta.info.logos.large,
     id: 'datasource-' + dataSource.id,
-    subTitle: `Type: ${pluginMeta.name}`,
+    subTitle: `类型: ${pluginMeta.name}`,
     url: '',
     text: dataSource.name,
     breadcrumbs: [{ title: 'Data Sources', url: 'datasources' }],
@@ -18,7 +18,7 @@ export function buildNavModel(dataSource: DataSourceSettings, plugin: GenericDat
         active: false,
         icon: 'fa fa-fw fa-sliders',
         id: `datasource-settings-${dataSource.id}`,
-        text: 'Settings',
+        text: '设置',
         url: `datasources/edit/${dataSource.id}/`,
       },
     ],
@@ -41,7 +41,7 @@ export function buildNavModel(dataSource: DataSourceSettings, plugin: GenericDat
       active: false,
       icon: 'fa fa-fw fa-th-large',
       id: `datasource-dashboards-${dataSource.id}`,
-      text: 'Dashboards',
+      text: '仪表板',
       url: `datasources/edit/${dataSource.id}/dashboards`,
     });
   }
@@ -51,7 +51,7 @@ export function buildNavModel(dataSource: DataSourceSettings, plugin: GenericDat
       active: false,
       icon: 'fa fa-fw fa-lock',
       id: `datasource-permissions-${dataSource.id}`,
-      text: 'Permissions',
+      text: '权限',
       url: `datasources/edit/${dataSource.id}/permissions`,
     });
   }

@@ -9,7 +9,7 @@ const setup = (propOverrides?: object) => {
   const props: Props = {
     navModel: {
       main: {
-        text: 'Configuration',
+        text: '设置',
       },
       node: {
         text: 'Api Keys',

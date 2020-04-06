@@ -31,11 +31,11 @@ interface DataSourceCategoryInfo {
 class NewDataSourcePage extends PureComponent<Props> {
   searchInput: HTMLElement;
   categoryInfoList: DataSourceCategoryInfo[] = [
-    { id: 'tsdb', title: 'Time series databases' },
-    { id: 'logging', title: 'Logging & document databases' },
+    { id: 'tsdb', title: '时间序列数据库' },
+    { id: 'logging', title: '日志和文档数据库' },
     { id: 'sql', title: 'SQL' },
-    { id: 'cloud', title: 'Cloud' },
-    { id: 'other', title: 'Others' },
+    { id: 'cloud', title: '云' },
+    { id: 'other', title: '其他' },
   ];
 
   sortingRules: { [id: string]: number } = {
@@ -132,7 +132,7 @@ class NewDataSourcePage extends PureComponent<Props> {
             href="https://grafana.com/plugins?type=datasource&utm_source=new-data-source"
             target="_blank"
           >
-            Find more data source plugins on grafana.com
+            更多数据源插件
           </a>
         </div>
       </>
@@ -153,12 +153,12 @@ class NewDataSourcePage extends PureComponent<Props> {
                 inputClassName="gf-form-input width-30"
                 value={searchQuery}
                 onChange={this.onSearchQueryChange}
-                placeholder="Filter by name or type"
+                placeholder="通过名称或类型过滤"
               />
             </div>
             <div className="page-action-bar__spacer" />
             <a className="btn btn-secondary" href="datasources">
-              Cancel
+              取消
             </a>
           </div>
           <div>
@@ -200,10 +200,10 @@ const DataSourceTypeCard: FC<DataSourceTypeCardProps> = props => {
             target="_blank"
             onClick={onLearnMoreClick}
           >
-            Learn more <i className="fa fa-external-link add-datasource-item-actions__btn-icon" />
+            了解更多 <i className="fa fa-external-link add-datasource-item-actions__btn-icon" />
           </a>
         )}
-        {canSelect && <button className="btn btn-primary">Select</button>}
+        {canSelect && <button className="btn btn-primary">选择</button>}
       </div>
     </div>
   );
@@ -237,9 +237,9 @@ export function getNavModel(): NavModel {
   const main = {
     icon: 'gicon gicon-add-datasources',
     id: 'datasource-new',
-    text: 'Add data source',
+    text: '添加数据源',
     href: 'datasources/new',
-    subTitle: 'Choose a data source type',
+    subTitle: '选择数据源类型',
   };
 
   return {

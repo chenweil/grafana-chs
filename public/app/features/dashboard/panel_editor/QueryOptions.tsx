@@ -28,7 +28,7 @@ const timeRangeValidationEvents: ValidationEvents = {
         }
         return rangeUtil.isValidTimeSpan(value);
       },
-      errorMessage: 'Not a valid timespan',
+      errorMessage: '不是有效的时间跨度',
     },
   ],
 };
@@ -54,38 +54,36 @@ interface State {
 export class QueryOptions extends PureComponent<Props, State> {
   allOptions = {
     cacheTimeout: {
-      label: 'Cache timeout',
+      label: '缓存超时',
       placeholder: '60',
       name: 'cacheTimeout',
       tooltipInfo: (
         <>
-          If your time series store has a query cache this option can override the default cache timeout. Specify a
-          numeric value in seconds.
+          如果您的时间序列存储具有查询缓存，则此选项可以覆盖默认缓存超时。 指定一个以秒为单位的数值。
         </>
       ),
     },
     maxDataPoints: {
-      label: 'Max data points',
+      label: '最大数据点',
       placeholder: 'auto',
       name: 'maxDataPoints',
       tooltipInfo: (
         <>
-          The maximum data points the query should return. For graphs this is automatically set to one data point per
-          pixel.
+          查询应返回的最大数据点。 对于图表，这会自动设置为每个数据点一个像素。
         </>
       ),
     },
     minInterval: {
-      label: 'Min time interval',
+      label: '最小时间间隔',
       placeholder: '0',
       name: 'minInterval',
       panelKey: 'interval',
       tooltipInfo: (
         <>
-          A lower limit for the auto group by time interval. Recommended to be set to write frequency, for example{' '}
-          <code>1m</code> if your data is written every minute. Access auto interval via variable{' '}
-          <code>$__interval</code> for time range string and <code>$__interval_ms</code> for numeric variable that can
-          be used in math expressions.
+          按时间间隔的自动组的下限。 例如，建议设置为写入频率{' '}
+          <code>1m</code> 如果您的数据每分钟写一次。 通过变量访问自动间隔{' '}
+          <code>$__interval</code> 对于时间范围字符串和 <code>$__interval_ms</code> 对于可以的数值变量
+          用于数学表达式。
         </>
       ),
     },
@@ -186,7 +184,7 @@ export class QueryOptions extends PureComponent<Props, State> {
         {this.renderOptions()}
 
         <div className="gf-form">
-          <FormLabel>Relative time</FormLabel>
+          <FormLabel>相对时间</FormLabel>
           <Input
             type="text"
             className="width-6"
@@ -200,7 +198,7 @@ export class QueryOptions extends PureComponent<Props, State> {
         </div>
 
         <div className="gf-form">
-          <span className="gf-form-label">Time shift</span>
+          <span className="gf-form-label">时见偏移</span>
           <Input
             type="text"
             className="width-6"
@@ -214,7 +212,7 @@ export class QueryOptions extends PureComponent<Props, State> {
         </div>
         {(timeShift || relativeTime) && (
           <div className="gf-form-inline">
-            <Switch label="Hide time info" checked={hideTimeOverride} onChange={this.onToggleTimeOverride} />
+            <Switch label="隐藏时间信息" checked={hideTimeOverride} onChange={this.onToggleTimeOverride} />
           </div>
         )}
       </div>

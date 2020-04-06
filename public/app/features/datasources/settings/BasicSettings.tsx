@@ -15,24 +15,24 @@ const BasicSettings: FC<Props> = ({ dataSourceName, isDefault, onDefaultChange, 
         <div className="gf-form max-width-30" style={{ marginRight: '3px' }}>
           <FormLabel
             tooltip={
-              'The name is used when you select the data source in panels. The Default data source is ' +
-              'preselected in new panels.'
+              '在面板中选择数据源时使用该名称。 默认数据源是 ' +
+              '在新面板中预选。'
             }
           >
-            Name
+            名称
           </FormLabel>
           <Input
             className="gf-form-input max-width-23"
             type="text"
             value={dataSourceName}
-            placeholder="Name"
+            placeholder="名称"
             onChange={event => onNameChange(event.target.value)}
             required
           />
         </div>
         {/*
         //@ts-ignore */}
-        <Switch label="Default" checked={isDefault} onChange={event => onDefaultChange(event.target.checked)} />
+        <Switch label="默认" checked={isDefault} onChange={event => onDefaultChange(event.target.checked)} />
       </div>
     </div>
   );

@@ -241,7 +241,7 @@ class MetricsPanelCtrl extends PanelCtrl {
     const items = [];
     if (this.contextSrv.hasAccessToExplore() && this.datasource) {
       items.push({
-        text: 'Explore',
+        text: '探索',
         click: 'ctrl.explore();',
         icon: 'gicon gicon-explore',
         shortcut: 'x',

@@ -49,7 +49,7 @@ export class UsersActionBar extends PureComponent<Props> {
             inputClassName="gf-form-input width-20"
             value={searchQuery}
             onChange={setUsersSearchQuery}
-            placeholder="Filter by name or type"
+            placeholder="通过名称或类型过滤"
           />
           {pendingInvitesCount > 0 && (
             <div style={{ marginLeft: '1rem' }}>
@@ -64,7 +64,7 @@ export class UsersActionBar extends PureComponent<Props> {
           <div className="page-action-bar__spacer" />
           {canInvite && (
             <a className="btn btn-primary" href="org/users/invite">
-              <span>Invite</span>
+              <span>邀请</span>
             </a>
           )}
           {externalUserMngLinkUrl && (

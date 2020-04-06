@@ -8,23 +8,24 @@
       <div class="login-inner-box" id="login-view">
         <form name="loginForm" class="login-form-group gf-form-group" ng-hide="disableLoginForm">
           <div class="login-form">
-            <input type="text" name="username" class="gf-form-input login-form-input" required ng-model='formModel.user' placeholder={{loginHint}} aria-label="Username input field"
+            <input type="text" name="username" class="gf-form-input login-form-input" required ng-model='formModel.user' placeholder="邮箱或用户名" aria-label="输入用户名"
               autofocus autofill-event-fix>
           </div>
           <div class="login-form">
             <input type="password" name="password" class="gf-form-input login-form-input" required ng-model="formModel.password" id="inputPassword"
-              placeholder="{{passwordHint}}" aria-label="Password input field">
+              placeholder="输入密码" aria-label="请输入密码">
           </div>
           <div class="login-button-group">
             <button type="submit" aria-label="Login button" class="btn btn-large p-x-2" ng-if="!loggingIn" ng-click="submit();" ng-class="{'btn-inverse': !loginForm.$valid, 'btn-primary': loginForm.$valid}">
-              Log In
+              登陆
             </button>
             <button type="submit" class="btn btn-large p-x-2 btn-inverse btn-loading" ng-if="loggingIn">
-              Logging In<span>.</span><span>.</span><span>.</span>
+              登陆中<span>.</span><span>.</span><span>.</span>
             </button>
             <div class="small login-button-forgot-password" ng-hide="ldapEnabled || authProxyEnabled">
               <a href="user/password/send-reset-email">
-                Forgot your password?
+                <!--Forgot your password?-->
+                忘记密码?
               </a>
             </div>
           </div>
@@ -75,36 +76,38 @@
         </div>
         <div class="login-signup-box" ng-show="!disableUserSignUp">
           <div class="login-signup-title p-r-1">
-            New to Grafana?
+            Grafana新手？
           </div>
           <a href="signup" class="btn btn-medium btn-signup btn-p-x-2">
-            Sign Up
+            <!--Sign Up-->
+            登陆
           </a>
         </div>
       </div>
       <div class="login-inner-box remove hidden" id="change-password-view">
         <div class="text-left login-change-password-info">
-          <h5>Change Password</h5>
-          Before you can get started with awesome dashboards we need you to make your account more secure by changing your password.
-          <br />You can change your password again later.
+          <h5>修改密码</h5>
+          在您开始使用炫酷的仪表板之前，我们需要您通过更改初始密码来提高帐户的安全性。
+          <br />您可以稍后再次更改密码。
         </div>
         <form class="login-form-group gf-form-group">
           <div class="login-form">
             <input type="password" id="newPassword" name="newPassword" class="gf-form-input login-form-input" required ng-model='command.newPassword'
-              placeholder="New password">
+              placeholder="新密码">
           </div>
           <div class="login-form">
-            <input type="password" name="confirmNew" class="gf-form-input login-form-input" required ng-model="command.confirmNew" placeholder="Confirm new password">
+            <input type="password" name="confirmNew" class="gf-form-input login-form-input" required ng-model="command.confirmNew" placeholder="确认新密码">
           </div>
           <div class="login-button-group login-button-group--right text-right">
             <a class="btn btn-link" ng-click="skip();">
-              Skip
+              <!--Skip-->
+              跳过
               <info-popover mode="no-padding">
-                If you skip you will be prompted to change password next time you login.
+                如果您跳过，则下次登录时会提示您更改密码。
               </info-popover>
             </a>
             <button type="submit" class="btn btn-large p-x-2" ng-click="changePassword();" ng-class="{'btn-inverse': !loginForm.$valid, 'btn-primary': loginForm.$valid}">
-              Save
+              保存
             </button>
           </div>
         </form>

@@ -15,10 +15,10 @@ const UsersTable: FC<Props> = props => {
       <thead>
         <tr>
           <th />
-          <th>Login</th>
-          <th>Email</th>
-          <th>Seen</th>
-          <th>Role</th>
+          <th>登陆</th>
+          <th>邮箱</th>
+          <th>浏览</th>
+          <th>角色</th>
           <th style={{ width: '34px' }} />
         </tr>
       </thead>

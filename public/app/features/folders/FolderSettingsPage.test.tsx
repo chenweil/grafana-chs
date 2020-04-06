@@ -10,7 +10,7 @@ const setup = (propOverrides?: object) => {
     folder: {
       id: 0,
       uid: '1234',
-      title: 'loading',
+      title: '加载中',
       canSave: true,
       url: 'url',
       hasChanged: false,
@@ -45,7 +45,7 @@ describe('Render', () => {
       folder: {
         id: 1,
         uid: '1234',
-        title: 'loading',
+        title: '加载中',
         canSave: true,
         hasChanged: true,
         version: 1,

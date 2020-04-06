@@ -16,7 +16,7 @@ function dashRepeatOptionDirective(variableSrv) {
       panel: '=',
     },
     link: (scope, element) => {
-      element.css({ display: 'block', width: '100%' });
+      element.css({ display: '锁定', width: '100%' });
 
       scope.variables = variableSrv.variables.map(item => {
         return { text: item.name, value: item.name };
@@ -24,12 +24,12 @@ function dashRepeatOptionDirective(variableSrv) {
 
       if (scope.variables.length === 0) {
         scope.variables.unshift({
-          text: 'No template variables found',
+          text: '找不到模板变量',
           value: null,
         });
       }
 
-      scope.variables.unshift({ text: 'Disabled', value: null });
+      scope.variables.unshift({ text: '关闭', value: null });
 
       // if repeat is set and no direction set to horizontal
       if (scope.panel.repeat && !scope.panel.repeatDirection) {

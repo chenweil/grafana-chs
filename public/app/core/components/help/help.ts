@@ -9,41 +9,41 @@ export class HelpCtrl {
   constructor() {
     this.tabIndex = 0;
     this.shortcuts = {
-      Global: [
-        { keys: ['g', 'h'], description: 'Go to Home Dashboard' },
-        { keys: ['g', 'p'], description: 'Go to Profile' },
-        { keys: ['s', 'o'], description: 'Open search' },
-        { keys: ['esc'], description: 'Exit edit/setting views' },
+      '全局': [
+        { keys: ['g', 'h'], description: '返回主面板' },
+        { keys: ['g', 'p'], description: '返回参数' },
+        { keys: ['s', 'o'], description: '打开搜索' },
+        { keys: ['esc'], description: '推出编辑/查看设置' },
       ],
-      Dashboard: [
-        { keys: ['mod+s'], description: 'Save dashboard' },
-        { keys: ['d', 'r'], description: 'Refresh all panels' },
-        { keys: ['d', 's'], description: 'Dashboard settings' },
-        { keys: ['d', 'v'], description: 'Toggle in-active / view mode' },
-        { keys: ['d', 'k'], description: 'Toggle kiosk mode (hides top nav)' },
-        { keys: ['d', 'E'], description: 'Expand all rows' },
-        { keys: ['d', 'C'], description: 'Collapse all rows' },
-        { keys: ['d', 'a'], description: 'Toggle auto fit panels (experimental feature)' },
-        { keys: ['mod+o'], description: 'Toggle shared graph crosshair' },
-        { keys: ['d', 'l'], description: 'Toggle all panel legends' },
+      '仪表板': [
+        { keys: ['mod+s'], description: '保存仪表板' },
+        { keys: ['d', 'r'], description: '刷新所有面板' },
+        { keys: ['d', 's'], description: '仪表板设置' },
+        { keys: ['d', 'v'], description: '切换活动/查看模式' },
+        { keys: ['d', 'k'], description: '切换信息展亭模式（隐藏顶部导航）' },
+        { keys: ['d', 'E'], description: '展开所有行' },
+        { keys: ['d', 'C'], description: '折叠所有行' },
+        { keys: ['d', 'a'], description: '切换自动配合面板（实验功能）' },
+        { keys: ['mod+o'], description: '切换共享图形十字准线' },
+        { keys: ['d', 'l'], description: '切换所有面板图例' },
       ],
-      'Focused Panel': [
-        { keys: ['e'], description: 'Toggle panel edit view' },
-        { keys: ['v'], description: 'Toggle panel fullscreen view' },
-        { keys: ['p', 's'], description: 'Open Panel Share Modal' },
-        { keys: ['p', 'd'], description: 'Duplicate Panel' },
-        { keys: ['p', 'r'], description: 'Remove Panel' },
-        { keys: ['p', 'l'], description: 'Toggle panel legend' },
+      '展示面板': [
+        { keys: ['e'], description: '切换面板编辑视图' },
+        { keys: ['v'], description: '切换面板全屏视图' },
+        { keys: ['p', 's'], description: '打开面板共享模式' },
+        { keys: ['p', 'd'], description: '复制面板' },
+        { keys: ['p', 'r'], description: '删除面板' },
+        { keys: ['p', 'l'], description: '切换面板图例' },
       ],
-      'Time Range': [
-        { keys: ['t', 'z'], description: 'Zoom out time range' },
+      '时间范围': [
+        { keys: ['t', 'z'], description: '缩小时间范围' },
         {
           keys: ['t', '<i class="fa fa-long-arrow-left"></i>'],
-          description: 'Move time range back',
+          description: '移回时间范围',
         },
         {
           keys: ['t', '<i class="fa fa-long-arrow-right"></i>'],
-          description: 'Move time range forward',
+          description: '向前移动时间范围',
         },
       ],
     };

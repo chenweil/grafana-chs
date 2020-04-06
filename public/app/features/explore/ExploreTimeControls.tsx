@@ -102,7 +102,7 @@ export class ExploreTimeControls extends Component<Props> {
           onIntervalChanged={onChangeRefreshInterval}
           onRefresh={onRunQuery}
           value={refreshInterval}
-          tooltip="Refresh"
+          tooltip="刷新"
           hasLiveOption={hasLiveOption}
         />
         {refreshInterval && <SetInterval func={onRunQuery} interval={refreshInterval} loading={loading} />}

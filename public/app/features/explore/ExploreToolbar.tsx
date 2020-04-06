@@ -140,7 +140,7 @@ export class UnConnectedExploreToolbar extends PureComponent<Props, {}> {
               {exploreId === 'left' && (
                 <span className="navbar-page-btn">
                   <i className="gicon gicon-explore" />
-                  Explore
+                  探索
                 </span>
               )}
             </div>
@@ -191,7 +191,7 @@ export class UnConnectedExploreToolbar extends PureComponent<Props, {}> {
               <div className="explore-toolbar-content-item">
                 {createResponsiveButton({
                   splitted,
-                  title: 'Split',
+                  title: '多列',
                   onClick: split,
                   iconClassName: 'fa fa-fw fa-columns icon-margin-right',
                   iconSide: IconSide.left,
@@ -216,13 +216,13 @@ export class UnConnectedExploreToolbar extends PureComponent<Props, {}> {
 
             <div className="explore-toolbar-content-item">
               <button className="btn navbar-button" onClick={this.onClearAll}>
-                Clear All
+                清除所有
               </button>
             </div>
             <div className="explore-toolbar-content-item">
               {createResponsiveButton({
                 splitted,
-                title: 'Run Query',
+                title: '运行查询',
                 onClick: this.onRunQuery,
                 buttonClassName: 'navbar-button--secondary',
                 iconClassName:

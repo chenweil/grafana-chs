@@ -234,7 +234,7 @@ export class QueryEditorRow extends PureComponent<Props, State> {
               <button
                 className="query-editor-row__action"
                 onClick={this.onToggleEditMode}
-                title="Toggle text edit mode"
+                title="切换文本编辑模式"
               >
                 <i className="fa fa-fw fa-pencil" />
               </button>
@@ -245,14 +245,14 @@ export class QueryEditorRow extends PureComponent<Props, State> {
             <button className="query-editor-row__action" onClick={() => this.props.onMoveQuery(query, -1)}>
               <i className="fa fa-fw fa-arrow-up" />
             </button>
-            <button className="query-editor-row__action" onClick={this.onCopyQuery} title="Duplicate query">
+            <button className="query-editor-row__action" onClick={this.onCopyQuery} title="查询副本">
               <i className="fa fa-fw fa-copy" />
             </button>
-            <button className="query-editor-row__action" onClick={this.onDisableQuery} title="Disable/enable query">
+            <button className="query-editor-row__action" onClick={this.onDisableQuery} title="禁用/启用查询">
               {isDisabled && <i className="fa fa-fw fa-eye-slash" />}
               {!isDisabled && <i className="fa fa-fw fa-eye" />}
             </button>
-            <button className="query-editor-row__action" onClick={this.onRemoveQuery} title="Remove query">
+            <button className="query-editor-row__action" onClick={this.onRemoveQuery} title="删除查询">
               <i className="fa fa-fw fa-trash" />
             </button>
           </div>

@@ -73,7 +73,7 @@ export class AlertTab extends PureComponent<Props> {
 
   stateHistory = (): EditorToolbarView => {
     return {
-      title: 'State history',
+      title: '历史状态',
       render: () => {
         return (
           <StateHistory
@@ -89,15 +89,15 @@ export class AlertTab extends PureComponent<Props> {
   deleteAlert = (): EditorToolbarView => {
     const { panel } = this.props;
     return {
-      title: 'Delete',
+      title: '删除',
       btnType: 'danger',
       onClick: () => {
         appEvents.emit('confirm-modal', {
-          title: 'Delete Alert',
-          text: 'Are you sure you want to delete this alert rule?',
-          text2: 'You need to save dashboard for the delete to take effect',
+          title: '删除告警',
+          text: '您确定要删除此警报规则吗？',
+          text2: '您需要保存仪表板才能使删除生效',
           icon: 'fa-trash',
-          yesText: 'Delete',
+          yesText: '删除',
           onConfirm: () => {
             delete panel.alert;
             panel.thresholds = [];
@@ -116,7 +116,7 @@ export class AlertTab extends PureComponent<Props> {
   };
 
   testRule = (): EditorToolbarView => ({
-    title: 'Test Rule',
+    title: '测试规则',
     render: () => this.renderTestRuleResult(),
   });
 
@@ -132,10 +132,10 @@ export class AlertTab extends PureComponent<Props> {
     const toolbarItems = alert ? [this.stateHistory(), this.testRule(), this.deleteAlert()] : [];
 
     const model = {
-      title: 'Panel has no alert rule defined',
+      title: '该面板没有定义警报规则',
       buttonIcon: 'gicon gicon-alert',
       onClick: this.onAddAlert,
-      buttonTitle: 'Create Alert',
+      buttonTitle: '创建警报规则',
     };
 
     return (

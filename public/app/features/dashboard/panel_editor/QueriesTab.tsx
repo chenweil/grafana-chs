@@ -173,7 +173,7 @@ export class QueriesTab extends PureComponent<Props, State> {
         <div className="flex-grow-1" />
         {!isAddingMixed && (
           <button className="btn navbar-button" onClick={this.onAddQueryClick}>
-            Add Query
+            添加查询
           </button>
         )}
         {isAddingMixed && this.renderMixedPicker()}
@@ -218,7 +218,7 @@ export class QueriesTab extends PureComponent<Props, State> {
     const { currentDS, scrollTop, data } = this.state;
 
     const queryInspector: EditorToolbarView = {
-      title: 'Query Inspector',
+      title: '查询检查器',
       render: this.renderQueryInspector,
     };
 

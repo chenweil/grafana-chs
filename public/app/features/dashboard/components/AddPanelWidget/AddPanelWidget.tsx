@@ -69,7 +69,7 @@ export class AddPanelWidget extends React.Component<Props, State> {
 
     const newPanel: any = {
       type: 'graph',
-      title: 'Panel Title',
+      title: '面板标题',
       gridPos: { x: gridPos.x, y: gridPos.y, w: gridPos.w, h: gridPos.h },
     };
 
@@ -99,7 +99,7 @@ export class AddPanelWidget extends React.Component<Props, State> {
 
     const newPanel: any = {
       type: panelPluginInfo.id,
-      title: 'Panel Title',
+      title: '面板标题',
       gridPos: {
         x: gridPos.x,
         y: gridPos.y,
@@ -124,7 +124,7 @@ export class AddPanelWidget extends React.Component<Props, State> {
 
     const newRow: any = {
       type: 'row',
-      title: 'Row title',
+      title: '行标题',
       gridPos: { x: 0, y: 0 },
     };
 
@@ -158,28 +158,28 @@ export class AddPanelWidget extends React.Component<Props, State> {
         <div className="add-panel-widget">
           <div className="add-panel-widget__header grid-drag-handle">
             <i className="gicon gicon-add-panel" />
-            <span className="add-panel-widget__title">New Panel</span>
+            <span className="add-panel-widget__title">新建面板</span>
             <button className="add-panel-widget__close" onClick={this.handleCloseAddPanel}>
               <i className="fa fa-close" />
             </button>
           </div>
           <div className="add-panel-widget__btn-container">
             <div className="add-panel-widget__create">
-              {this.renderOptionLink('queries', 'Add Query', this.onCreateNewPanel)}
-              {this.renderOptionLink('visualization', 'Choose Visualization', () =>
+              {this.renderOptionLink('queries', '添加查询', this.onCreateNewPanel)}
+              {this.renderOptionLink('visualization', '选择可视化', () =>
                 this.onCreateNewPanel('visualization')
               )}
             </div>
             <div className="add-panel-widget__actions">
               <button className="btn btn-inverse add-panel-widget__action" onClick={this.onCreateNewRow}>
-                Convert to row
+                转换为行
               </button>
               {copiedPanelPlugins.length === 1 && (
                 <button
                   className="btn btn-inverse add-panel-widget__action"
                   onClick={() => this.onPasteCopiedPanel(copiedPanelPlugins[0])}
                 >
-                  Paste copied panel
+                  粘贴复制的面板
                 </button>
               )}
             </div>

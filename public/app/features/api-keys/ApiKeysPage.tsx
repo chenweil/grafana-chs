@@ -36,7 +36,7 @@ const timeRangeValidationEvents: ValidationEvents = {
           return false;
         }
       },
-      errorMessage: 'Not a valid duration',
+      errorMessage: '持续时间无效',
     },
   ],
 };
@@ -71,7 +71,9 @@ const initialApiKeyState = {
 };
 
 const tooltipText =
-  'The api key life duration. For example 1d if your key is going to last for one day. All the supported units are: s,m,h,d,w,M,y';
+  '\n' +
+  '126/5000\n' +
+  'api密钥的生命周期。 例如，如果您的密钥将持续一天，则为1d。 所有支持的单位是：s，m，h，d，w，M，y';
 
 export class ApiKeysPage extends PureComponent<Props, any> {
   constructor(props) {
@@ -146,12 +148,12 @@ export class ApiKeysPage extends PureComponent<Props, any> {
         {!isAdding && (
           <EmptyListCTA
             model={{
-              title: "You haven't added any API Keys yet.",
+              title: "尚未创建API KEY",
               buttonIcon: 'gicon gicon-apikeys',
               buttonLink: '#',
               onClick: this.onToggleAdding,
-              buttonTitle: ' New API Key',
-              proTip: 'Remember you can provide view-only API access to other applications.',
+              buttonTitle: ' 创建 API Key',
+              proTip: '请记住，您可以提供对其他应用程序的仅查看API访问。',
               proTipLink: '',
               proTipLinkTitle: '',
               proTipTarget: '_blank',
@@ -165,7 +167,7 @@ export class ApiKeysPage extends PureComponent<Props, any> {
 
   formatDate(date, format?) {
     if (!date) {
-      return 'No expiration date';
+      return '没有失效日期';
     }
     date = isDateTime(date) ? date : dateTime(date);
     format = format || 'YYYY-MM-DD HH:mm:ss';
@@ -183,21 +185,21 @@ export class ApiKeysPage extends PureComponent<Props, any> {
           <button className="cta-form__close btn btn-transparent" onClick={this.onToggleAdding}>
             <i className="fa fa-close" />
           </button>
-          <h5>Add API Key</h5>
+          <h5>添加API密钥</h5>
           <form className="gf-form-group" onSubmit={this.onAddApiKey}>
             <div className="gf-form-inline">
               <div className="gf-form max-width-21">
-                <span className="gf-form-label">Key name</span>
+                <span className="gf-form-label">Key 名称</span>
                 <Input
                   type="text"
                   className="gf-form-input"
                   value={newApiKey.name}
-                  placeholder="Name"
+                  placeholder="名称"
                   onChange={evt => this.onApiKeyStateUpdate(evt, ApiKeyStateProps.Name)}
                 />
               </div>
               <div className="gf-form">
-                <span className="gf-form-label">Role</span>
+                <span className="gf-form-label">角色</span>
                 <span className="gf-form-select-wrapper">
                   <select
                     className="gf-form-input gf-size-auto"
@@ -215,7 +217,7 @@ export class ApiKeysPage extends PureComponent<Props, any> {
                 </span>
               </div>
               <div className="gf-form max-width-21">
-                <FormLabel tooltip={tooltipText}>Time to live</FormLabel>
+                <FormLabel tooltip={tooltipText}>生存的时间</FormLabel>
                 <Input
                   type="text"
                   className="gf-form-input"
@@ -226,7 +228,7 @@ export class ApiKeysPage extends PureComponent<Props, any> {
                 />
               </div>
               <div className="gf-form">
-                <button className="btn gf-form-btn btn-primary">Add</button>
+                <button className="btn gf-form-btn btn-primary">添加</button>
               </div>
             </div>
           </form>
@@ -246,7 +248,7 @@ export class ApiKeysPage extends PureComponent<Props, any> {
             <FilterInput
               labelClassName="gf-form--has-input-icon gf-form--grow"
               inputClassName="gf-form-input"
-              placeholder="Search keys"
+              placeholder="查询密钥"
               value={searchQuery}
               onChange={this.onSearchQueryChange}
             />
@@ -254,19 +256,19 @@ export class ApiKeysPage extends PureComponent<Props, any> {
 
           <div className="page-action-bar__spacer" />
           <button className="btn btn-primary pull-right" onClick={this.onToggleAdding} disabled={isAdding}>
-            Add API key
+            添加API密钥
           </button>
         </div>
 
         {this.renderAddApiKeyForm()}
 
-        <h3 className="page-heading">Existing Keys</h3>
+        <h3 className="page-heading">现有密钥</h3>
         <table className="filter-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Role</th>
-              <th>Expires</th>
+              <th>名称</th>
+              <th>角色</th>
+              <th>过期时间</th>
               <th style={{ width: '34px' }} />
             </tr>
           </thead>

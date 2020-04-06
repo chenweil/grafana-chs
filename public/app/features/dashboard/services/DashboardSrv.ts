@@ -83,10 +83,10 @@ export class DashboardSrv {
       err.isHandled = true;
 
       this.$rootScope.appEvent('confirm-modal', {
-        title: 'Conflict',
-        text: 'Someone else has updated this dashboard.',
-        text2: 'Would you still like to save this dashboard?',
-        yesText: 'Save & Overwrite',
+        title: '冲突',
+        text: '其他人已更新此信息中心.',
+        text2: '依然要保存这个仪表板吗？',
+        yesText: '保存并覆盖',
         icon: 'fa-warning',
         onConfirm: () => {
           this.save(clone, options);
@@ -98,10 +98,10 @@ export class DashboardSrv {
       err.isHandled = true;
 
       this.$rootScope.appEvent('confirm-modal', {
-        title: 'Conflict',
-        text: 'A dashboard with the same name in selected folder already exists.',
-        text2: 'Would you still like to save this dashboard?',
-        yesText: 'Save & Overwrite',
+        title: '冲突',
+        text: '已存在所选文件夹中具有相同名称的仪表板。',
+        text2: '依然要保存这个仪表板吗？',
+        yesText: '保存并覆盖',
         icon: 'fa-warning',
         onConfirm: () => {
           this.save(clone, options);
@@ -113,12 +113,12 @@ export class DashboardSrv {
       err.isHandled = true;
 
       this.$rootScope.appEvent('confirm-modal', {
-        title: 'Plugin Dashboard',
+        title: '插件仪表板',
         text: err.data.message,
-        text2: 'Your changes will be lost when you update the plugin. Use Save As to create custom version.',
-        yesText: 'Overwrite',
+        text2: '更新插件时，您的更改将会丢失。 使用“另存为”创建自定义版本。',
+        yesText: '覆盖',
         icon: 'fa-warning',
-        altActionText: 'Save As',
+        altActionText: '另存为',
         onAltAction: () => {
           this.showSaveAsModal();
         },
@@ -134,7 +134,7 @@ export class DashboardSrv {
 
     // important that these happens before location redirect below
     this.$rootScope.appEvent('dashboard-saved', this.dashboard);
-    this.$rootScope.appEvent('alert-success', ['Dashboard saved']);
+    this.$rootScope.appEvent('alert-success', ['仪表板已保存']);
 
     const newUrl = locationUtil.stripBaseFromUrl(data.url);
     const currentPath = this.$location.path();

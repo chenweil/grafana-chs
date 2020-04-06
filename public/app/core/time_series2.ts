@@ -210,8 +210,8 @@ export default class TimeSeries {
     this.allIsNull = true;
     this.allIsZero = true;
 
-    const ignoreNulls = fillStyle === 'connected';
-    const nullAsZero = fillStyle === 'null as zero';
+    const ignoreNulls = fillStyle === '连接';
+    const nullAsZero = fillStyle === 'null为零';
     let currentTime;
     let currentValue;
     let nonNulls = 0;

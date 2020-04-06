@@ -97,7 +97,7 @@ function describeInitScenario(description: string, scenarioFn: ScenarioFn) {
   });
 }
 
-describeInitScenario('Initializing new dashboard', ctx => {
+describeInitScenario('初始化新仪表板', ctx => {
   ctx.setup(() => {
     ctx.storeState.user.orgId = 12;
     ctx.args.routeInfo = DashboardRouteInfo.New;
@@ -131,7 +131,7 @@ describeInitScenario('Initializing new dashboard', ctx => {
   });
 });
 
-describeInitScenario('Initializing home dashboard', ctx => {
+describeInitScenario('初始化主仪表板', ctx => {
   ctx.setup(() => {
     ctx.args.routeInfo = DashboardRouteInfo.Home;
     ctx.backendSrv.get.mockReturnValue(

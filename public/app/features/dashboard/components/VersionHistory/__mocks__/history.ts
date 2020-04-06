@@ -111,7 +111,7 @@ export function restore(version, restoredFrom?) {
                 thresholds: [],
                 timeFrom: null,
                 timeShift: null,
-                title: 'Panel Title',
+                title: '面板标题',
                 tooltip: {
                   shared: true,
                   sort: 0,

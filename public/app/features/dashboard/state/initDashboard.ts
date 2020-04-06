@@ -214,12 +214,12 @@ function getNewDashboardModelData(urlFolderId?: string): any {
       folderId: 0,
     },
     dashboard: {
-      title: 'New dashboard',
+      title: '创建仪表板',
       panels: [
         {
           type: 'add-panel',
           gridPos: { x: 0, y: 0, w: 12, h: 9 },
-          title: 'Panel Title',
+          title: '面板标题',
         },
       ],
     },
