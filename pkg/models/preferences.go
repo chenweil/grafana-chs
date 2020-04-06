@@ -7,7 +7,7 @@ import (
 
 // Typed errors
 var (
-	ErrPreferencesNotFound = errors.New("Preferences not found")
+	ErrPreferencesNotFound = errors.New("找不到首选项")
 )
 
 type Preferences struct {

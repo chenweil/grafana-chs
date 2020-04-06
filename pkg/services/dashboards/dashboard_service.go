@@ -271,7 +271,7 @@ func (dr *dashboardServiceImpl) deleteDashboard(dashboardId int64, orgId int64, 
 	if validateProvisionedDashboard {
 		provisionedData, err := dr.GetProvisionedDashboardDataByDashboardId(dashboardId)
 		if err != nil {
-			return errutil.Wrap("failed to check if dashboard is provisioned", err)
+			return errutil.Wrap("无法检查是否已配置仪表板", err)
 		}
 
 		if provisionedData != nil {

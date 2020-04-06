@@ -38,7 +38,7 @@ func (uss *UsageStatsService) sendUsageStats(oauthProviders map[string]bool) {
 
 	statsQuery := models.GetSystemStatsQuery{}
 	if err := uss.Bus.Dispatch(&statsQuery); err != nil {
-		metricsLogger.Error("Failed to get system stats", "error", err)
+		metricsLogger.Error("无法获得系统统计信息", "error", err)
 		return
 	}
 
@@ -71,7 +71,7 @@ func (uss *UsageStatsService) sendUsageStats(oauthProviders map[string]bool) {
 
 	dsStats := models.GetDataSourceStatsQuery{}
 	if err := uss.Bus.Dispatch(&dsStats); err != nil {
-		metricsLogger.Error("Failed to get datasource stats", "error", err)
+		metricsLogger.Error("无法获取数据源统计信息", "error", err)
 		return
 	}
 
@@ -92,7 +92,7 @@ func (uss *UsageStatsService) sendUsageStats(oauthProviders map[string]bool) {
 
 	dsAccessStats := models.GetDataSourceAccessStatsQuery{}
 	if err := uss.Bus.Dispatch(&dsAccessStats); err != nil {
-		metricsLogger.Error("Failed to get datasource access stats", "error", err)
+		metricsLogger.Error("无法获取数据源访问统计信息", "error", err)
 		return
 	}
 
@@ -121,7 +121,7 @@ func (uss *UsageStatsService) sendUsageStats(oauthProviders map[string]bool) {
 
 	anStats := models.GetAlertNotifierUsageStatsQuery{}
 	if err := uss.Bus.Dispatch(&anStats); err != nil {
-		metricsLogger.Error("Failed to get alert notification stats", "error", err)
+		metricsLogger.Error("无法获得警报通知统计信息", "error", err)
 		return
 	}
 
@@ -157,7 +157,7 @@ func (uss *UsageStatsService) sendUsageStats(oauthProviders map[string]bool) {
 func (uss *UsageStatsService) updateTotalStats() {
 	statsQuery := models.GetSystemStatsQuery{}
 	if err := uss.Bus.Dispatch(&statsQuery); err != nil {
-		metricsLogger.Error("Failed to get system stats", "error", err)
+		metricsLogger.Error("无法获得系统统计信息", "error", err)
 		return
 	}
 

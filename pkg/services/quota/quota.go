@@ -31,7 +31,7 @@ func (qs *QuotaService) QuotaReached(c *m.ReqContext, target string) (bool, erro
 	}
 
 	for _, scope := range scopes {
-		c.Logger.Debug("Checking quota", "target", target, "scope", scope)
+		c.Logger.Debug("检查配额", "target", target, "scope", scope)
 
 		switch scope.Name {
 		case "global":
@@ -49,7 +49,7 @@ func (qs *QuotaService) QuotaReached(c *m.ReqContext, target string) (bool, erro
 				}
 
 				if usedSessions > scope.DefaultLimit {
-					c.Logger.Debug("Sessions limit reached", "active", usedSessions, "limit", scope.DefaultLimit)
+					c.Logger.Debug("已达到会话限制", "active", usedSessions, "limit", scope.DefaultLimit)
 					return true, nil
 				}
 				continue

@@ -29,7 +29,7 @@ func userAuthTokenFromUserToken(ut *models.UserToken) *userAuthToken {
 
 func (uat *userAuthToken) fromUserToken(ut *models.UserToken) error {
 	if uat == nil {
-		return fmt.Errorf("needs pointer to userAuthToken struct")
+		return fmt.Errorf("需要指向用户的身份验证令牌结构")
 	}
 
 	uat.Id = ut.Id
@@ -50,7 +50,7 @@ func (uat *userAuthToken) fromUserToken(ut *models.UserToken) error {
 
 func (uat *userAuthToken) toUserToken(ut *models.UserToken) error {
 	if uat == nil {
-		return fmt.Errorf("needs pointer to userAuthToken struct")
+		return fmt.Errorf("需要指向用户的身份验证令牌结构")
 	}
 
 	ut.Id = uat.Id

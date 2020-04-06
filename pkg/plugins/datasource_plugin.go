@@ -109,9 +109,9 @@ func (p *DataSourcePlugin) restartKilledProcess(ctx context.Context) error {
 		case <-ticker.C:
 			if p.client.Exited() {
 				err := p.spawnSubProcess()
-				p.log.Debug("Spawning new sub process", "name", p.Name, "id", p.Id)
+				p.log.Debug("产生新的子过程", "name", p.Name, "id", p.Id)
 				if err != nil {
-					p.log.Error("Failed to spawn subprocess")
+					p.log.Error("无法生成子进程")
 				}
 			}
 		}
@@ -120,7 +120,7 @@ func (p *DataSourcePlugin) restartKilledProcess(ctx context.Context) error {
 
 func (p *DataSourcePlugin) Kill() {
 	if p.client != nil {
-		p.log.Debug("Killing subprocess ", "name", p.Name)
+		p.log.Debug("杀死子流程 ", "name", p.Name)
 		p.client.Kill()
 	}
 }

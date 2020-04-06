@@ -42,10 +42,10 @@ func isDashboardStarredByUser(c *m.ReqContext, dashID int64) (bool, error) {
 
 func dashboardGuardianResponse(err error) Response {
 	if err != nil {
-		return Error(500, "Error while checking dashboard permissions", err)
+		return Error(500, "检查仪表板权限时出错", err)
 	}
 
-	return Error(403, "Access denied to this dashboard", nil)
+	return Error(403, "拒绝访问此仪表板", nil)
 }
 
 func (hs *HTTPServer) GetDashboard(c *m.ReqContext) Response {
@@ -65,7 +65,7 @@ func (hs *HTTPServer) GetDashboard(c *m.ReqContext) Response {
 
 	isStarred, err := isDashboardStarredByUser(c, dash.Id)
 	if err != nil {
-		return Error(500, "Error while checking if dashboard was starred by user", err)
+		return Error(500, "检查仪表板是否由用户标记时出错", err)
 	}
 
 	// Finding creator and last updater of the dashboard
@@ -101,7 +101,7 @@ func (hs *HTTPServer) GetDashboard(c *m.ReqContext) Response {
 	if dash.FolderId > 0 {
 		query := m.GetDashboardQuery{Id: dash.FolderId, OrgId: c.OrgId}
 		if err := bus.Dispatch(&query); err != nil {
-			return Error(500, "Dashboard folder could not be read", err)
+			return Error(500, "无法读取仪表板文件夹", err)
 		}
 		meta.FolderTitle = query.Result.Title
 		meta.FolderUrl = query.Result.GetUrl()
@@ -109,7 +109,7 @@ func (hs *HTTPServer) GetDashboard(c *m.ReqContext) Response {
 
 	provisioningData, err := dashboards.NewProvisioningService().GetProvisionedDashboardDataByDashboardId(dash.Id)
 	if err != nil {
-		return Error(500, "Error while checking if dashboard is provisioned", err)
+		return Error(500, "检查仪表板是否已设置时出错", err)
 	}
 
 	if provisioningData != nil {
@@ -121,7 +121,7 @@ func (hs *HTTPServer) GetDashboard(c *m.ReqContext) Response {
 		if err != nil {
 			// Not sure when this could happen so not sure how to better handle this. Right now ProvisionedExternalId
 			// is for better UX, showing in Save/Delete dialogs and so it won't break anything if it is empty.
-			hs.log.Warn("Failed to create ProvisionedExternalId", "err", err)
+			hs.log.Warn("无法创建ProvisionedExternalId", "err", err)
 		}
 	}
 
@@ -156,7 +156,7 @@ func getDashboardHelper(orgID int64, slug string, id int64, uid string) (*m.Dash
 	}
 
 	if err := bus.Dispatch(&query); err != nil {
-		return nil, Error(404, "Dashboard not found", err)
+		return nil, Error(404, "未找到仪表板", err)
 	}
 
 	return query.Result, nil
@@ -166,7 +166,7 @@ func DeleteDashboardBySlug(c *m.ReqContext) Response {
 	query := m.GetDashboardsBySlugQuery{OrgId: c.OrgId, Slug: c.Params(":slug")}
 
 	if err := bus.Dispatch(&query); err != nil {
-		return Error(500, "Failed to retrieve dashboards by slug", err)
+		return Error(500, "无法通过slug检索仪表板", err)
 	}
 
 	if len(query.Result) > 1 {
@@ -193,14 +193,14 @@ func deleteDashboard(c *m.ReqContext) Response {
 
 	err := dashboards.NewService().DeleteDashboard(dash.Id, c.OrgId)
 	if err == m.ErrDashboardCannotDeleteProvisionedDashboard {
-		return Error(400, "Dashboard cannot be deleted because it was provisioned", err)
+		return Error(400, "无法删除仪表板，因为它已配置", err)
 	} else if err != nil {
-		return Error(500, "Failed to delete dashboard", err)
+		return Error(500, "无法删除仪表板", err)
 	}
 
 	return JSON(200, util.DynMap{
 		"title":   dash.Title,
-		"message": fmt.Sprintf("Dashboard %s deleted", dash.Title),
+		"message": fmt.Sprintf("仪表板 %s 已删除", dash.Title),
 	})
 }
 
@@ -214,10 +214,10 @@ func (hs *HTTPServer) PostDashboard(c *m.ReqContext, cmd m.SaveDashboardCommand)
 	if newDashboard {
 		limitReached, err := hs.QuotaService.QuotaReached(c, "dashboard")
 		if err != nil {
-			return Error(500, "failed to get quota", err)
+			return Error(500, "未能获得配额", err)
 		}
 		if limitReached {
-			return Error(403, "Quota reached", nil)
+			return Error(403, "已达到配额", nil)
 		}
 	}
 
@@ -261,17 +261,17 @@ func (hs *HTTPServer) PostDashboard(c *m.ReqContext, cmd m.SaveDashboardCommand)
 			return JSON(412, util.DynMap{"status": "version-mismatch", "message": err.Error()})
 		}
 		if pluginErr, ok := err.(m.UpdatePluginDashboardError); ok {
-			message := "The dashboard belongs to plugin " + pluginErr.PluginId + "."
+			message := "仪表板属于插件 " + pluginErr.PluginId + "."
 			// look up plugin name
 			if pluginDef, exist := plugins.Plugins[pluginErr.PluginId]; exist {
-				message = "The dashboard belongs to plugin " + pluginDef.Name + "."
+				message = "仪表板属于插件 " + pluginDef.Name + "."
 			}
 			return JSON(412, util.DynMap{"status": "plugin-dashboard", "message": message})
 		}
 		if err == m.ErrDashboardNotFound {
 			return JSON(404, util.DynMap{"status": "not-found", "message": err.Error()})
 		}
-		return Error(500, "Failed to save dashboard", err)
+		return Error(500, "无法保存仪表板", err)
 	}
 
 	if hs.Cfg.EditorsCanAdmin && newDashboard {
@@ -296,7 +296,7 @@ func (hs *HTTPServer) PostDashboard(c *m.ReqContext, cmd m.SaveDashboardCommand)
 func GetHomeDashboard(c *m.ReqContext) Response {
 	prefsQuery := m.GetPreferencesWithDefaultsQuery{User: c.SignedInUser}
 	if err := bus.Dispatch(&prefsQuery); err != nil {
-		return Error(500, "Failed to get preferences", err)
+		return Error(500, "无法获得首选项", err)
 	}
 
 	if prefsQuery.Result.HomeDashboardId != 0 {
@@ -313,18 +313,18 @@ func GetHomeDashboard(c *m.ReqContext) Response {
 	filePath := path.Join(setting.StaticRootPath, "dashboards/home.json")
 	file, err := os.Open(filePath)
 	if err != nil {
-		return Error(500, "Failed to load home dashboard", err)
+		return Error(500, "无法加载主页仪表板", err)
 	}
 	defer file.Close()
 
 	dash := dtos.DashboardFullWithMeta{}
 	dash.Meta.IsHome = true
 	dash.Meta.CanEdit = c.SignedInUser.HasRole(m.ROLE_EDITOR)
-	dash.Meta.FolderTitle = "General"
+	dash.Meta.FolderTitle = "默认"
 
 	jsonParser := json.NewDecoder(file)
 	if err := jsonParser.Decode(&dash.Dashboard); err != nil {
-		return Error(500, "Failed to load home dashboard", err)
+		return Error(500, "无法加载主页仪表板", err)
 	}
 
 	if c.HasUserRole(m.ROLE_ADMIN) && !c.HasHelpFlag(m.HelpFlagGettingStartedPanelDismissed) {
@@ -369,22 +369,22 @@ func GetDashboardVersions(c *m.ReqContext) Response {
 	}
 
 	if err := bus.Dispatch(&query); err != nil {
-		return Error(404, fmt.Sprintf("No versions found for dashboardId %d", dashID), err)
+		return Error(404, fmt.Sprintf("找不到dashboardId的版本 %d", dashID), err)
 	}
 
 	for _, version := range query.Result {
 		if version.RestoredFrom == version.Version {
-			version.Message = "Initial save (created by migration)"
+			version.Message = "初始保存（由迁移创建）"
 			continue
 		}
 
 		if version.RestoredFrom > 0 {
-			version.Message = fmt.Sprintf("Restored from version %d", version.RestoredFrom)
+			version.Message = fmt.Sprintf("从版本恢复 %d", version.RestoredFrom)
 			continue
 		}
 
 		if version.ParentVersion == 0 {
-			version.Message = "Initial save"
+			version.Message = "初始保存"
 		}
 	}
 
@@ -407,7 +407,7 @@ func GetDashboardVersion(c *m.ReqContext) Response {
 	}
 
 	if err := bus.Dispatch(&query); err != nil {
-		return Error(500, fmt.Sprintf("Dashboard version %d not found for dashboardId %d", query.Version, dashID), err)
+		return Error(500, fmt.Sprintf("未从dashboardId %d 的仪表版本为 %d 信息",  dashID, query.Version), err)
 	}
 
 	creator := anonString
@@ -463,9 +463,9 @@ func CalculateDashboardDiff(c *m.ReqContext, apiOptions dtos.CalculateDiffOption
 	result, err := dashdiffs.CalculateDiff(&options)
 	if err != nil {
 		if err == m.ErrDashboardVersionNotFound {
-			return Error(404, "Dashboard version not found", err)
+			return Error(404, "未找到仪表板版本", err)
 		}
-		return Error(500, "Unable to compute diff", err)
+		return Error(500, "无法计算差异", err)
 	}
 
 	if options.DiffType == dashdiffs.DiffDelta {
@@ -489,7 +489,7 @@ func (hs *HTTPServer) RestoreDashboardVersion(c *m.ReqContext, apiCmd dtos.Resto
 
 	versionQuery := m.GetDashboardVersionQuery{DashboardId: dash.Id, Version: apiCmd.Version, OrgId: c.OrgId}
 	if err := bus.Dispatch(&versionQuery); err != nil {
-		return Error(404, "Dashboard version not found", nil)
+		return Error(404, "未找到仪表板版本", nil)
 	}
 
 	version := versionQuery.Result
@@ -501,7 +501,7 @@ func (hs *HTTPServer) RestoreDashboardVersion(c *m.ReqContext, apiCmd dtos.Resto
 	saveCmd.Dashboard = version.Data
 	saveCmd.Dashboard.Set("version", dash.Version)
 	saveCmd.Dashboard.Set("uid", dash.Uid)
-	saveCmd.Message = fmt.Sprintf("Restored from version %d", version.Version)
+	saveCmd.Message = fmt.Sprintf("从 %d 版本恢复", version.Version)
 	saveCmd.FolderId = dash.FolderId
 
 	return hs.PostDashboard(c, saveCmd)
@@ -511,7 +511,7 @@ func GetDashboardTags(c *m.ReqContext) {
 	query := m.GetDashboardTagsQuery{OrgId: c.OrgId}
 	err := bus.Dispatch(&query)
 	if err != nil {
-		c.JsonApiErr(500, "Failed to get tags from database", err)
+		c.JsonApiErr(500, "无法从数据库中获取标签", err)
 		return
 	}
 

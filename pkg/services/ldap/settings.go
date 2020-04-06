@@ -116,26 +116,26 @@ func GetConfig() (*Config, error) {
 func readConfig(configFile string) (*Config, error) {
 	result := &Config{}
 
-	logger.Info("LDAP enabled, reading config file", "file", configFile)
+	logger.Info("启用LDAP，读取配置文件", "file", configFile)
 
 	_, err := toml.DecodeFile(configFile, result)
 	if err != nil {
-		return nil, errutil.Wrap("Failed to load LDAP config file", err)
+		return nil, errutil.Wrap("无法加载LDAP配置文件", err)
 	}
 
 	if len(result.Servers) == 0 {
-		return nil, xerrors.New("LDAP enabled but no LDAP servers defined in config file")
+		return nil, xerrors.New("已启用LDAP但在配置文件中未定义LDAP服务器")
 	}
 
 	// set default org id
 	for _, server := range result.Servers {
 		err = assertNotEmptyCfg(server.SearchFilter, "search_filter")
 		if err != nil {
-			return nil, errutil.Wrap("Failed to validate SearchFilter section", err)
+			return nil, errutil.Wrap("无法验证SearchFilter部分", err)
 		}
 		err = assertNotEmptyCfg(server.SearchBaseDNs, "search_base_dns")
 		if err != nil {
-			return nil, errutil.Wrap("Failed to validate SearchBaseDNs section", err)
+			return nil, errutil.Wrap("无法验证SearchBaseDNs部分", err)
 		}
 
 		for _, groupMap := range server.Groups {
@@ -152,14 +152,14 @@ func assertNotEmptyCfg(val interface{}, propName string) error {
 	switch v := val.(type) {
 	case string:
 		if v == "" {
-			return xerrors.Errorf("LDAP config file is missing option: %v", propName)
+			return xerrors.Errorf("缺少LDAP配置文件选项: %v", propName)
 		}
 	case []string:
 		if len(v) == 0 {
-			return xerrors.Errorf("LDAP config file is missing option: %v", propName)
+			return xerrors.Errorf("缺少LDAP配置文件选项: %v", propName)
 		}
 	default:
-		fmt.Println("unknown")
+		fmt.Println("未知")
 	}
 	return nil
 }

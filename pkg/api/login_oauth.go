@@ -37,14 +37,14 @@ func GenStateString() string {
 
 func (hs *HTTPServer) OAuthLogin(ctx *m.ReqContext) {
 	if setting.OAuthService == nil {
-		ctx.Handle(404, "OAuth not enabled", nil)
+		ctx.Handle(404, "OAuth未启用", nil)
 		return
 	}
 
 	name := ctx.Params(":name")
 	connect, ok := social.SocialMap[name]
 	if !ok {
-		ctx.Handle(404, fmt.Sprintf("No OAuth with name %s configured", name), nil)
+		ctx.Handle(404, fmt.Sprintf("没有配置名称为 %s 的OAuth", name), nil)
 		return
 	}
 
@@ -76,14 +76,14 @@ func (hs *HTTPServer) OAuthLogin(ctx *m.ReqContext) {
 	hs.deleteCookie(ctx.Resp, OauthStateCookieName, hs.Cfg.CookieSameSite)
 
 	if cookieState == "" {
-		ctx.Handle(500, "login.OAuthLogin(missing saved state)", nil)
+		ctx.Handle(500, "login.OAuthLogin(缺少保存状态)", nil)
 		return
 	}
 
 	queryState := hashStatecode(ctx.Query("state"), setting.OAuthService.OAuthInfos[name].ClientSecret)
 	oauthLogger.Info("state check", "queryState", queryState, "cookieState", cookieState)
 	if cookieState != queryState {
-		ctx.Handle(500, "login.OAuthLogin(state mismatch)", nil)
+		ctx.Handle(500, "login.OAuthLogin(状态不匹配)", nil)
 		return
 	}
 
@@ -102,7 +102,7 @@ func (hs *HTTPServer) OAuthLogin(ctx *m.ReqContext) {
 		cert, err := tls.LoadX509KeyPair(setting.OAuthService.OAuthInfos[name].TlsClientCert, setting.OAuthService.OAuthInfos[name].TlsClientKey)
 		if err != nil {
 			ctx.Logger.Error("Failed to setup TlsClientCert", "oauth", name, "error", err)
-			ctx.Handle(500, "login.OAuthLogin(Failed to setup TlsClientCert)", nil)
+			ctx.Handle(500, "login.OAuthLogin(无法设置TlsClientCert)", nil)
 			return
 		}
 
@@ -113,7 +113,7 @@ func (hs *HTTPServer) OAuthLogin(ctx *m.ReqContext) {
 		caCert, err := ioutil.ReadFile(setting.OAuthService.OAuthInfos[name].TlsClientCa)
 		if err != nil {
 			ctx.Logger.Error("Failed to setup TlsClientCa", "oauth", name, "error", err)
-			ctx.Handle(500, "login.OAuthLogin(Failed to setup TlsClientCa)", nil)
+			ctx.Handle(500, "login.OAuthLogin(无法设置TlsClientCa)", nil)
 			return
 		}
 		caCertPool := x509.NewCertPool()

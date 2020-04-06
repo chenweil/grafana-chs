@@ -173,7 +173,7 @@ func (b *Bridge) Run(ctx context.Context) {
 		select {
 		case <-ticker.C:
 			if err := b.Push(); err != nil && b.logger != nil {
-				b.logger.Println("error pushing to Graphite:", err)
+				b.logger.Println("错误推送到Graphite:", err)
 			}
 		case <-ctx.Done():
 			return
@@ -190,10 +190,10 @@ func (b *Bridge) Push() error {
 			return err
 		case ContinueOnError:
 			if b.logger != nil {
-				b.logger.Println("continue on error:", err)
+				b.logger.Println("继续出错:", err)
 			}
 		default:
-			panic("unrecognized error handling value")
+			panic("无法识别的错误处理值e")
 		}
 	}
 

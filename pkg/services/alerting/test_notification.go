@@ -40,7 +40,7 @@ func handleNotificationTestCommand(cmd *NotificationTestCommand) error {
 	notifiers, err := InitNotifier(model)
 
 	if err != nil {
-		logger.Error("Failed to create notifier", "error", err.Error())
+		logger.Error("无法创建通知程序", "error", err.Error())
 		return err
 	}
 
@@ -51,8 +51,8 @@ func createTestEvalContext(cmd *NotificationTestCommand) *EvalContext {
 	testRule := &Rule{
 		DashboardID: 1,
 		PanelID:     1,
-		Name:        "Test notification",
-		Message:     "Someone is testing the alert notification within grafana.",
+		Name:        "测试通知",
+		Message:     "有人正在测试系统警报通知。",
 		State:       models.AlertStateAlerting,
 	}
 
@@ -62,7 +62,7 @@ func createTestEvalContext(cmd *NotificationTestCommand) *EvalContext {
 	}
 	ctx.IsTestRun = true
 	ctx.Firing = true
-	ctx.Error = fmt.Errorf("This is only a test")
+	ctx.Error = fmt.Errorf("这只是一个测试")
 	ctx.EvalMatches = evalMatchesBasedOnState()
 
 	return ctx

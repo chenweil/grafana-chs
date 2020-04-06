@@ -102,7 +102,7 @@ func DecodeBasicAuthHeader(header string) (string, string, error) {
 
 	userAndPass := strings.SplitN(string(decoded), ":", 2)
 	if len(userAndPass) != 2 {
-		return "", "", errors.New("Invalid basic auth header")
+		return "", "", errors.New("无效的基本身份验证头信息")
 	}
 
 	return userAndPass[0], userAndPass[1], nil

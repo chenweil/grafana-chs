@@ -16,11 +16,11 @@ const defaultDingdingMsgType = "link"
 const dingdingOptionsTemplate = `
       <h3 class="page-heading">DingDing settings</h3>
       <div class="gf-form">
-        <span class="gf-form-label width-10">Url</span>
+        <span class="gf-form-label width-10">地址</span>
         <input type="text" required class="gf-form-input max-width-70" ng-model="ctrl.model.settings.url" placeholder="https://oapi.dingtalk.com/robot/send?access_token=xxxxxxxxx"></input>
       </div>
       <div class="gf-form">
-        <span class="gf-form-label width-10">MessageType</span>
+        <span class="gf-form-label width-10">消息类型</span>
         <select class="gf-form-input max-width-14" ng-model="ctrl.model.settings.msgType" ng-options="s for s in ['link','actionCard']" ng-init="ctrl.model.settings.msgType=ctrl.model.settings.msgType || '` + defaultDingdingMsgType + `'"></select>
       </div>
 `
@@ -28,8 +28,8 @@ const dingdingOptionsTemplate = `
 func init() {
 	alerting.RegisterNotifier(&alerting.NotifierPlugin{
 		Type:            "dingding",
-		Name:            "DingDing",
-		Description:     "Sends HTTP POST request to DingDing",
+		Name:            "钉钉",
+		Description:     "向PingDing发送HTTP POST请求",
 		Factory:         newDingDingNotifier,
 		OptionsTemplate: dingdingOptionsTemplate,
 	})
@@ -39,7 +39,7 @@ func init() {
 func newDingDingNotifier(model *models.AlertNotification) (alerting.Notifier, error) {
 	url := model.Settings.Get("url").MustString()
 	if url == "" {
-		return nil, alerting.ValidationError{Reason: "Could not find url property in settings"}
+		return nil, alerting.ValidationError{Reason: "在设置中找不到地址属性"}
 	}
 
 	msgType := model.Settings.Get("msgType").MustString(defaultDingdingMsgType)
@@ -66,7 +66,7 @@ func (dd *DingDingNotifier) Notify(evalContext *alerting.EvalContext) error {
 
 	messageURL, err := evalContext.GetRuleURL()
 	if err != nil {
-		dd.log.Error("Failed to get messageUrl", "error", err, "dingding", dd.Name)
+		dd.log.Error("无法获得信息地址", "error", err, "dingding", dd.Name)
 		messageURL = ""
 	}
 
@@ -123,7 +123,7 @@ func (dd *DingDingNotifier) Notify(evalContext *alerting.EvalContext) error {
 	bodyJSON, err := simplejson.NewJson([]byte(bodyStr))
 
 	if err != nil {
-		dd.log.Error("Failed to create Json data", "error", err, "dingding", dd.Name)
+		dd.log.Error("无法创建Json数据", "error", err, "dingding", dd.Name)
 	}
 
 	body, err := bodyJSON.MarshalJSON()
@@ -137,7 +137,7 @@ func (dd *DingDingNotifier) Notify(evalContext *alerting.EvalContext) error {
 	}
 
 	if err := bus.DispatchCtx(evalContext.Ctx, cmd); err != nil {
-		dd.log.Error("Failed to send DingDing", "error", err, "dingding", dd.Name)
+		dd.log.Error("无法发送丁丁", "error", err, "dingding", dd.Name)
 		return err
 	}
 

@@ -143,14 +143,14 @@ func (cfg *DatasourcesAsConfigV1) mapToDatasourceFromConfig(apiVersion int64) *D
 		// it will still warn
 		if len(ds.Password.Raw) > 0 {
 			cfg.log.Warn(
-				"[Deprecated] the use of password field is deprecated. Please use secureJsonData.password",
+				"[已弃用]不推荐使用密码字段。 请使用安全的Json Data.password",
 				"datasource name",
 				ds.Name.Value(),
 			)
 		}
 		if len(ds.BasicAuthPassword.Raw) > 0 {
 			cfg.log.Warn(
-				"[Deprecated] the use of basicAuthPassword field is deprecated. Please use secureJsonData.basicAuthPassword",
+				"[已弃用]不推荐使用基本的Auth Password字段。 请使用安全的JsonData.basic验证密码",
 				"datasource name",
 				ds.Name.Value(),
 			)

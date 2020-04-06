@@ -50,7 +50,7 @@ func (pm *PluginManager) checkForUpdates() {
 	resp, err := httpClient.Get("https://grafana.com/api/plugins/versioncheck?slugIn=" + pluginSlugs + "&grafanaVersion=" + setting.BuildVersion)
 
 	if err != nil {
-		log.Trace("Failed to get plugins repo from grafana.com, %v", err.Error())
+		log.Trace("无法从网站获得插件回购, %v", err.Error())
 		return
 	}
 
@@ -58,14 +58,14 @@ func (pm *PluginManager) checkForUpdates() {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Trace("Update check failed, reading response from grafana.com, %v", err.Error())
+		log.Trace("更新检查失败，从网站读取响应, %v", err.Error())
 		return
 	}
 
 	gNetPlugins := []GrafanaNetPlugin{}
 	err = json.Unmarshal(body, &gNetPlugins)
 	if err != nil {
-		log.Trace("Failed to unmarshal plugin repo, reading response from grafana.com, %v", err.Error())
+		log.Trace("无法解组插件回购，阅读网站的回复, %v", err.Error())
 		return
 	}
 
@@ -88,21 +88,21 @@ func (pm *PluginManager) checkForUpdates() {
 
 	resp2, err := httpClient.Get("https://raw.githubusercontent.com/grafana/grafana/master/latest.json")
 	if err != nil {
-		log.Trace("Failed to get latest.json repo from github.com: %v", err.Error())
+		log.Trace("无法从github.com获得latest.json repo: %v", err.Error())
 		return
 	}
 
 	defer resp2.Body.Close()
 	body, err = ioutil.ReadAll(resp2.Body)
 	if err != nil {
-		log.Trace("Update check failed, reading response from github.com, %v", err.Error())
+		log.Trace("更新检查失败，从github.com读取响应, %v", err.Error())
 		return
 	}
 
 	var githubLatest GithubLatest
 	err = json.Unmarshal(body, &githubLatest)
 	if err != nil {
-		log.Trace("Failed to unmarshal github.com latest, reading response from github.com: %v", err.Error())
+		log.Trace("无法解组github.com最新，阅读来自github.com的回复: %v", err.Error())
 		return
 	}
 

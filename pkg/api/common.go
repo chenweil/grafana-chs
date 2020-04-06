@@ -90,9 +90,9 @@ func Error(status int, message string, err error) *NormalResponse {
 
 	switch status {
 	case 404:
-		data["message"] = "Not Found"
+		data["message"] = "未找到"
 	case 500:
-		data["message"] = "Internal Server Error"
+		data["message"] = "内部服务器错误"
 	}
 
 	if message != "" {
@@ -126,7 +126,7 @@ func Respond(status int, body interface{}) *NormalResponse {
 		b = []byte(t)
 	default:
 		if b, err = json.Marshal(body); err != nil {
-			return Error(500, "body json marshal", err)
+			return Error(500, "body收集json错误", err)
 		}
 	}
 	return &NormalResponse{

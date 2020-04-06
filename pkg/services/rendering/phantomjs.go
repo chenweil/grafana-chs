@@ -81,30 +81,30 @@ func (rs *RenderingService) renderViaPhantomJS(ctx context.Context, opts Opts) (
 		cmd.Env = appendEnviron(cmd.Env, "OPENSSL_CONF", disableNewOpenssl)
 	}
 
-	rs.log.Debug("executing Phantomjs", "binPath", binPath, "cmdArgs", cmdArgs, "timezone", timezone)
+	rs.log.Debug("执行Phantomjs", "binPath", binPath, "cmdArgs", cmdArgs, "timezone", timezone)
 
 	out, err := cmd.Output()
 
 	if out != nil {
-		rs.log.Debug("Phantomjs output", "out", string(out))
+		rs.log.Debug("Phantomjs输出", "out", string(out))
 	}
 
 	if err != nil {
-		rs.log.Debug("Phantomjs error", "error", err)
+		rs.log.Debug("Phantomjs错误", "error", err)
 	}
 
 	// check for timeout first
 	if commandCtx.Err() == context.DeadlineExceeded {
-		rs.log.Info("Rendering timed out")
+		rs.log.Info("渲染超时")
 		return nil, ErrTimeout
 	}
 
 	if err != nil {
-		rs.log.Error("Phantomjs exited with non zero exit code", "error", err)
+		rs.log.Error("Phantomjs以非零退出代码退出", "error", err)
 		return nil, err
 	}
 
-	rs.log.Debug("Image rendered", "path", pngPath)
+	rs.log.Debug("图像呈现", "path", pngPath)
 	return &RenderResult{FilePath: pngPath}, nil
 }
 

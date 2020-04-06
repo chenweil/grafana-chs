@@ -28,11 +28,11 @@ const (
 )
 
 var (
-	ErrDataSourceNotFound           = errors.New("Data source not found")
-	ErrDataSourceNameExists         = errors.New("Data source with same name already exists")
-	ErrDataSourceUpdatingOldVersion = errors.New("Trying to update old version of datasource")
-	ErrDatasourceIsReadOnly         = errors.New("Data source is readonly. Can only be updated from configuration")
-	ErrDataSourceAccessDenied       = errors.New("Data source access denied")
+	ErrDataSourceNotFound           = errors.New("找不到数据源")
+	ErrDataSourceNameExists         = errors.New("已存在具有相同名称的数据源")
+	ErrDataSourceUpdatingOldVersion = errors.New("试图更新旧版本的数据源")
+	ErrDatasourceIsReadOnly         = errors.New("数据源是只读的。 只能从配置更新")
+	ErrDataSourceAccessDenied       = errors.New("数据源访问被拒绝")
 )
 
 type DsAccess string
@@ -228,8 +228,8 @@ const (
 
 func (p DsPermissionType) String() string {
 	names := map[int]string{
-		int(DsPermissionQuery):    "Query",
-		int(DsPermissionNoAccess): "No Access",
+		int(DsPermissionQuery):    "查询",
+		int(DsPermissionNoAccess): "无法访问",
 	}
 	return names[int(p)]
 }

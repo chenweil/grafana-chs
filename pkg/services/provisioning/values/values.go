@@ -34,7 +34,7 @@ func (val *IntValue) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	}
 	val.Raw = interpolated.raw
 	val.value, err = strconv.Atoi(interpolated.value)
-	return errutil.Wrap("cannot convert value int", err)
+	return errutil.Wrap("无法转换值int", err)
 }
 
 func (val *IntValue) Value() int {

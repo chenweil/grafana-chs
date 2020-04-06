@@ -50,7 +50,7 @@ func (cr *configReader) parseConfigs(file os.FileInfo) ([]*DashboardsAsConfig, e
 		}
 
 		if v0 != nil {
-			cr.log.Warn("[Deprecated] the dashboard provisioning config is outdated. please upgrade", "filename", filename)
+			cr.log.Warn("[已弃用]仪表板配置配置已过时。 请升级", "filename", filename)
 			return mapV0ToDashboardAsConfig(v0), nil
 		}
 	}
@@ -63,7 +63,7 @@ func (cr *configReader) readConfig() ([]*DashboardsAsConfig, error) {
 
 	files, err := ioutil.ReadDir(cr.path)
 	if err != nil {
-		cr.log.Error("can't read dashboard provisioning files from directory", "path", cr.path, "error", err)
+		cr.log.Error("无法从目录中读取仪表板配置文件", "path", cr.path, "error", err)
 		return dashboards, nil
 	}
 
@@ -74,7 +74,7 @@ func (cr *configReader) readConfig() ([]*DashboardsAsConfig, error) {
 
 		parsedDashboards, err := cr.parseConfigs(file)
 		if err != nil {
-			return nil, fmt.Errorf("could not parse provisioning config file: %s error: %v", file.Name(), err)
+			return nil, fmt.Errorf("无法解析配置配置文件: %s error: %v", file.Name(), err)
 		}
 
 		if len(parsedDashboards) > 0 {
@@ -98,7 +98,7 @@ func (cr *configReader) readConfig() ([]*DashboardsAsConfig, error) {
 
 	for uid, times := range uidUsage {
 		if times > 1 {
-			cr.log.Error("the same 'folderUid' is used more than once", "folderUid", uid)
+			cr.log.Error("同一个'folderUid'被多次使用", "folderUid", uid)
 		}
 	}
 

@@ -27,20 +27,20 @@ func NewStreamManager() *StreamManager {
 }
 
 func (sm *StreamManager) Run(context context.Context) {
-	log.Info("Initializing Stream Manager")
+	log.Info("初始化流管理器")
 
 	go func() {
 		sm.hub.run(context)
-		log.Info("Stopped Stream Manager")
+		log.Info("停止流管理器")
 	}()
 }
 
 func (sm *StreamManager) Serve(w http.ResponseWriter, r *http.Request) {
-	sm.log.Info("Upgrading to WebSocket")
+	sm.log.Info("升级到WebSocket")
 
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		sm.log.Error("Failed to upgrade connection to WebSocket", "error", err)
+		sm.log.Error("无法升级到WebSocket的连接", "error", err)
 		return
 	}
 

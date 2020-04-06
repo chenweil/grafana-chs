@@ -16,11 +16,11 @@ func Quota(quotaService *quota.QuotaService) func(target string) macaron.Handler
 		return func(c *m.ReqContext) {
 			limitReached, err := quotaService.QuotaReached(c, target)
 			if err != nil {
-				c.JsonApiErr(500, "failed to get quota", err)
+				c.JsonApiErr(500, "未能获得配额", err)
 				return
 			}
 			if limitReached {
-				c.JsonApiErr(403, fmt.Sprintf("%s Quota reached", target), nil)
+				c.JsonApiErr(403, fmt.Sprintf("%s 已达到配额", target), nil)
 				return
 			}
 		}

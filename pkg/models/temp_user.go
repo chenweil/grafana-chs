@@ -7,7 +7,7 @@ import (
 
 // Typed errors
 var (
-	ErrTempUserNotFound = errors.New("User not found")
+	ErrTempUserNotFound = errors.New("找不到用户")
 )
 
 type TempUserStatus string

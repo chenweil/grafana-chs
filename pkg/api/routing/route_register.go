@@ -129,7 +129,7 @@ func (rr *routeRegister) route(pattern, method string, handlers ...macaron.Handl
 
 	for _, r := range rr.routes {
 		if r.pattern == rr.prefix+pattern && r.method == method {
-			panic("cannot add duplicate route")
+			panic("无法添加重复路线")
 		}
 	}
 

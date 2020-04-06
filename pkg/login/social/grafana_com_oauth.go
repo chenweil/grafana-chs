@@ -61,12 +61,12 @@ func (s *SocialGrafanaCom) UserInfo(client *http.Client, token *oauth2.Token) (*
 
 	response, err := HttpGet(client, s.url+"/api/oauth2/user")
 	if err != nil {
-		return nil, fmt.Errorf("Error getting user info: %s", err)
+		return nil, fmt.Errorf("获取用户信息时出错: %s", err)
 	}
 
 	err = json.Unmarshal(response.Body, &data)
 	if err != nil {
-		return nil, fmt.Errorf("Error getting user info: %s", err)
+		return nil, fmt.Errorf("获取用户信息时出错: %s", err)
 	}
 
 	userInfo := &BasicUserInfo{

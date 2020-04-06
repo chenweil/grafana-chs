@@ -29,7 +29,7 @@ type PluginNotFoundError struct {
 }
 
 func (e PluginNotFoundError) Error() string {
-	return fmt.Sprintf("Plugin with id %s not found", e.PluginId)
+	return fmt.Sprintf("找不到ID %s 的插件", e.PluginId)
 }
 
 type PluginLoader interface {
@@ -61,11 +61,11 @@ type PluginBase struct {
 
 func (pb *PluginBase) registerPlugin(pluginDir string) error {
 	if _, exists := Plugins[pb.Id]; exists {
-		return errors.New("Plugin with same id already exists")
+		return errors.New("已存在具有相同ID的插件")
 	}
 
 	if !strings.HasPrefix(pluginDir, setting.StaticRootPath) {
-		plog.Info("Registering plugin", "name", pb.Name)
+		plog.Info("注册插件", "name", pb.Name)
 	}
 
 	if len(pb.Dependencies.Plugins) == 0 {

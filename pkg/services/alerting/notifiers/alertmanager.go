@@ -15,13 +15,13 @@ import (
 func init() {
 	alerting.RegisterNotifier(&alerting.NotifierPlugin{
 		Type:        "prometheus-alertmanager",
-		Name:        "Prometheus Alertmanager",
-		Description: "Sends alert to Prometheus Alertmanager",
+		Name:        "警报管理控制器",
+		Description: "发送警报到警报管理系统",
 		Factory:     NewAlertmanagerNotifier,
 		OptionsTemplate: `
-      <h3 class="page-heading">Alertmanager settings</h3>
+      <h3 class="page-heading">警报管理器配置</h3>
       <div class="gf-form">
-        <span class="gf-form-label width-10">Url</span>
+        <span class="gf-form-label width-10">地址</span>
         <input type="text" required class="gf-form-input max-width-26" ng-model="ctrl.model.settings.url" placeholder="http://localhost:9093"></input>
       </div>
     `,
@@ -32,7 +32,7 @@ func init() {
 func NewAlertmanagerNotifier(model *models.AlertNotification) (alerting.Notifier, error) {
 	url := model.Settings.Get("url").MustString()
 	if url == "" {
-		return nil, alerting.ValidationError{Reason: "Could not find url property in settings"}
+		return nil, alerting.ValidationError{Reason: "在设置中找不到地址属性"}
 	}
 
 	return &AlertmanagerNotifier{
@@ -118,7 +118,7 @@ func (am *AlertmanagerNotifier) Notify(evalContext *alerting.EvalContext) error 
 
 	ruleURL, err := evalContext.GetRuleURL()
 	if err != nil {
-		am.log.Error("Failed get rule link", "error", err)
+		am.log.Error("获取规则链接失败", "error", err)
 		return err
 	}
 
@@ -145,7 +145,7 @@ func (am *AlertmanagerNotifier) Notify(evalContext *alerting.EvalContext) error 
 	}
 
 	if err := bus.DispatchCtx(evalContext.Ctx, cmd); err != nil {
-		am.log.Error("Failed to send alertmanager", "error", err, "alertmanager", am.Name)
+		am.log.Error("无法发送alertmanager", "error", err, "alertmanager", am.Name)
 		return err
 	}
 

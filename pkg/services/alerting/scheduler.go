@@ -73,6 +73,6 @@ func (s *schedulerImpl) Tick(tickTime time.Time, execQueue chan *Job) {
 }
 
 func (s *schedulerImpl) enqueue(job *Job, execQueue chan *Job) {
-	s.log.Debug("Scheduler: Putting job on to exec queue", "name", job.Rule.Name, "id", job.Rule.ID)
+	s.log.Debug("调度程序：将作业放到执行队列中", "name", job.Rule.Name, "id", job.Rule.ID)
 	execQueue <- job
 }

@@ -30,14 +30,14 @@ func (arr *defaultRuleReader) fetch() []*Rule {
 	cmd := &models.GetAllAlertsQuery{}
 
 	if err := bus.Dispatch(cmd); err != nil {
-		arr.log.Error("Could not load alerts", "error", err)
+		arr.log.Error("无法加载警报", "error", err)
 		return []*Rule{}
 	}
 
 	res := make([]*Rule, 0)
 	for _, ruleDef := range cmd.Result {
 		if model, err := NewRuleFromDBAlert(ruleDef); err != nil {
-			arr.log.Error("Could not build alert model for rule", "ruleId", ruleDef.Id, "error", err)
+			arr.log.Error("无法为规则建立警报模型", "ruleId", ruleDef.Id, "error", err)
 		} else {
 			res = append(res, model)
 		}

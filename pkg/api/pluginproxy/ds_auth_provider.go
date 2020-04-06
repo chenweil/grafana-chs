@@ -24,13 +24,13 @@ func ApplyRoute(ctx context.Context, req *http.Request, proxyPath string, route 
 
 	interpolatedURL, err := InterpolateString(route.Url, data)
 	if err != nil {
-		logger.Error("Error interpolating proxy url", "error", err)
+		logger.Error("插入代理地址时出错", "error", err)
 		return
 	}
 
 	routeURL, err := url.Parse(interpolatedURL)
 	if err != nil {
-		logger.Error("Error parsing plugin route url", "error", err)
+		logger.Error("解析插件路由地址时出错", "error", err)
 		return
 	}
 
@@ -40,14 +40,14 @@ func ApplyRoute(ctx context.Context, req *http.Request, proxyPath string, route 
 	req.URL.Path = util.JoinURLFragments(routeURL.Path, proxyPath)
 
 	if err := addHeaders(&req.Header, route, data); err != nil {
-		logger.Error("Failed to render plugin headers", "error", err)
+		logger.Error("无法呈现插件头信息", "error", err)
 	}
 
 	tokenProvider := newAccessTokenProvider(ds, route)
 
 	if route.TokenAuth != nil {
 		if token, err := tokenProvider.getAccessToken(data); err != nil {
-			logger.Error("Failed to get access token", "error", err)
+			logger.Error("无法获得访问令牌", "error", err)
 		} else {
 			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 		}
@@ -56,22 +56,22 @@ func ApplyRoute(ctx context.Context, req *http.Request, proxyPath string, route 
 	authenticationType := ds.JsonData.Get("authenticationType").MustString("jwt")
 	if route.JwtTokenAuth != nil && authenticationType == "jwt" {
 		if token, err := tokenProvider.getJwtAccessToken(ctx, data); err != nil {
-			logger.Error("Failed to get access token", "error", err)
+			logger.Error("无法获得访问令牌", "error", err)
 		} else {
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+			req.Header.Set("授权", fmt.Sprintf("Bearer %s", token))
 		}
 	}
 
 	if authenticationType == "gce" {
 		tokenSrc, err := google.DefaultTokenSource(ctx, route.JwtTokenAuth.Scopes...)
 		if err != nil {
-			logger.Error("Failed to get default token from meta data server", "error", err)
+			logger.Error("无法从元数据服务器获取默认令牌", "error", err)
 		} else {
 			token, err := tokenSrc.Token()
 			if err != nil {
-				logger.Error("Failed to get default access token from meta data server", "error", err)
+				logger.Error("法从元数据服务器的默认访问令牌", "error", err)
 			} else {
-				req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token.AccessToken))
+				req.Header.Set("授权", fmt.Sprintf("Bearer %s", token.AccessToken))
 			}
 		}
 	}

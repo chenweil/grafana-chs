@@ -33,9 +33,9 @@ func OrgRedirect() macaron.Handler {
 		cmd := m.SetUsingOrgCommand{UserId: ctx.UserId, OrgId: orgId}
 		if err := bus.Dispatch(&cmd); err != nil {
 			if ctx.IsApiRequest() {
-				ctx.JsonApiErr(404, "Not found", nil)
+				ctx.JsonApiErr(404, "未找到", nil)
 			} else {
-				ctx.Error(404, "Not found")
+				ctx.Error(404, "未找到")
 			}
 
 			return

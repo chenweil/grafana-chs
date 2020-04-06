@@ -13,14 +13,14 @@ func (hs *HTTPServer) CreateTeam(c *m.ReqContext, cmd m.CreateTeamCommand) Respo
 	cmd.OrgId = c.OrgId
 
 	if c.OrgRole == m.ROLE_VIEWER {
-		return Error(403, "Not allowed to create team.", nil)
+		return Error(403, "不允许创建团队。", nil)
 	}
 
 	if err := hs.Bus.Dispatch(&cmd); err != nil {
 		if err == m.ErrTeamNameTaken {
-			return Error(409, "Team name taken", err)
+			return Error(409, "团队名称已被使用", err)
 		}
-		return Error(500, "Failed to create Team", err)
+		return Error(500, "无法创建团队", err)
 	}
 
 	if c.OrgRole == m.ROLE_EDITOR && hs.Cfg.EditorsCanAdmin {
@@ -32,13 +32,13 @@ func (hs *HTTPServer) CreateTeam(c *m.ReqContext, cmd m.CreateTeamCommand) Respo
 		}
 
 		if err := hs.Bus.Dispatch(&addMemberCmd); err != nil {
-			c.Logger.Error("Could not add creator to team.", "error", err)
+			c.Logger.Error("无法将创建者添加到团队中。", "error", err)
 		}
 	}
 
 	return JSON(200, &util.DynMap{
 		"teamId":  cmd.Result.Id,
-		"message": "Team created",
+		"message": "团队创建成功",
 	})
 }
 
@@ -48,17 +48,17 @@ func (hs *HTTPServer) UpdateTeam(c *m.ReqContext, cmd m.UpdateTeamCommand) Respo
 	cmd.Id = c.ParamsInt64(":teamId")
 
 	if err := teamguardian.CanAdmin(hs.Bus, cmd.OrgId, cmd.Id, c.SignedInUser); err != nil {
-		return Error(403, "Not allowed to update team", err)
+		return Error(403, "不允许更新团队", err)
 	}
 
 	if err := hs.Bus.Dispatch(&cmd); err != nil {
 		if err == m.ErrTeamNameTaken {
-			return Error(400, "Team name taken", err)
+			return Error(400, "团队名称已被使用", err)
 		}
-		return Error(500, "Failed to update Team", err)
+		return Error(500, "无法更新团队", err)
 	}
 
-	return Success("Team updated")
+	return Success("团队更新成功")
 }
 
 // DELETE /api/teams/:teamId
@@ -68,16 +68,16 @@ func (hs *HTTPServer) DeleteTeamByID(c *m.ReqContext) Response {
 	user := c.SignedInUser
 
 	if err := teamguardian.CanAdmin(hs.Bus, orgId, teamId, user); err != nil {
-		return Error(403, "Not allowed to delete team", err)
+		return Error(403, "不允许删除团队", err)
 	}
 
 	if err := hs.Bus.Dispatch(&m.DeleteTeamCommand{OrgId: orgId, Id: teamId}); err != nil {
 		if err == m.ErrTeamNotFound {
-			return Error(404, "Failed to delete Team. ID not found", nil)
+			return Error(404, "无法删除团队。 找不到ID", nil)
 		}
-		return Error(500, "Failed to delete Team", err)
+		return Error(500, "无法删除团队", err)
 	}
-	return Success("Team deleted")
+	return Success("团队已删除")
 }
 
 // GET /api/teams/search
@@ -106,7 +106,7 @@ func (hs *HTTPServer) SearchTeams(c *m.ReqContext) Response {
 	}
 
 	if err := bus.Dispatch(&query); err != nil {
-		return Error(500, "Failed to search Teams", err)
+		return Error(500, "无法搜索小组", err)
 	}
 
 	for _, team := range query.Result.Teams {
@@ -125,10 +125,10 @@ func GetTeamByID(c *m.ReqContext) Response {
 
 	if err := bus.Dispatch(&query); err != nil {
 		if err == m.ErrTeamNotFound {
-			return Error(404, "Team not found", err)
+			return Error(404, "团队未找到", err)
 		}
 
-		return Error(500, "Failed to get Team", err)
+		return Error(500, "无法获得团队", err)
 	}
 
 	query.Result.AvatarUrl = dtos.GetGravatarUrlWithDefault(query.Result.Email, query.Result.Name)
@@ -141,7 +141,7 @@ func (hs *HTTPServer) GetTeamPreferences(c *m.ReqContext) Response {
 	orgId := c.OrgId
 
 	if err := teamguardian.CanAdmin(hs.Bus, orgId, teamId, c.SignedInUser); err != nil {
-		return Error(403, "Not allowed to view team preferences.", err)
+		return Error(403, "不允许查看团队首选项。", err)
 	}
 
 	return getPreferencesFor(orgId, 0, teamId)
@@ -153,7 +153,7 @@ func (hs *HTTPServer) UpdateTeamPreferences(c *m.ReqContext, dtoCmd dtos.UpdateP
 	orgId := c.OrgId
 
 	if err := teamguardian.CanAdmin(hs.Bus, orgId, teamId, c.SignedInUser); err != nil {
-		return Error(403, "Not allowed to update team preferences.", err)
+		return Error(403, "不允许更新团队首选项。", err)
 	}
 
 	return updatePreferencesFor(orgId, 0, teamId, &dtoCmd)

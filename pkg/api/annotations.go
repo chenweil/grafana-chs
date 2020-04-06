@@ -31,7 +31,7 @@ func GetAnnotations(c *m.ReqContext) Response {
 
 	items, err := repo.Find(query)
 	if err != nil {
-		return Error(500, "Failed to get annotations", err)
+		return Error(500, "无法获得注释", err)
 	}
 
 	for _, item := range items {
@@ -59,8 +59,8 @@ func PostAnnotation(c *m.ReqContext, cmd dtos.PostAnnotationsCmd) Response {
 	repo := annotations.GetRepository()
 
 	if cmd.Text == "" {
-		err := &CreateAnnotationError{"text field should not be empty"}
-		return Error(500, "Failed to save annotation", err)
+		err := &CreateAnnotationError{"文本字段不应为空"}
+		return Error(500, "无法保存注释", err)
 	}
 
 	item := annotations.Item{
@@ -75,7 +75,7 @@ func PostAnnotation(c *m.ReqContext, cmd dtos.PostAnnotationsCmd) Response {
 	}
 
 	if err := repo.Save(&item); err != nil {
-		return Error(500, "Failed to save annotation", err)
+		return Error(500, "无法保存注释", err)
 	}
 
 	startID := item.Id
@@ -89,25 +89,25 @@ func PostAnnotation(c *m.ReqContext, cmd dtos.PostAnnotationsCmd) Response {
 		}
 
 		if err := repo.Update(&item); err != nil {
-			return Error(500, "Failed set regionId on annotation", err)
+			return Error(500, "注释上设置regionId失败", err)
 		}
 
 		item.Id = 0
 		item.Epoch = cmd.TimeEnd
 
 		if err := repo.Save(&item); err != nil {
-			return Error(500, "Failed save annotation for region end time", err)
+			return Error(500, "区域结束时间的保存注释失败", err)
 		}
 
 		return JSON(200, util.DynMap{
-			"message": "Annotation added",
+			"message": "注释已添加",
 			"id":      startID,
 			"endId":   item.Id,
 		})
 	}
 
 	return JSON(200, util.DynMap{
-		"message": "Annotation added",
+		"message": "注释已添加",
 		"id":      startID,
 	})
 }
@@ -124,8 +124,8 @@ func PostGraphiteAnnotation(c *m.ReqContext, cmd dtos.PostGraphiteAnnotationsCmd
 	repo := annotations.GetRepository()
 
 	if cmd.What == "" {
-		err := &CreateAnnotationError{"what field should not be empty"}
-		return Error(500, "Failed to save Graphite annotation", err)
+		err := &CreateAnnotationError{"什么字段不应该是空的"}
+		return Error(500, "无法保存Graphite注释", err)
 	}
 
 	text := formatGraphiteAnnotation(cmd.What, cmd.Data)
@@ -144,13 +144,13 @@ func PostGraphiteAnnotation(c *m.ReqContext, cmd dtos.PostGraphiteAnnotationsCmd
 			if tagStr, ok := t.(string); ok {
 				tagsArray = append(tagsArray, tagStr)
 			} else {
-				err := &CreateAnnotationError{"tag should be a string"}
-				return Error(500, "Failed to save Graphite annotation", err)
+				err := &CreateAnnotationError{"标签应该是一个字符串"}
+				return Error(500, "无法保存Graphite注释", err)
 			}
 		}
 	default:
 		err := &CreateAnnotationError{"unsupported tags format"}
-		return Error(500, "Failed to save Graphite annotation", err)
+		return Error(500, "无法保存Graphite注释", err)
 	}
 
 	item := annotations.Item{
@@ -166,7 +166,7 @@ func PostGraphiteAnnotation(c *m.ReqContext, cmd dtos.PostGraphiteAnnotationsCmd
 	}
 
 	return JSON(200, util.DynMap{
-		"message": "Graphite annotation added",
+		"message": "Graphite注释已添加",
 		"id":      item.Id,
 	})
 }
@@ -190,7 +190,7 @@ func UpdateAnnotation(c *m.ReqContext, cmd dtos.UpdateAnnotationsCmd) Response {
 	}
 
 	if err := repo.Update(&item); err != nil {
-		return Error(500, "Failed to update annotation", err)
+		return Error(500, "无法更新注释", err)
 	}
 
 	if cmd.IsRegion {
@@ -203,7 +203,7 @@ func UpdateAnnotation(c *m.ReqContext, cmd dtos.UpdateAnnotationsCmd) Response {
 		itemRight.Id = 0
 
 		if err := repo.Update(&itemRight); err != nil {
-			return Error(500, "Failed to update annotation for region end time", err)
+			return Error(500, "无法更新区域结束时间的注释", err)
 		}
 	}
 
@@ -222,7 +222,7 @@ func PatchAnnotation(c *m.ReqContext, cmd dtos.PatchAnnotationsCmd) Response {
 	items, err := repo.Find(&annotations.ItemQuery{AnnotationId: annotationID, OrgId: c.OrgId})
 
 	if err != nil || len(items) == 0 {
-		return Error(404, "Could not find annotation to update", err)
+		return Error(404, "无法找到要更新的注释", err)
 	}
 
 	existing := annotations.Item{
@@ -248,7 +248,7 @@ func PatchAnnotation(c *m.ReqContext, cmd dtos.PatchAnnotationsCmd) Response {
 	}
 
 	if err := repo.Update(&existing); err != nil {
-		return Error(500, "Failed to update annotation", err)
+		return Error(500, "无法更新注释", err)
 	}
 
 	// Update region end time if provided
@@ -262,7 +262,7 @@ func PatchAnnotation(c *m.ReqContext, cmd dtos.PatchAnnotationsCmd) Response {
 		itemRight.Id = 0
 
 		if err := repo.Update(&itemRight); err != nil {
-			return Error(500, "Failed to update annotation for region end time", err)
+			return Error(500, "无法更新区域结束时间的注释", err)
 		}
 	}
 
@@ -281,10 +281,10 @@ func DeleteAnnotations(c *m.ReqContext, cmd dtos.DeleteAnnotationsCmd) Response 
 	})
 
 	if err != nil {
-		return Error(500, "Failed to delete annotations", err)
+		return Error(500, "无法删除注释", err)
 	}
 
-	return Success("Annotations deleted")
+	return Success("注释已删除")
 }
 
 func DeleteAnnotationByID(c *m.ReqContext) Response {
@@ -301,10 +301,10 @@ func DeleteAnnotationByID(c *m.ReqContext) Response {
 	})
 
 	if err != nil {
-		return Error(500, "Failed to delete annotation", err)
+		return Error(500, "无法删除注释", err)
 	}
 
-	return Success("Annotation deleted")
+	return Success("注释已删除")
 }
 
 func DeleteAnnotationRegion(c *m.ReqContext) Response {
@@ -321,10 +321,10 @@ func DeleteAnnotationRegion(c *m.ReqContext) Response {
 	})
 
 	if err != nil {
-		return Error(500, "Failed to delete annotation region", err)
+		return Error(500, "无法删除注释区域", err)
 	}
 
-	return Success("Annotation region deleted")
+	return Success("注释区域已删除")
 }
 
 func canSaveByDashboardID(c *m.ReqContext, dashboardID int64) (bool, error) {
@@ -346,7 +346,7 @@ func canSave(c *m.ReqContext, repo annotations.Repository, annotationID int64) R
 	items, err := repo.Find(&annotations.ItemQuery{AnnotationId: annotationID, OrgId: c.OrgId})
 
 	if err != nil || len(items) == 0 {
-		return Error(500, "Could not find annotation to update", err)
+		return Error(500, "无法找到要更新的注释", err)
 	}
 
 	dashboardID := items[0].DashboardId

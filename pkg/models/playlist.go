@@ -6,8 +6,8 @@ import (
 
 // Typed errors
 var (
-	ErrPlaylistNotFound           = errors.New("Playlist not found")
-	ErrPlaylistWithSameNameExists = errors.New("A playlist with the same name already exists")
+	ErrPlaylistNotFound           = errors.New("找不到播放列表")
+	ErrPlaylistWithSameNameExists = errors.New("已存在具有相同名称的播放列表")
 )
 
 // Playlist model

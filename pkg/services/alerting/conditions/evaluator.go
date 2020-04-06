@@ -35,12 +35,12 @@ type thresholdEvaluator struct {
 func newThresholdEvaluator(typ string, model *simplejson.Json) (*thresholdEvaluator, error) {
 	params := model.Get("params").MustArray()
 	if len(params) == 0 {
-		return nil, fmt.Errorf("Evaluator missing threshold parameter")
+		return nil, fmt.Errorf("评估者缺少阈值参数")
 	}
 
 	firstParam, ok := params[0].(json.Number)
 	if !ok {
-		return nil, fmt.Errorf("Evaluator has invalid parameter")
+		return nil, fmt.Errorf("评估者含有无效参数")
 	}
 
 	defaultEval := &thresholdEvaluator{Type: typ}
@@ -72,17 +72,17 @@ type rangedEvaluator struct {
 func newRangedEvaluator(typ string, model *simplejson.Json) (*rangedEvaluator, error) {
 	params := model.Get("params").MustArray()
 	if len(params) == 0 {
-		return nil, alerting.ValidationError{Reason: "Evaluator missing threshold parameter"}
+		return nil, alerting.ValidationError{Reason: "评估者缺少阈值参数"}
 	}
 
 	firstParam, ok := params[0].(json.Number)
 	if !ok {
-		return nil, alerting.ValidationError{Reason: "Evaluator has invalid parameter"}
+		return nil, alerting.ValidationError{Reason: "评估者含有无效参数"}
 	}
 
 	secondParam, ok := params[1].(json.Number)
 	if !ok {
-		return nil, alerting.ValidationError{Reason: "Evaluator has invalid second parameter"}
+		return nil, alerting.ValidationError{Reason: "评估者含有无效的第二个参数"}
 	}
 
 	rangedEval := &rangedEvaluator{Type: typ}
@@ -113,7 +113,7 @@ func (e *rangedEvaluator) Eval(reducedValue null.Float) bool {
 func NewAlertEvaluator(model *simplejson.Json) (AlertEvaluator, error) {
 	typ := model.Get("type").MustString()
 	if typ == "" {
-		return nil, fmt.Errorf("Evaluator missing type property")
+		return nil, fmt.Errorf("评估者缺少类型属性")
 	}
 
 	if inSlice(typ, defaultTypes) {
@@ -128,7 +128,7 @@ func NewAlertEvaluator(model *simplejson.Json) (AlertEvaluator, error) {
 		return &noValueEvaluator{}, nil
 	}
 
-	return nil, fmt.Errorf("Evaluator invalid evaluator type: %s", typ)
+	return nil, fmt.Errorf("评估者无效的评估者类型: %s", typ)
 }
 
 func inSlice(a string, list []string) bool {

@@ -27,7 +27,7 @@ func NewFakeStore(t *testing.T) *RemoteCache {
 
 	err := dc.Init()
 	if err != nil {
-		t.Fatalf("failed to init remote cache for test. error: %v", err)
+		t.Fatalf("无法初始化远程缓存进行测试。 错误: %v", err)
 	}
 
 	return dc

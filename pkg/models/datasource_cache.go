@@ -94,7 +94,7 @@ func (ds *DataSource) GetTLSConfig() (*tls.Config, error) {
 			caPool := x509.NewCertPool()
 			ok := caPool.AppendCertsFromPEM([]byte(decrypted["tlsCACert"]))
 			if !ok {
-				return nil, errors.New("Failed to parse TLS CA PEM certificate")
+				return nil, errors.New("无法解析TLS CA PEM证书")
 			}
 			tlsConfig.RootCAs = caPool
 		}

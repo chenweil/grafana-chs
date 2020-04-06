@@ -11,28 +11,28 @@ import (
 func init() {
 	alerting.RegisterNotifier(&alerting.NotifierPlugin{
 		Type:        "webhook",
-		Name:        "webhook",
-		Description: "Sends HTTP POST request to a URL",
+		Name:        "web钩子",
+		Description: "HTTP发送POST/PUT数据到一个地址",
 		Factory:     NewWebHookNotifier,
 		OptionsTemplate: `
-      <h3 class="page-heading">Webhook settings</h3>
+      <h3 class="page-heading">Web钩子 设置</h3>
       <div class="gf-form">
         <span class="gf-form-label width-10">Url</span>
         <input type="text" required class="gf-form-input max-width-26" ng-model="ctrl.model.settings.url"></input>
       </div>
       <div class="gf-form">
-        <span class="gf-form-label width-10">Http Method</span>
+        <span class="gf-form-label width-10">Http 请求方式</span>
         <div class="gf-form-select-wrapper width-14">
           <select class="gf-form-input" ng-model="ctrl.model.settings.httpMethod" ng-options="t for t in ['POST', 'PUT']">
           </select>
         </div>
       </div>
       <div class="gf-form">
-        <span class="gf-form-label width-10">Username</span>
+        <span class="gf-form-label width-10">用户名</span>
         <input type="text" class="gf-form-input max-width-14" ng-model="ctrl.model.settings.username"></input>
       </div>
       <div class="gf-form">
-        <span class="gf-form-label width-10">Password</span>
+        <span class="gf-form-label width-10">密码</span>
         <input type="text" class="gf-form-input max-width-14" ng-model="ctrl.model.settings.password"></input>
       </div>
     `,
@@ -45,7 +45,7 @@ func init() {
 func NewWebHookNotifier(model *models.AlertNotification) (alerting.Notifier, error) {
 	url := model.Settings.Get("url").MustString()
 	if url == "" {
-		return nil, alerting.ValidationError{Reason: "Could not find url property in settings"}
+			return nil, alerting.ValidationError{Reason: "在设置中找不到URL属性"}
 	}
 
 	return &WebhookNotifier{
@@ -105,7 +105,7 @@ func (wn *WebhookNotifier) Notify(evalContext *alerting.EvalContext) error {
 	}
 
 	if err := bus.DispatchCtx(evalContext.Ctx, cmd); err != nil {
-		wn.log.Error("Failed to send webhook", "error", err, "webhook", wn.Name)
+		wn.log.Error("发送web钩子失败", "error", err, "webhook", wn.Name)
 		return err
 	}
 

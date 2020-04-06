@@ -14,29 +14,29 @@ func ValidateOrgPlaylist(c *m.ReqContext) {
 	err := bus.Dispatch(&query)
 
 	if err != nil {
-		c.JsonApiErr(404, "Playlist not found", err)
+		c.JsonApiErr(404, "找不到播放列表", err)
 		return
 	}
 
 	if query.Result.OrgId == 0 {
-		c.JsonApiErr(404, "Playlist not found", err)
+		c.JsonApiErr(404, "找不到播放列表", err)
 		return
 	}
 
 	if query.Result.OrgId != c.OrgId {
-		c.JsonApiErr(403, "You are not allowed to edit/view playlist", nil)
+		c.JsonApiErr(403, "您无权编辑/查看播放列表", nil)
 		return
 	}
 
 	items, itemsErr := LoadPlaylistItemDTOs(id)
 
 	if itemsErr != nil {
-		c.JsonApiErr(404, "Playlist items not found", err)
+		c.JsonApiErr(404, "找不到播放列表项目", err)
 		return
 	}
 
 	if len(items) == 0 && c.Context.Req.Method != http.MethodDelete {
-		c.JsonApiErr(404, "Playlist is empty", itemsErr)
+		c.JsonApiErr(404, "播放列表为空", itemsErr)
 		return
 	}
 }
@@ -57,7 +57,7 @@ func SearchPlaylists(c *m.ReqContext) Response {
 
 	err := bus.Dispatch(&searchQuery)
 	if err != nil {
-		return Error(500, "Search failed", err)
+		return Error(500, "搜索失败", err)
 	}
 
 	return JSON(200, searchQuery.Result)
@@ -68,7 +68,7 @@ func GetPlaylist(c *m.ReqContext) Response {
 	cmd := m.GetPlaylistByIdQuery{Id: id}
 
 	if err := bus.Dispatch(&cmd); err != nil {
-		return Error(500, "Playlist not found", err)
+		return Error(500, "找不到播放列表", err)
 	}
 
 	playlistDTOs, _ := LoadPlaylistItemDTOs(id)
@@ -122,7 +122,7 @@ func GetPlaylistItems(c *m.ReqContext) Response {
 	playlistDTOs, err := LoadPlaylistItemDTOs(id)
 
 	if err != nil {
-		return Error(500, "Could not load playlist items", err)
+		return Error(500, "无法加载播放列表项", err)
 	}
 
 	return JSON(200, playlistDTOs)
@@ -133,7 +133,7 @@ func GetPlaylistDashboards(c *m.ReqContext) Response {
 
 	playlists, err := LoadPlaylistDashboards(c.OrgId, c.SignedInUser, playlistID)
 	if err != nil {
-		return Error(500, "Could not load dashboards", err)
+		return Error(500, "无法加载仪表板", err)
 	}
 
 	return JSON(200, playlists)
@@ -144,7 +144,7 @@ func DeletePlaylist(c *m.ReqContext) Response {
 
 	cmd := m.DeletePlaylistCommand{Id: id, OrgId: c.OrgId}
 	if err := bus.Dispatch(&cmd); err != nil {
-		return Error(500, "Failed to delete playlist", err)
+		return Error(500, "无法删除播放列表", err)
 	}
 
 	return JSON(200, "")
@@ -154,7 +154,7 @@ func CreatePlaylist(c *m.ReqContext, cmd m.CreatePlaylistCommand) Response {
 	cmd.OrgId = c.OrgId
 
 	if err := bus.Dispatch(&cmd); err != nil {
-		return Error(500, "Failed to create playlist", err)
+		return Error(500, "无法创建播放列表", err)
 	}
 
 	return JSON(200, cmd.Result)
@@ -165,12 +165,12 @@ func UpdatePlaylist(c *m.ReqContext, cmd m.UpdatePlaylistCommand) Response {
 	cmd.Id = c.ParamsInt64(":id")
 
 	if err := bus.Dispatch(&cmd); err != nil {
-		return Error(500, "Failed to save playlist", err)
+		return Error(500, "无法保存播放列表", err)
 	}
 
 	playlistDTOs, err := LoadPlaylistItemDTOs(cmd.Id)
 	if err != nil {
-		return Error(500, "Failed to save playlist", err)
+		return Error(500, "无法保存播放列表", err)
 	}
 
 	cmd.Result.Items = playlistDTOs

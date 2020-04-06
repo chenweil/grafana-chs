@@ -74,7 +74,7 @@ func (h *hub) run(ctx context.Context) {
 		case message := <-h.streamChannel:
 			subscribers, exists := h.streams[message.Stream]
 			if !exists || len(subscribers) == 0 {
-				h.log.Info("Message to stream without subscribers", "stream", message.Stream)
+				h.log.Info("没有订阅者的消息流", "stream", message.Stream)
 				continue
 			}
 

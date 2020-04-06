@@ -46,7 +46,7 @@ func handleAlertTestCommand(cmd *AlertTestCommand) error {
 		}
 	}
 
-	return fmt.Errorf("Could not find alert with panel id %d", cmd.PanelID)
+	return fmt.Errorf("无法找到面板ID的提醒 %d", cmd.PanelID)
 }
 
 func testAlertRule(rule *Rule) *EvalContext {

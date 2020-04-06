@@ -59,9 +59,9 @@ func (ctx *ReqContext) JsonApiErr(status int, message string, err error) {
 
 	switch status {
 	case 404:
-		resp["message"] = "Not Found"
+		resp["message"] = "未找到"
 	case 500:
-		resp["message"] = "Internal Server Error"
+		resp["message"] = "内部服务器错误"
 	}
 
 	if message != "" {

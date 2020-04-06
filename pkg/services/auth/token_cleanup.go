@@ -17,7 +17,7 @@ func (srv *UserAuthTokenService) Run(ctx context.Context) error {
 	})
 
 	if err != nil {
-		srv.log.Error("failed to lock and execute cleanup of expired auth token", "error", err)
+		srv.log.Error("无法锁定并执行已过期的身份验证令牌的清理", "error", err)
 	}
 
 	for {
@@ -28,7 +28,7 @@ func (srv *UserAuthTokenService) Run(ctx context.Context) error {
 			})
 
 			if err != nil {
-				srv.log.Error("failed to lock and execute cleanup of expired auth token", "error", err)
+				srv.log.Error("无法锁定并执行已过期的身份验证令牌的清理", "error", err)
 			}
 
 		case <-ctx.Done():
@@ -41,7 +41,7 @@ func (srv *UserAuthTokenService) deleteExpiredTokens(ctx context.Context, maxIna
 	createdBefore := getTime().Add(-maxLifetime)
 	rotatedBefore := getTime().Add(-maxInactiveLifetime)
 
-	srv.log.Debug("starting cleanup of expired auth tokens", "createdBefore", createdBefore, "rotatedBefore", rotatedBefore)
+	srv.log.Debug("开始清理过期的身份验证令牌", "createdBefore", createdBefore, "rotatedBefore", rotatedBefore)
 
 	var affected int64
 	err := srv.SQLStore.WithDbSession(ctx, func(dbSession *sqlstore.DBSession) error {
@@ -53,11 +53,11 @@ func (srv *UserAuthTokenService) deleteExpiredTokens(ctx context.Context, maxIna
 
 		affected, err = res.RowsAffected()
 		if err != nil {
-			srv.log.Error("failed to cleanup expired auth tokens", "error", err)
+			srv.log.Error("无法清除过期的身份验证令牌", "error", err)
 			return nil
 		}
 
-		srv.log.Debug("cleanup of expired auth tokens done", "count", affected)
+		srv.log.Debug("完成过期的auth令牌的清理", "count", affected)
 
 		return nil
 	})

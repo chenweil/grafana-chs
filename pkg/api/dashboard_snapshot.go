@@ -57,7 +57,7 @@ func createExternalDashboardSnapshot(cmd m.CreateDashboardSnapshotCommand) (*Cre
 	defer response.Body.Close()
 
 	if response.StatusCode != 200 {
-		return nil, fmt.Errorf("Create external snapshot response status code %d", response.StatusCode)
+		return nil, fmt.Errorf("创建外部快照响应状态代码为 %d", response.StatusCode)
 	}
 
 	if err := json.NewDecoder(response.Body).Decode(&createSnapshotResponse); err != nil {
@@ -80,13 +80,13 @@ func CreateDashboardSnapshot(c *m.ReqContext, cmd m.CreateDashboardSnapshotComma
 
 	if cmd.External {
 		if !setting.ExternalEnabled {
-			c.JsonApiErr(403, "External dashboard creation is disabled", nil)
+			c.JsonApiErr(403, "外部仪表板创建已禁用", nil)
 			return
 		}
 
 		response, err := createExternalDashboardSnapshot(cmd)
 		if err != nil {
-			c.JsonApiErr(500, "Failed to create external snaphost", err)
+			c.JsonApiErr(500, "无法创建外部快照", err)
 			return
 		}
 
@@ -113,7 +113,7 @@ func CreateDashboardSnapshot(c *m.ReqContext, cmd m.CreateDashboardSnapshotComma
 	}
 
 	if err := bus.Dispatch(&cmd); err != nil {
-		c.JsonApiErr(500, "Failed to create snaphost", err)
+		c.JsonApiErr(500, "无法创建快照", err)
 		return
 	}
 
@@ -132,7 +132,7 @@ func GetDashboardSnapshot(c *m.ReqContext) {
 
 	err := bus.Dispatch(query)
 	if err != nil {
-		c.JsonApiErr(500, "Failed to get dashboard snapshot", err)
+		c.JsonApiErr(500, "无法获得仪表板快照", err)
 		return
 	}
 
@@ -140,7 +140,7 @@ func GetDashboardSnapshot(c *m.ReqContext) {
 
 	// expired snapshots should also be removed from db
 	if snapshot.Expires.Before(time.Now()) {
-		c.JsonApiErr(404, "Dashboard snapshot not found", err)
+		c.JsonApiErr(404, "未找到仪表板快照", err)
 		return
 	}
 
@@ -179,12 +179,12 @@ func deleteExternalDashboardSnapshot(externalUrl string) error {
 			return err
 		}
 
-		if respJson["message"] == "Failed to get dashboard snapshot" {
+		if respJson["message"] == "无法获得仪表板快照" {
 			return nil
 		}
 	}
 
-	return fmt.Errorf("Unexpected response when deleting external snapshot. Status code: %d", response.StatusCode)
+	return fmt.Errorf("删除外部快照时出现意外响应。 状态代码： %d", response.StatusCode)
 }
 
 // GET /api/snapshots-delete/:deleteKey
@@ -195,23 +195,23 @@ func DeleteDashboardSnapshotByDeleteKey(c *m.ReqContext) Response {
 
 	err := bus.Dispatch(query)
 	if err != nil {
-		return Error(500, "Failed to get dashboard snapshot", err)
+		return Error(500, "无法获得仪表板快照", err)
 	}
 
 	if query.Result.External {
 		err := deleteExternalDashboardSnapshot(query.Result.ExternalDeleteUrl)
 		if err != nil {
-			return Error(500, "Failed to delete external dashboard", err)
+			return Error(500, "无法删除外部仪表板", err)
 		}
 	}
 
 	cmd := &m.DeleteDashboardSnapshotCommand{DeleteKey: query.Result.DeleteKey}
 
 	if err := bus.Dispatch(cmd); err != nil {
-		return Error(500, "Failed to delete dashboard snapshot", err)
+		return Error(500, "无法删除仪表板快照", err)
 	}
 
-	return JSON(200, util.DynMap{"message": "Snapshot deleted. It might take an hour before it's cleared from any CDN caches."})
+	return JSON(200, util.DynMap{"message": "快照已删除。 它可能需要一个小时才能从任何CDN缓存中清除。"})
 }
 
 // DELETE /api/snapshots/:key
@@ -222,11 +222,11 @@ func DeleteDashboardSnapshot(c *m.ReqContext) Response {
 
 	err := bus.Dispatch(query)
 	if err != nil {
-		return Error(500, "Failed to get dashboard snapshot", err)
+		return Error(500, "无法获得仪表板快照", err)
 	}
 
 	if query.Result == nil {
-		return Error(404, "Failed to get dashboard snapshot", nil)
+		return Error(404, "无法获得仪表板快照", nil)
 	}
 	dashboard := query.Result.Dashboard
 	dashboardID := dashboard.Get("id").MustInt64()
@@ -234,27 +234,27 @@ func DeleteDashboardSnapshot(c *m.ReqContext) Response {
 	guardian := guardian.New(dashboardID, c.OrgId, c.SignedInUser)
 	canEdit, err := guardian.CanEdit()
 	if err != nil {
-		return Error(500, "Error while checking permissions for snapshot", err)
+		return Error(500, "检查快照权限时出错", err)
 	}
 
 	if !canEdit && query.Result.UserId != c.SignedInUser.UserId {
-		return Error(403, "Access denied to this snapshot", nil)
+		return Error(403, "访问被拒绝此快照", nil)
 	}
 
 	if query.Result.External {
 		err := deleteExternalDashboardSnapshot(query.Result.ExternalDeleteUrl)
 		if err != nil {
-			return Error(500, "Failed to delete external dashboard", err)
+			return Error(500, "无法删除外部仪表板", err)
 		}
 	}
 
 	cmd := &m.DeleteDashboardSnapshotCommand{DeleteKey: query.Result.DeleteKey}
 
 	if err := bus.Dispatch(cmd); err != nil {
-		return Error(500, "Failed to delete dashboard snapshot", err)
+		return Error(500, "无法删除仪表板快照", err)
 	}
 
-	return JSON(200, util.DynMap{"message": "Snapshot deleted. It might take an hour before it's cleared from any CDN caches."})
+	return JSON(200, util.DynMap{"message": "快照已删除。 它可能需要一个小时才能从任何CDN缓存中清除。"})
 }
 
 // GET /api/dashboard/snapshots
@@ -275,7 +275,7 @@ func SearchDashboardSnapshots(c *m.ReqContext) Response {
 
 	err := bus.Dispatch(&searchQuery)
 	if err != nil {
-		return Error(500, "Search failed", err)
+		return Error(500, "搜索失败", err)
 	}
 
 	dtos := make([]*m.DashboardSnapshotDTO, len(searchQuery.Result))

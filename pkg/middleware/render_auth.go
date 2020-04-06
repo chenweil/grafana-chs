@@ -22,7 +22,7 @@ func initContextWithRenderAuth(ctx *m.ReqContext) bool {
 
 	renderUser, exists := renderKeys[key]
 	if !exists {
-		ctx.JsonApiErr(401, "Invalid Render Key", nil)
+		ctx.JsonApiErr(401, "无效的渲染键", nil)
 		return true
 	}
 

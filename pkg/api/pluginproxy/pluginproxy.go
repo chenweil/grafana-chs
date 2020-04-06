@@ -92,7 +92,7 @@ func NewApiPluginProxy(ctx *m.ReqContext, proxyPath string, route *plugins.AppPl
 		// Create a HTTP header with the context in it.
 		ctxJSON, err := json.Marshal(ctx.SignedInUser)
 		if err != nil {
-			ctx.JsonApiErr(500, "failed to marshal context to json.", err)
+			ctx.JsonApiErr(500, "未能为json编组上下文。", err)
 			return
 		}
 
@@ -105,7 +105,7 @@ func NewApiPluginProxy(ctx *m.ReqContext, proxyPath string, route *plugins.AppPl
 		if len(route.Headers) > 0 {
 			headers, err := getHeaders(route, ctx.OrgId, appID)
 			if err != nil {
-				ctx.JsonApiErr(500, "Could not generate plugin route header", err)
+				ctx.JsonApiErr(500, "无法生成插件路由报头", err)
 				return
 			}
 
@@ -118,11 +118,11 @@ func NewApiPluginProxy(ctx *m.ReqContext, proxyPath string, route *plugins.AppPl
 		if len(route.Url) > 0 {
 			interpolatedURL, err := updateURL(route, ctx.OrgId, appID)
 			if err != nil {
-				ctx.JsonApiErr(500, "Could not interpolate plugin route url", err)
+				ctx.JsonApiErr(500, "无法插入插件路由网址", err)
 			}
 			targetURL, err := url.Parse(interpolatedURL)
 			if err != nil {
-				ctx.JsonApiErr(500, "Could not parse custom url: %v", err)
+				ctx.JsonApiErr(500, "无法解析自定义网址: %v", err)
 				return
 			}
 			req.URL.Scheme = targetURL.Scheme
@@ -132,7 +132,7 @@ func NewApiPluginProxy(ctx *m.ReqContext, proxyPath string, route *plugins.AppPl
 		}
 
 		// reqBytes, _ := httputil.DumpRequestOut(req, true);
-		// log.Trace("Proxying plugin request: %s", string(reqBytes))
+		// log.Trace("代理插件请求: %s", string(reqBytes))
 	}
 
 	return &httputil.ReverseProxy{Director: director}

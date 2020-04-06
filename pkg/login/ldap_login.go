@@ -33,7 +33,7 @@ var loginUsingLDAP = func(query *models.LoginUserQuery) (bool, error) {
 
 	config, err := getLDAPConfig()
 	if err != nil {
-		return true, errutil.Wrap("Failed to get LDAP config", err)
+		return true, errutil.Wrap("无法获得LDAP配置", err)
 	}
 
 	externalUser, err := newLDAP(config.Servers).Login(query)
@@ -76,7 +76,7 @@ func disableExternalUser(username string) error {
 	if !userInfo.IsDisabled {
 
 		logger.Debug(
-			"Disabling external user",
+			"禁用外部用户",
 			"user",
 			userQuery.Result.Login,
 		)
@@ -89,7 +89,7 @@ func disableExternalUser(username string) error {
 
 		if err := bus.Dispatch(disableUserCmd); err != nil {
 			logger.Debug(
-				"Error disabling external user",
+				"禁用外部用户时出错",
 				"user",
 				userQuery.Result.Login,
 				"message",

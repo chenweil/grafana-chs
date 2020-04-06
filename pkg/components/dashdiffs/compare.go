@@ -13,9 +13,9 @@ import (
 
 var (
 	// ErrUnsupportedDiffType occurs when an invalid diff type is used.
-	ErrUnsupportedDiffType = errors.New("dashdiff: unsupported diff type")
+	ErrUnsupportedDiffType = errors.New("dashdiff: 不支持的diff类型")
 	// ErrNilDiff occurs when two compared interfaces are identical.
-	ErrNilDiff = errors.New("dashdiff: diff is nil")
+	ErrNilDiff = errors.New("dashdiff: diff是零")
 )
 
 type DiffType int

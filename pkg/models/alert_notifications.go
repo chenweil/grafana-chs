@@ -8,11 +8,11 @@ import (
 )
 
 var (
-	ErrNotificationFrequencyNotFound            = errors.New("Notification frequency not specified")
-	ErrAlertNotificationStateNotFound           = errors.New("alert notification state not found")
-	ErrAlertNotificationStateVersionConflict    = errors.New("alert notification state update version conflict")
-	ErrAlertNotificationStateAlreadyExist       = errors.New("alert notification state already exists")
-	ErrAlertNotificationFailedGenerateUniqueUid = errors.New("Failed to generate unique alert notification uid")
+	ErrNotificationFrequencyNotFound            = errors.New("通知频率未指定")
+	ErrAlertNotificationStateNotFound           = errors.New("警报通知状态未找到")
+	ErrAlertNotificationStateVersionConflict    = errors.New("警报通知状态更新版本冲突")
+	ErrAlertNotificationStateAlreadyExist       = errors.New("警报通知状态已存在")
+	ErrAlertNotificationFailedGenerateUniqueUid = errors.New("无法生成唯一的警报通知uid")
 )
 
 type AlertNotificationStateType string

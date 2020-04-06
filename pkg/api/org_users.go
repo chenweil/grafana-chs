@@ -20,13 +20,13 @@ func AddOrgUser(c *m.ReqContext, cmd m.AddOrgUserCommand) Response {
 
 func addOrgUserHelper(cmd m.AddOrgUserCommand) Response {
 	if !cmd.Role.IsValid() {
-		return Error(400, "Invalid role specified", nil)
+		return Error(400, "指定的角色无效", nil)
 	}
 
 	userQuery := m.GetUserByLoginQuery{LoginOrEmail: cmd.LoginOrEmail}
 	err := bus.Dispatch(&userQuery)
 	if err != nil {
-		return Error(404, "User not found", nil)
+		return Error(404, "找不到用户", nil)
 	}
 
 	userToAdd := userQuery.Result
@@ -35,12 +35,12 @@ func addOrgUserHelper(cmd m.AddOrgUserCommand) Response {
 
 	if err := bus.Dispatch(&cmd); err != nil {
 		if err == m.ErrOrgUserAlreadyAdded {
-			return Error(409, "User is already member of this organization", nil)
+			return Error(409, "用户已经是该组织的成员", nil)
 		}
-		return Error(500, "Could not add user to organization", err)
+		return Error(500, "无法将用户添加到组织", err)
 	}
 
-	return Success("User added to organization")
+	return Success("用户已添加到组织中")
 }
 
 // GET /api/org/users
@@ -61,7 +61,7 @@ func getOrgUsersHelper(orgID int64, query string, limit int) Response {
 	}
 
 	if err := bus.Dispatch(&q); err != nil {
-		return Error(500, "Failed to get account user", err)
+		return Error(500, "无法获得帐户用户", err)
 	}
 
 	for _, user := range q.Result {
@@ -87,17 +87,17 @@ func UpdateOrgUser(c *m.ReqContext, cmd m.UpdateOrgUserCommand) Response {
 
 func updateOrgUserHelper(cmd m.UpdateOrgUserCommand) Response {
 	if !cmd.Role.IsValid() {
-		return Error(400, "Invalid role specified", nil)
+		return Error(400, "指定的角色无效", nil)
 	}
 
 	if err := bus.Dispatch(&cmd); err != nil {
 		if err == m.ErrLastOrgAdmin {
-			return Error(400, "Cannot change role so that there is no organization admin left", nil)
+			return Error(400, "无法更改角色，因此没有组织管理员", nil)
 		}
-		return Error(500, "Failed update org user", err)
+		return Error(500, "更新组织用户失败", err)
 	}
 
-	return Success("Organization user updated")
+	return Success("组织用户已更新")
 }
 
 // DELETE /api/org/users/:userId
@@ -120,14 +120,14 @@ func RemoveOrgUser(c *m.ReqContext) Response {
 func removeOrgUserHelper(cmd *m.RemoveOrgUserCommand) Response {
 	if err := bus.Dispatch(cmd); err != nil {
 		if err == m.ErrLastOrgAdmin {
-			return Error(400, "Cannot remove last organization admin", nil)
+			return Error(400, "无法删除上一个组织管理员", nil)
 		}
-		return Error(500, "Failed to remove user from organization", err)
+		return Error(500, "无法从组织中删除用户", err)
 	}
 
 	if cmd.UserWasDeleted {
-		return Success("User deleted")
+		return Success("用户已删除")
 	}
 
-	return Success("User removed from organization")
+	return Success("用户已从组织中删除")
 }

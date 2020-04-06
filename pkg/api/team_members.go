@@ -14,7 +14,7 @@ func GetTeamMembers(c *m.ReqContext) Response {
 	query := m.GetTeamMembersQuery{OrgId: c.OrgId, TeamId: c.ParamsInt64(":teamId")}
 
 	if err := bus.Dispatch(&query); err != nil {
-		return Error(500, "Failed to get Team Members", err)
+		return Error(500, "无法获得组织成员", err)
 	}
 
 	for _, member := range query.Result {
@@ -36,23 +36,23 @@ func (hs *HTTPServer) AddTeamMember(c *m.ReqContext, cmd m.AddTeamMemberCommand)
 	cmd.TeamId = c.ParamsInt64(":teamId")
 
 	if err := teamguardian.CanAdmin(hs.Bus, cmd.OrgId, cmd.TeamId, c.SignedInUser); err != nil {
-		return Error(403, "Not allowed to add team member", err)
+		return Error(403, "不允许添加组织成员", err)
 	}
 
 	if err := hs.Bus.Dispatch(&cmd); err != nil {
 		if err == m.ErrTeamNotFound {
-			return Error(404, "Team not found", nil)
+			return Error(404, "组织未找到", nil)
 		}
 
 		if err == m.ErrTeamMemberAlreadyAdded {
-			return Error(400, "User is already added to this team", nil)
+			return Error(400, "用户已添加到此组织中", nil)
 		}
 
-		return Error(500, "Failed to add Member to Team", err)
+		return Error(500, "无法将成员添加到组织", err)
 	}
 
 	return JSON(200, &util.DynMap{
-		"message": "Member added to Team",
+		"message": "会员加入了组织",
 	})
 }
 
@@ -62,7 +62,7 @@ func (hs *HTTPServer) UpdateTeamMember(c *m.ReqContext, cmd m.UpdateTeamMemberCo
 	orgId := c.OrgId
 
 	if err := teamguardian.CanAdmin(hs.Bus, orgId, teamId, c.SignedInUser); err != nil {
-		return Error(403, "Not allowed to update team member", err)
+		return Error(403, "不允许更新组织成员", err)
 	}
 
 	if c.OrgRole != m.ROLE_ADMIN {
@@ -75,11 +75,11 @@ func (hs *HTTPServer) UpdateTeamMember(c *m.ReqContext, cmd m.UpdateTeamMemberCo
 
 	if err := hs.Bus.Dispatch(&cmd); err != nil {
 		if err == m.ErrTeamMemberNotFound {
-			return Error(404, "Team member not found.", nil)
+			return Error(404, "未找到组织成员。", nil)
 		}
-		return Error(500, "Failed to update team member.", err)
+		return Error(500, "无法更新组织成员。", err)
 	}
-	return Success("Team member updated")
+	return Success("组织成员已更新")
 }
 
 // DELETE /api/teams/:teamId/members/:userId
@@ -89,7 +89,7 @@ func (hs *HTTPServer) RemoveTeamMember(c *m.ReqContext) Response {
 	userId := c.ParamsInt64(":userId")
 
 	if err := teamguardian.CanAdmin(hs.Bus, orgId, teamId, c.SignedInUser); err != nil {
-		return Error(403, "Not allowed to remove team member", err)
+		return Error(403, "不允许删除组织成员", err)
 	}
 
 	protectLastAdmin := false
@@ -99,14 +99,14 @@ func (hs *HTTPServer) RemoveTeamMember(c *m.ReqContext) Response {
 
 	if err := hs.Bus.Dispatch(&m.RemoveTeamMemberCommand{OrgId: orgId, TeamId: teamId, UserId: userId, ProtectLastAdmin: protectLastAdmin}); err != nil {
 		if err == m.ErrTeamNotFound {
-			return Error(404, "Team not found", nil)
+			return Error(404, "组织未找到", nil)
 		}
 
 		if err == m.ErrTeamMemberNotFound {
-			return Error(404, "Team member not found", nil)
+			return Error(404, "未找到组织成员", nil)
 		}
 
-		return Error(500, "Failed to remove Member from Team", err)
+		return Error(500, "无法从组织中删除成员", err)
 	}
-	return Success("Team Member removed")
+	return Success("组织成员已删除")
 }

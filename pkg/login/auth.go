@@ -9,14 +9,14 @@ import (
 )
 
 var (
-	ErrEmailNotAllowed       = errors.New("Required email domain not fulfilled")
-	ErrInvalidCredentials    = errors.New("Invalid Username or Password")
-	ErrNoEmail               = errors.New("Login provider didn't return an email address")
-	ErrProviderDeniedRequest = errors.New("Login provider denied login request")
-	ErrSignUpNotAllowed      = errors.New("Signup is not allowed for this adapter")
-	ErrTooManyLoginAttempts  = errors.New("Too many consecutive incorrect login attempts for user. Login for user temporarily blocked")
-	ErrPasswordEmpty         = errors.New("No password provided")
-	ErrUserDisabled          = errors.New("User is disabled")
+	ErrEmailNotAllowed       = errors.New("未满足所需的电子邮件域")
+	ErrInvalidCredentials    = errors.New("账号或密码错误")
+	ErrNoEmail               = errors.New("登录提供商未返回电子邮件地址")
+	ErrProviderDeniedRequest = errors.New("登录提供商拒绝登录请求")
+	ErrSignUpNotAllowed      = errors.New("此适配器不允许注册")
+	ErrTooManyLoginAttempts  = errors.New("用户连续错误登录尝试次数过多。 登录用户暂时被阻止")
+	ErrPasswordEmpty         = errors.New("没有提供密码")
+	ErrUserDisabled          = errors.New("用户被禁用")
 )
 
 func Init() {

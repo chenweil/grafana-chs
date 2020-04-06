@@ -9,10 +9,10 @@ import (
 
 // Typed errors
 var (
-	ErrInvalidRoleType     = errors.New("Invalid role type")
-	ErrLastOrgAdmin        = errors.New("Cannot remove last organization admin")
-	ErrOrgUserNotFound     = errors.New("Cannot find the organization user")
-	ErrOrgUserAlreadyAdded = errors.New("User is already added to organization")
+	ErrInvalidRoleType     = errors.New("角色类型无效")
+	ErrLastOrgAdmin        = errors.New("无法删除最后一个组织admin")
+	ErrOrgUserNotFound     = errors.New("找不到组织用户")
+	ErrOrgUserAlreadyAdded = errors.New("用户已添加到组织中")
 )
 
 type RoleType string
@@ -54,7 +54,7 @@ func (r *RoleType) UnmarshalJSON(data []byte) error {
 
 	if !(*r).IsValid() {
 		if (*r) != "" {
-			return fmt.Errorf("JSON validation error: invalid role value: %s", *r)
+			return fmt.Errorf("JSON验证错误:角色值无效: %s", *r)
 		}
 
 		*r = ROLE_VIEWER

@@ -34,8 +34,8 @@ const (
 )
 
 var (
-	ErrCannotChangeStateOnPausedAlert = fmt.Errorf("Cannot change state on pause alert")
-	ErrRequiresNewState               = fmt.Errorf("update alert state requires a new state")
+	ErrCannotChangeStateOnPausedAlert = fmt.Errorf("暂停警报时无法更改状态")
+	ErrRequiresNewState               = fmt.Errorf("更新警报状态需要新状态")
 )
 
 func (s AlertStateType) IsValid() bool {

@@ -32,7 +32,7 @@ func NewSyslog(sec *ini.Section, format log15.Format) *SysLogHandler {
 	handler.Tag = sec.Key("tag").MustString("")
 
 	if err := handler.Init(); err != nil {
-		Root.Error("Failed to init syslog log handler", "error", err)
+		Root.Error("无法初始化syslog日志处理程序", "error", err)
 		os.Exit(1)
 	}
 
@@ -71,7 +71,7 @@ func (sw *SysLogHandler) Log(r *log15.Record) error {
 	case log15.LvlCrit:
 		err = sw.syslog.Crit(msg)
 	default:
-		err = errors.New("invalid syslog level")
+		err = errors.New("syslog级别无效")
 	}
 
 	return err
@@ -97,7 +97,7 @@ var facilities = map[string]syslog.Priority{
 func parseFacility(facility string) (syslog.Priority, error) {
 	prio, ok := facilities[facility]
 	if !ok {
-		return syslog.LOG_LOCAL0, errors.New("invalid syslog facility")
+		return syslog.LOG_LOCAL0, errors.New("syslog工具无效")
 	}
 
 	return prio, nil

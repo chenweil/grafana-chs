@@ -36,7 +36,7 @@ type DashboardInputMissingError struct {
 }
 
 func (e DashboardInputMissingError) Error() string {
-	return fmt.Sprintf("Dashboard input variable: %v missing from import command", e.VariableName)
+	return fmt.Sprintf("仪表板输入变量:导入命令中缺少 %v", e.VariableName)
 }
 
 func init() {

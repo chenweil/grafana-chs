@@ -24,7 +24,7 @@ func Decrypt(payload []byte, secret string) ([]byte, error) {
 	// The IV needs to be unique, but not secure. Therefore it's common to
 	// include it at the beginning of the ciphertext.
 	if len(payload) < aes.BlockSize {
-		return nil, errors.New("payload too short")
+		return nil, errors.New("有效载荷太短")
 	}
 	iv := payload[saltLength : saltLength+aes.BlockSize]
 	payload = payload[saltLength+aes.BlockSize:]

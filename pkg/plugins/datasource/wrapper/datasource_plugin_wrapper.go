@@ -83,7 +83,7 @@ func (tw *DatasourcePluginWrapper) Query(ctx context.Context, ds *models.DataSou
 		if r.MetaJson != "" {
 			metaJson, err := simplejson.NewJson([]byte(r.MetaJson))
 			if err != nil {
-				tw.logger.Error("Error parsing JSON Meta field: " + err.Error())
+				tw.logger.Error("解析JSON Meta字段时出错: " + err.Error())
 			}
 			qr.Meta = metaJson
 		}
@@ -165,6 +165,6 @@ func (tw *DatasourcePluginWrapper) mapRowValue(rv *datasource.RowValue) (interfa
 	case datasource.RowValue_TYPE_BYTES:
 		return rv.BytesValue, nil
 	default:
-		return nil, fmt.Errorf("Unsupported row value %v from plugin", rv.Kind)
+		return nil, fmt.Errorf("插件中不支持的行值 %v ", rv.Kind)
 	}
 }

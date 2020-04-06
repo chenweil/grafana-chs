@@ -22,7 +22,7 @@ func (rs *RenderingService) startPlugin(ctx context.Context) error {
 		MagicCookieValue: "renderer",
 	}
 
-	rs.log.Info("Renderer plugin found, starting", "cmd", cmd)
+	rs.log.Info("找到Renderer插件，开始", "cmd", cmd)
 
 	rs.pluginClient = plugin.NewClient(&plugin.ClientConfig{
 		HandshakeConfig: handshakeConfig,
@@ -59,9 +59,9 @@ func (rs *RenderingService) watchAndRestartPlugin(ctx context.Context) error {
 		case <-ticker.C:
 			if rs.pluginClient.Exited() {
 				err := rs.startPlugin(ctx)
-				rs.log.Debug("Render plugin existed, restarting...")
+				rs.log.Debug("渲染插件已存在，重新启动...")
 				if err != nil {
-					rs.log.Error("Failed to start render plugin", err)
+					rs.log.Error("无法启动渲染插件", err)
 				}
 			}
 		}
@@ -88,7 +88,7 @@ func (rs *RenderingService) renderViaPlugin(ctx context.Context, opts Opts) (*Re
 	}
 
 	if rsp.Error != "" {
-		return nil, fmt.Errorf("Rendering failed: %v", rsp.Error)
+		return nil, fmt.Errorf("渲染失败: %v", rsp.Error)
 	}
 
 	return &RenderResult{FilePath: pngPath}, err

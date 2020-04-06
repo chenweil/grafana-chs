@@ -45,13 +45,13 @@ func (ls *LoginService) UpsertUser(cmd *models.UpsertUserCommand) error {
 
 	if err != nil {
 		if !cmd.SignupAllowed {
-			log.Warn("Not allowing %s login, user not found in internal user database and allow signup = false", extUser.AuthModule)
+			log.Warn("不允许 %s 登录，在内部用户数据库中找不到用户并允许注册 = false", extUser.AuthModule)
 			return ErrInvalidCredentials
 		}
 
 		limitReached, err := ls.QuotaService.QuotaReached(cmd.ReqContext, "user")
 		if err != nil {
-			log.Warn("Error getting user quota. error: %v", err)
+			log.Warn("获取用户配额时出错。 错误: %v", err)
 			return ErrGettingUserQuota
 		}
 		if limitReached {
@@ -168,7 +168,7 @@ func updateUser(user *models.User, extUser *models.ExternalUserInfo) error {
 		return nil
 	}
 
-	logger.Debug("Syncing user info", "id", user.Id, "update", updateCmd)
+	logger.Debug("同步用户信息", "id", user.Id, "update", updateCmd)
 	return bus.Dispatch(updateCmd)
 }
 
@@ -180,7 +180,7 @@ func updateUserAuth(user *models.User, extUser *models.ExternalUserInfo) error {
 		OAuthToken: extUser.OAuthToken,
 	}
 
-	logger.Debug("Updating user_auth info", "user_id", user.Id)
+	logger.Debug("更新user_auth信息", "user_id", user.Id)
 	return bus.Dispatch(updateCmd)
 }
 

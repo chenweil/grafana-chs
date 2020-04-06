@@ -68,9 +68,9 @@ func (pm *PluginManager) Init() error {
 	// check if plugins dir exists
 	if _, err := os.Stat(setting.PluginsPath); os.IsNotExist(err) {
 		if err = os.MkdirAll(setting.PluginsPath, os.ModePerm); err != nil {
-			plog.Error("Failed to create plugin dir", "dir", setting.PluginsPath, "error", err)
+			plog.Error("无法创建插件目录", "dir", setting.PluginsPath, "error", err)
 		} else {
-			plog.Info("Plugin dir created", "dir", setting.PluginsPath)
+			plog.Info("插件目录创建", "dir", setting.PluginsPath)
 			scan(setting.PluginsPath)
 		}
 	} else {
@@ -99,7 +99,7 @@ func (pm *PluginManager) startBackendPlugins(ctx context.Context) error {
 	for _, ds := range DataSources {
 		if ds.Backend {
 			if err := ds.startBackendPlugin(ctx, plog); err != nil {
-				pm.log.Error("Failed to init plugin.", "error", err, "plugin", ds.Id)
+				pm.log.Error("无法初始化插件。", "error", err, "plugin", ds.Id)
 			}
 		}
 	}
@@ -151,13 +151,13 @@ func scan(pluginDir string) error {
 
 	if err := util.Walk(pluginDir, true, true, scanner.walker); err != nil {
 		if pluginDir != "data/plugins" {
-			log.Warn("Could not scan dir \"%v\" error: %s", pluginDir, err)
+			log.Warn("无法扫描目录 \"%v\" 错误: %s", pluginDir, err)
 		}
 		return err
 	}
 
 	if len(scanner.errors) > 0 {
-		return errors.New("Some plugins failed to load")
+		return errors.New("某些插件无法加载")
 	}
 
 	return nil
@@ -179,7 +179,7 @@ func (scanner *PluginScanner) walker(currentPath string, f os.FileInfo, err erro
 	if f.Name() == "plugin.json" {
 		err := scanner.loadPluginJson(currentPath)
 		if err != nil {
-			log.Error(3, "Plugins: Failed to load plugin json file: %v,  err: %v", currentPath, err)
+			log.Error(3, "插件：无法加载插件json文件: %v,  err: %v", currentPath, err)
 			scanner.errors = append(scanner.errors, err)
 		}
 	}
@@ -202,13 +202,13 @@ func (scanner *PluginScanner) loadPluginJson(pluginJsonFilePath string) error {
 	}
 
 	if pluginCommon.Id == "" || pluginCommon.Type == "" {
-		return errors.New("Did not find type and id property in plugin.json")
+		return errors.New("在plugin.json中找不到type和id属性")
 	}
 
 	var loader PluginLoader
 	pluginGoType, exists := PluginTypes[pluginCommon.Type]
 	if !exists {
-		return errors.New("Unknown plugin type " + pluginCommon.Type)
+		return errors.New("未知的插件类型 " + pluginCommon.Type)
 	}
 	loader = reflect.New(reflect.TypeOf(pluginGoType)).Interface().(PluginLoader)
 

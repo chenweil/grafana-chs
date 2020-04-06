@@ -61,25 +61,25 @@ func (c *EvalContext) GetStateModel() *StateDescription {
 	case models.AlertStateOK:
 		return &StateDescription{
 			Color: "#36a64f",
-			Text:  "OK",
+			Text:  "正常",
 		}
 	case models.AlertStateNoData:
 		return &StateDescription{
 			Color: "#888888",
-			Text:  "No Data",
+			Text:  "无数据",
 		}
 	case models.AlertStateAlerting:
 		return &StateDescription{
 			Color: "#D63232",
-			Text:  "Alerting",
+			Text:  "警报",
 		}
 	case models.AlertStateUnknown:
 		return &StateDescription{
 			Color: "#888888",
-			Text:  "Unknown",
+			Text:  "未知",
 		}
 	default:
-		panic("Unknown rule state for alert " + c.Rule.State)
+		panic("警报的未知规则状态 " + c.Rule.State)
 	}
 }
 
@@ -148,7 +148,7 @@ func (c *EvalContext) GetNewState() models.AlertStateType {
 
 func getNewStateInternal(c *EvalContext) models.AlertStateType {
 	if c.Error != nil {
-		c.log.Error("Alert Rule Result Error",
+		c.log.Error("警报规则结果错误",
 			"ruleId", c.Rule.ID,
 			"name", c.Rule.Name,
 			"error", c.Error,
@@ -165,7 +165,7 @@ func getNewStateInternal(c *EvalContext) models.AlertStateType {
 	}
 
 	if c.NoDataFound {
-		c.log.Info("Alert Rule returned no data",
+		c.log.Info("警报规则未返回任何数据",
 			"ruleId", c.Rule.ID,
 			"name", c.Rule.Name,
 			"changing state to", c.Rule.NoDataState.ToAlertState())

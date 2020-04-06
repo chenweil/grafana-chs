@@ -14,7 +14,7 @@ func GetDataSources(c *m.ReqContext) Response {
 	query := m.GetDataSourcesQuery{OrgId: c.OrgId}
 
 	if err := bus.Dispatch(&query); err != nil {
-		return Error(500, "Failed to query datasources", err)
+		return Error(500, "无法查询数据源", err)
 	}
 
 	result := make(dtos.DataSourceList, 0)
@@ -57,9 +57,9 @@ func GetDataSourceById(c *m.ReqContext) Response {
 
 	if err := bus.Dispatch(&query); err != nil {
 		if err == m.ErrDataSourceNotFound {
-			return Error(404, "Data source not found", nil)
+			return Error(404, "找不到数据源", nil)
 		}
-		return Error(500, "Failed to query datasources", err)
+		return Error(500, "无法查询数据源", err)
 	}
 
 	ds := query.Result
@@ -72,54 +72,54 @@ func DeleteDataSourceById(c *m.ReqContext) Response {
 	id := c.ParamsInt64(":id")
 
 	if id <= 0 {
-		return Error(400, "Missing valid datasource id", nil)
+		return Error(400, "缺少有效的数据源ID", nil)
 	}
 
 	ds, err := getRawDataSourceById(id, c.OrgId)
 	if err != nil {
-		return Error(400, "Failed to delete datasource", nil)
+		return Error(400, "无法删除数据源", nil)
 	}
 
 	if ds.ReadOnly {
-		return Error(403, "Cannot delete read-only data source", nil)
+		return Error(403, "无法删除只读数据源", nil)
 	}
 
 	cmd := &m.DeleteDataSourceByIdCommand{Id: id, OrgId: c.OrgId}
 
 	err = bus.Dispatch(cmd)
 	if err != nil {
-		return Error(500, "Failed to delete datasource", err)
+		return Error(500, "无法删除数据源", err)
 	}
 
-	return Success("Data source deleted")
+	return Success("数据源已删除")
 }
 
 func DeleteDataSourceByName(c *m.ReqContext) Response {
 	name := c.Params(":name")
 
 	if name == "" {
-		return Error(400, "Missing valid datasource name", nil)
+		return Error(400, "缺少有效的数据源名称", nil)
 	}
 
 	getCmd := &m.GetDataSourceByNameQuery{Name: name, OrgId: c.OrgId}
 	if err := bus.Dispatch(getCmd); err != nil {
 		if err == m.ErrDataSourceNotFound {
-			return Error(404, "Data source not found", nil)
+			return Error(404, "找不到数据源", nil)
 		}
-		return Error(500, "Failed to delete datasource", err)
+		return Error(500, "无法删除数据源", err)
 	}
 
 	if getCmd.Result.ReadOnly {
-		return Error(403, "Cannot delete read-only data source", nil)
+		return Error(403, "无法删除只读数据源", nil)
 	}
 
 	cmd := &m.DeleteDataSourceByNameCommand{Name: name, OrgId: c.OrgId}
 	err := bus.Dispatch(cmd)
 	if err != nil {
-		return Error(500, "Failed to delete datasource", err)
+		return Error(500, "无法删除数据源", err)
 	}
 
-	return Success("Data source deleted")
+	return Success("数据源已删除")
 }
 
 func AddDataSource(c *m.ReqContext, cmd m.AddDataSourceCommand) Response {
@@ -130,12 +130,12 @@ func AddDataSource(c *m.ReqContext, cmd m.AddDataSourceCommand) Response {
 			return Error(409, err.Error(), err)
 		}
 
-		return Error(500, "Failed to add datasource", err)
+		return Error(500, "无法添加数据源", err)
 	}
 
 	ds := convertModelToDtos(cmd.Result)
 	return JSON(200, util.DynMap{
-		"message":    "Datasource added",
+		"message":    "已添加数据源",
 		"id":         cmd.Result.Id,
 		"name":       cmd.Result.Name,
 		"datasource": ds,
@@ -148,15 +148,15 @@ func UpdateDataSource(c *m.ReqContext, cmd m.UpdateDataSourceCommand) Response {
 
 	err := fillWithSecureJSONData(&cmd)
 	if err != nil {
-		return Error(500, "Failed to update datasource", err)
+		return Error(500, "无法更新数据源", err)
 	}
 
 	err = bus.Dispatch(&cmd)
 	if err != nil {
 		if err == m.ErrDataSourceUpdatingOldVersion {
-			return Error(500, "Failed to update datasource. Reload new version and try again", err)
+			return Error(500, "无法更新数据源。 重新加载新版本，然后重试", err)
 		}
-		return Error(500, "Failed to update datasource", err)
+		return Error(500, "无法更新数据源", err)
 	}
 
 	query := m.GetDataSourceByIdQuery{
@@ -166,15 +166,15 @@ func UpdateDataSource(c *m.ReqContext, cmd m.UpdateDataSourceCommand) Response {
 
 	if err := bus.Dispatch(&query); err != nil {
 		if err == m.ErrDataSourceNotFound {
-			return Error(404, "Data source not found", nil)
+			return Error(404, "找不到数据源", nil)
 		}
-		return Error(500, "Failed to query datasources", err)
+		return Error(500, "无法查询数据源", err)
 	}
 
 	dtos := convertModelToDtos(query.Result)
 
 	return JSON(200, util.DynMap{
-		"message":    "Datasource updated",
+		"message":    "数据源已更新",
 		"id":         cmd.Id,
 		"name":       cmd.Name,
 		"datasource": dtos,
@@ -225,9 +225,9 @@ func GetDataSourceByName(c *m.ReqContext) Response {
 
 	if err := bus.Dispatch(&query); err != nil {
 		if err == m.ErrDataSourceNotFound {
-			return Error(404, "Data source not found", nil)
+			return Error(404, "找不到数据源", nil)
 		}
-		return Error(500, "Failed to query datasources", err)
+		return Error(500, "无法查询数据源", err)
 	}
 
 	dtos := convertModelToDtos(query.Result)
@@ -241,9 +241,9 @@ func GetDataSourceIdByName(c *m.ReqContext) Response {
 
 	if err := bus.Dispatch(&query); err != nil {
 		if err == m.ErrDataSourceNotFound {
-			return Error(404, "Data source not found", nil)
+			return Error(404, "找不到数据源", nil)
 		}
-		return Error(500, "Failed to query datasources", err)
+		return Error(500, "无法查询数据源", err)
 	}
 
 	ds := query.Result

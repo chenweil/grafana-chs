@@ -104,7 +104,7 @@ func (e *PrometheusExecutor) Query(ctx context.Context, dsInfo *models.DataSourc
 			Step:  query.Step,
 		}
 
-		plog.Debug("Sending query", "start", timeRange.Start, "end", timeRange.End, "step", timeRange.Step, "query", query.Expr)
+		plog.Debug("发送查询", "start", timeRange.Start, "end", timeRange.End, "step", timeRange.Step, "query", query.Expr)
 
 		span, ctx := opentracing.StartSpanFromContext(ctx, "alerting.prometheus")
 		span.SetTag("expr", query.Expr)
@@ -194,7 +194,7 @@ func parseResponse(value model.Value, query *PrometheusQuery) (*tsdb.QueryResult
 
 	data, ok := value.(model.Matrix)
 	if !ok {
-		return queryRes, fmt.Errorf("Unsupported result format: %s", value.Type().String())
+		return queryRes, fmt.Errorf("不支持的结果格式: %s", value.Type().String())
 	}
 
 	for _, v := range data {

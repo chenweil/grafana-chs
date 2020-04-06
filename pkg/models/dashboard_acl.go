@@ -24,10 +24,10 @@ func (p PermissionType) String() string {
 
 // Typed errors
 var (
-	ErrDashboardAclInfoMissing           = errors.New("User id and team id cannot both be empty for a dashboard permission")
-	ErrDashboardPermissionDashboardEmpty = errors.New("Dashboard Id must be greater than zero for a dashboard permission")
-	ErrFolderAclInfoMissing              = errors.New("User id and team id cannot both be empty for a folder permission")
-	ErrFolderPermissionFolderEmpty       = errors.New("Folder Id must be greater than zero for a folder permission")
+	ErrDashboardAclInfoMissing           = errors.New("对于仪表板权限，用户ID和团队ID不能都为空")
+	ErrDashboardPermissionDashboardEmpty = errors.New("对于仪表板权限，仪表板ID必须大于零")
+	ErrFolderAclInfoMissing              = errors.New("对于文件夹权限，用户ID和团队ID不能都为空")
+	ErrFolderPermissionFolderEmpty       = errors.New("对于文件夹权限，文件夹ID必须大于零")
 )
 
 // Dashboard ACL model

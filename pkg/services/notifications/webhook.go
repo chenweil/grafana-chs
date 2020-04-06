@@ -87,5 +87,5 @@ func (ns *NotificationService) sendWebRequestSync(ctx context.Context, webhook *
 	}
 
 	ns.log.Debug("Webhook failed", "statuscode", resp.Status, "body", string(body))
-	return fmt.Errorf("Webhook response status %v", resp.Status)
+	return fmt.Errorf("Webhook响应状态 %v", resp.Status)
 }

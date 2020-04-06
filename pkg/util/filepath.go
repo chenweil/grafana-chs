@@ -9,7 +9,7 @@ import (
 )
 
 //ErrWalkSkipDir is the Error returned when we want to skip descending into a directory
-var ErrWalkSkipDir = errors.New("skip this directory")
+var ErrWalkSkipDir = errors.New("跳过这个目录")
 
 //WalkFunc is a callback function called for each path as a directory is walked
 //If resolvedPath != "", then we are following symbolic links.
@@ -63,7 +63,7 @@ func walk(path string, info os.FileInfo, resolvedPath string, symlinkPathsFollow
 		//vout("SymLink Path: %v, links to: %v", resolvedPath, path2)
 		if symlinkPathsFollowed != nil {
 			if _, ok := symlinkPathsFollowed[path2]; ok {
-				errMsg := "Potential SymLink Infinite Loop. Path: %v, Link To: %v"
+				errMsg := "潜在的SymLink无限循环. 路径: %v, 链接 To: %v"
 				return fmt.Errorf(errMsg, resolvedPath, path2)
 			}
 			symlinkPathsFollowed[path2] = true

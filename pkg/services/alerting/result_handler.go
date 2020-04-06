@@ -46,7 +46,7 @@ func (handler *defaultResultHandler) handle(evalContext *EvalContext) error {
 
 	metrics.MAlertingResultState.WithLabelValues(string(evalContext.Rule.State)).Inc()
 	if evalContext.shouldUpdateAlertState() {
-		handler.log.Info("New state change", "alertId", evalContext.Rule.ID, "newState", evalContext.Rule.State, "prev state", evalContext.PrevAlertState)
+		handler.log.Info("新状态变化", "alertId", evalContext.Rule.ID, "newState", evalContext.Rule.State, "prev state", evalContext.PrevAlertState)
 
 		cmd := &models.SetAlertStateCommand{
 			AlertId:  evalContext.Rule.ID,
@@ -58,16 +58,16 @@ func (handler *defaultResultHandler) handle(evalContext *EvalContext) error {
 
 		if err := bus.Dispatch(cmd); err != nil {
 			if err == models.ErrCannotChangeStateOnPausedAlert {
-				handler.log.Error("Cannot change state on alert that's paused", "error", err)
+				handler.log.Error("无法在暂停的警报状态下更改状态", "error", err)
 				return err
 			}
 
 			if err == models.ErrRequiresNewState {
-				handler.log.Info("Alert already updated")
+				handler.log.Info("警报已更新")
 				return nil
 			}
 
-			handler.log.Error("Failed to save state", "error", err)
+			handler.log.Error("保存状态失败", "error", err)
 		} else {
 
 			// StateChanges is used for de duping alert notifications
@@ -94,7 +94,7 @@ func (handler *defaultResultHandler) handle(evalContext *EvalContext) error {
 
 		annotationRepo := annotations.GetRepository()
 		if err := annotationRepo.Save(&item); err != nil {
-			handler.log.Error("Failed to save annotation for new alert state", "error", err)
+			handler.log.Error("无法为新警报状态保存注释", "error", err)
 		}
 	}
 

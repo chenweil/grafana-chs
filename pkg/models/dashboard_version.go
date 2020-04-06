@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	ErrDashboardVersionNotFound = errors.New("Dashboard version not found")
-	ErrNoVersionsForDashboardId = errors.New("No dashboard versions found for the given DashboardId")
+	ErrDashboardVersionNotFound = errors.New("未找到仪表板版本")
+	ErrNoVersionsForDashboardId = errors.New("找不到给定DashboardId的仪表板版本")
 )
 
 // A DashboardVersion represents the comparable data in a dashboard, allowing

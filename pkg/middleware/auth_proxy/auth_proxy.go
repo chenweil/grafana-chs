@@ -123,7 +123,7 @@ func (auth *AuthProxy) IsAllowedIP() (bool, *Error) {
 	for _, proxy := range proxies {
 		result, err := coerceProxyAddress(proxy)
 		if err != nil {
-			return false, newError("Could not get the network", err)
+			return false, newError("无法获得网络", err)
 		}
 
 		proxyObjs = append(proxyObjs, result)
@@ -139,11 +139,9 @@ func (auth *AuthProxy) IsAllowedIP() (bool, *Error) {
 	}
 
 	err := fmt.Errorf(
-		"Request for user (%s) from %s is not from the authentication proxy", auth.header,
-		sourceIP,
-	)
+		"来自 %s 的用户 (%s) 请求不是来自身份验证代理", sourceIP, auth.header)
 
-	return false, newError("Proxy authentication required", err)
+	return false, newError("需要代理验证", err)
 }
 
 // getKey forms a key for the cache based on the headers received as part of the authentication flow.
@@ -174,13 +172,13 @@ func (auth *AuthProxy) Login() (int64, *Error) {
 
 		if err == ldap.ErrInvalidCredentials {
 			return 0, newError(
-				"Proxy authentication required",
+				"需要代理验证",
 				ldap.ErrInvalidCredentials,
 			)
 		}
 
 		if err != nil {
-			return 0, newError("Failed to get the user", err)
+			return 0, newError("无法获得用户", err)
 		}
 
 		return id, nil
@@ -189,7 +187,7 @@ func (auth *AuthProxy) Login() (int64, *Error) {
 	id, err := auth.LoginViaHeader()
 	if err != nil {
 		return 0, newError(
-			"Failed to log in as user, specified in auth proxy header",
+			"登录失败的用户，在身份验证代理报头中指定",
 			err,
 		)
 	}
@@ -215,7 +213,7 @@ func (auth *AuthProxy) GetUserViaCache() (int64, error) {
 func (auth *AuthProxy) LoginViaLDAP() (int64, *Error) {
 	config, err := getLDAPConfig()
 	if err != nil {
-		return 0, newError("Failed to get LDAP config", nil)
+		return 0, newError("无法获得LDAP配置", nil)
 	}
 
 	extUser, err := newLDAP(config.Servers).User(auth.header)
@@ -257,7 +255,7 @@ func (auth *AuthProxy) LoginViaHeader() (int64, error) {
 		extUser.Email = auth.header
 		extUser.Login = auth.header
 	default:
-		return 0, newError("Auth proxy header property invalid", nil)
+		return 0, newError("验证代理头属性无效", nil)
 
 	}
 

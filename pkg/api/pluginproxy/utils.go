@@ -14,13 +14,13 @@ import (
 func InterpolateString(text string, data templateData) (string, error) {
 	t, err := template.New("content").Parse(text)
 	if err != nil {
-		return "", fmt.Errorf("could not parse template %s", text)
+		return "", fmt.Errorf("无法解析模板 %s", text)
 	}
 
 	var contentBuf bytes.Buffer
 	err = t.Execute(&contentBuf, data)
 	if err != nil {
-		return "", fmt.Errorf("failed to execute template %s", text)
+		return "", fmt.Errorf("无法执行模板 %s", text)
 	}
 
 	return contentBuf.String(), nil
@@ -39,7 +39,7 @@ func InterpolateURL(anURL *url.URL, route *plugins.AppPluginRoute, orgID int64, 
 			if err == nil {
 				result, err = url.Parse(interpolatedResult)
 				if err != nil {
-					return nil, fmt.Errorf("Error parsing plugin route url %v", err)
+					return nil, fmt.Errorf("解析插件路由地址时出错 %v", err)
 				}
 			}
 		}

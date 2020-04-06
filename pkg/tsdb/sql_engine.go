@@ -236,7 +236,7 @@ func (e *sqlQueryEndpoint) transformToTable(query *Query, rows *core.Rows, resul
 
 	for ; rows.Next(); rowCount++ {
 		if rowCount > rowLimit {
-			return fmt.Errorf("query row limit exceeded, limit %d", rowLimit)
+			return fmt.Errorf("超出查询行限制，限制 %d", rowLimit)
 		}
 
 		values, err := e.rowTransformer.Transform(columnTypes, rows)
@@ -308,7 +308,7 @@ func (e *sqlQueryEndpoint) transformToTimeSeries(query *Query, rows *core.Rows, 
 	}
 
 	if timeIndex == -1 {
-		return fmt.Errorf("Found no column named %s", strings.Join(e.timeColumnNames, " or "))
+		return fmt.Errorf("找不到列名 %s", strings.Join(e.timeColumnNames, " or "))
 	}
 
 	fillMissing := query.Model.Get("fill").MustBool(false)
@@ -334,7 +334,7 @@ func (e *sqlQueryEndpoint) transformToTimeSeries(query *Query, rows *core.Rows, 
 		var metric string
 
 		if rowCount > rowLimit {
-			return fmt.Errorf("query row limit exceeded, limit %d", rowLimit)
+			return fmt.Errorf("超出查询行限制，限制 %d", rowLimit)
 		}
 
 		values, err := e.rowTransformer.Transform(columnTypes, rows)
@@ -353,7 +353,7 @@ func (e *sqlQueryEndpoint) transformToTimeSeries(query *Query, rows *core.Rows, 
 		case float64:
 			timestamp = columnValue
 		default:
-			return fmt.Errorf("Invalid type for column time, must be of type timestamp or unix timestamp, got: %T %v", columnValue, columnValue)
+			return fmt.Errorf("列时间的类型无效，必须是timestamp或unix timestamp类型，得到: %T %v", columnValue, columnValue)
 		}
 
 		if metricIndex >= 0 {
@@ -364,7 +364,7 @@ func (e *sqlQueryEndpoint) transformToTimeSeries(query *Query, rows *core.Rows, 
 					metric = columnValue
 				}
 			} else {
-				return fmt.Errorf("Column metric must be of type %s. metric column name: %s type: %s but datatype is %T", strings.Join(e.metricColumnTypes, ", "), columnNames[metricIndex], columnTypes[metricIndex].DatabaseTypeName(), values[metricIndex])
+				return fmt.Errorf("列度量标准必须为 %s 类型。 度量标准列名称:%s 类型:%s 但数据类型为 %T ", strings.Join(e.metricColumnTypes, ", "), columnNames[metricIndex], columnTypes[metricIndex].DatabaseTypeName(), values[metricIndex])
 			}
 		}
 
@@ -603,7 +603,7 @@ func ConvertSqlValueColumnToFloat(columnName string, columnValue interface{}) (n
 	case nil:
 		value.Valid = false
 	default:
-		return null.NewFloat(0, false), fmt.Errorf("Value column must have numeric datatype, column: %s type: %T value: %v", columnName, typedValue, typedValue)
+		return null.NewFloat(0, false), fmt.Errorf("值列必须具有numeric数据类型, 列: %s 类型: %T 值: %v", columnName, typedValue, typedValue)
 	}
 
 	return value, nil

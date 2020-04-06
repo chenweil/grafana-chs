@@ -21,12 +21,12 @@ func GetSignUpOptions(c *m.ReqContext) Response {
 // POST /api/user/signup
 func SignUp(c *m.ReqContext, form dtos.SignUpForm) Response {
 	if !setting.AllowUserSignUp {
-		return Error(401, "User signup is disabled", nil)
+		return Error(401, "用户注册已禁用", nil)
 	}
 
 	existing := m.GetUserByLoginQuery{LoginOrEmail: form.Email}
 	if err := bus.Dispatch(&existing); err == nil {
-		return Error(422, "User with same email address already exists", nil)
+		return Error(422, "具有相同电子邮件地址的用户已存在", nil)
 	}
 
 	cmd := m.CreateTempUserCommand{}
@@ -38,7 +38,7 @@ func SignUp(c *m.ReqContext, form dtos.SignUpForm) Response {
 	cmd.RemoteAddr = c.Req.RemoteAddr
 
 	if err := bus.Dispatch(&cmd); err != nil {
-		return Error(500, "Failed to create signup", err)
+		return Error(500, "无法创建注册", err)
 	}
 
 	bus.Publish(&events.SignUpStarted{
@@ -48,12 +48,12 @@ func SignUp(c *m.ReqContext, form dtos.SignUpForm) Response {
 
 	metrics.MApiUserSignUpStarted.Inc()
 
-	return JSON(200, util.DynMap{"status": "SignUpCreated"})
+	return JSON(200, util.DynMap{"status": "注册成功"})
 }
 
 func (hs *HTTPServer) SignUpStep2(c *m.ReqContext, form dtos.SignUpStep2Form) Response {
 	if !setting.AllowUserSignUp {
-		return Error(401, "User signup is disabled", nil)
+		return Error(401, "用户注册已禁用", nil)
 	}
 
 	createUserCmd := m.CreateUserCommand{
@@ -75,12 +75,12 @@ func (hs *HTTPServer) SignUpStep2(c *m.ReqContext, form dtos.SignUpStep2Form) Re
 	// check if user exists
 	existing := m.GetUserByLoginQuery{LoginOrEmail: form.Email}
 	if err := bus.Dispatch(&existing); err == nil {
-		return Error(401, "User with same email address already exists", nil)
+		return Error(401, "邮件地址已存在", nil)
 	}
 
 	// dispatch create command
 	if err := bus.Dispatch(&createUserCmd); err != nil {
-		return Error(500, "Failed to create user", err)
+		return Error(500, "无法创建用户", err)
 	}
 
 	// publish signup event
@@ -98,10 +98,10 @@ func (hs *HTTPServer) SignUpStep2(c *m.ReqContext, form dtos.SignUpStep2Form) Re
 	// check for pending invites
 	invitesQuery := m.GetTempUsersQuery{Email: form.Email, Status: m.TmpUserInvitePending}
 	if err := bus.Dispatch(&invitesQuery); err != nil {
-		return Error(500, "Failed to query database for invites", err)
+		return Error(500, "无法查询数据库以获取邀请", err)
 	}
 
-	apiResponse := util.DynMap{"message": "User sign up completed successfully", "code": "redirect-to-landing-page"}
+	apiResponse := util.DynMap{"message": "用户注册成功完成", "code": "redirect-to-landing-page"}
 	for _, invite := range invitesQuery.Result {
 		if ok, rsp := applyUserInvite(user, invite, false); !ok {
 			return rsp
@@ -120,14 +120,14 @@ func verifyUserSignUpEmail(email string, code string) (bool, Response) {
 
 	if err := bus.Dispatch(&query); err != nil {
 		if err == m.ErrTempUserNotFound {
-			return false, Error(404, "Invalid email verification code", nil)
+			return false, Error(404, "电子邮件验证码无效", nil)
 		}
-		return false, Error(500, "Failed to read temp user", err)
+		return false, Error(500, "无法读取临时用户", err)
 	}
 
 	tempUser := query.Result
 	if tempUser.Email != email {
-		return false, Error(404, "Email verification code does not match email", nil)
+		return false, Error(404, "电子邮件验证码与电子邮件不符", nil)
 	}
 
 	return true, nil

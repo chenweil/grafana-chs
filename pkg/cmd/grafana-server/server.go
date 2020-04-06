@@ -78,19 +78,19 @@ func (g *GrafanaServerImpl) Run() error {
 	serviceGraph := inject.Graph{}
 	err = serviceGraph.Provide(&inject.Object{Value: bus.GetBus()})
 	if err != nil {
-		return fmt.Errorf("Failed to provide object to the graph: %v", err)
+		return fmt.Errorf("无法为图表提供对象: %v", err)
 	}
 	err = serviceGraph.Provide(&inject.Object{Value: g.cfg})
 	if err != nil {
-		return fmt.Errorf("Failed to provide object to the graph: %v", err)
+		return fmt.Errorf("无法向图表提供对象: %v", err)
 	}
 	err = serviceGraph.Provide(&inject.Object{Value: routing.NewRouteRegister(middleware.RequestMetrics, middleware.RequestTracing)})
 	if err != nil {
-		return fmt.Errorf("Failed to provide object to the graph: %v", err)
+		return fmt.Errorf("无法向图表提供对象: %v", err)
 	}
 	err = serviceGraph.Provide(&inject.Object{Value: localcache.New(5*time.Minute, 10*time.Minute)})
 	if err != nil {
-		return fmt.Errorf("Failed to provide object to the graph: %v", err)
+		return fmt.Errorf("无法向图表提供对象: %v", err)
 	}
 
 	// self registered services
@@ -100,18 +100,18 @@ func (g *GrafanaServerImpl) Run() error {
 	for _, service := range services {
 		err = serviceGraph.Provide(&inject.Object{Value: service.Instance})
 		if err != nil {
-			return fmt.Errorf("Failed to provide object to the graph: %v", err)
+			return fmt.Errorf("无法向图表提供对象: %v", err)
 		}
 	}
 
 	err = serviceGraph.Provide(&inject.Object{Value: g})
 	if err != nil {
-		return fmt.Errorf("Failed to provide object to the graph: %v", err)
+		return fmt.Errorf("无法向图表提供对象: %v", err)
 	}
 
 	// Inject dependencies to services
 	if err := serviceGraph.Populate(); err != nil {
-		return fmt.Errorf("Failed to populate service dependency: %v", err)
+		return fmt.Errorf("无法填充服务依赖项: %v", err)
 	}
 
 	// Init & start services
@@ -123,7 +123,7 @@ func (g *GrafanaServerImpl) Run() error {
 		g.log.Info("Initializing " + service.Name)
 
 		if err := service.Instance.Init(); err != nil {
-			return fmt.Errorf("Service init failed: %v", err)
+			return fmt.Errorf("服务初始化失败: %v", err)
 		}
 	}
 
@@ -151,9 +151,9 @@ func (g *GrafanaServerImpl) Run() error {
 
 			// If error is not canceled then the service crashed
 			if err != context.Canceled && err != nil {
-				g.log.Error("Stopped "+descriptor.Name, "reason", err)
+				g.log.Error("停止 "+descriptor.Name, "reason", err)
 			} else {
-				g.log.Info("Stopped "+descriptor.Name, "reason", err)
+				g.log.Info("停止 "+descriptor.Name, "reason", err)
 			}
 
 			// Mark that we are in shutdown mode
@@ -176,7 +176,7 @@ func (g *GrafanaServerImpl) loadConfiguration() {
 	})
 
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to start grafana. error: %s\n", err.Error())
+		fmt.Fprintf(os.Stderr, "无法启动系统。 错误: %s\n", err.Error())
 		os.Exit(1)
 	}
 
@@ -205,7 +205,7 @@ func (g *GrafanaServerImpl) Exit(reason error) int {
 		code = 0
 	}
 
-	g.log.Error("Server shutdown", "reason", reason)
+	g.log.Error("服务器关闭", "reason", reason)
 	return code
 }
 
@@ -217,25 +217,25 @@ func (g *GrafanaServerImpl) writePIDFile() {
 	// Ensure the required directory structure exists.
 	err := os.MkdirAll(filepath.Dir(*pidFile), 0700)
 	if err != nil {
-		g.log.Error("Failed to verify pid directory", "error", err)
+		g.log.Error("无法验证pid目录", "error", err)
 		os.Exit(1)
 	}
 
 	// Retrieve the PID and write it.
 	pid := strconv.Itoa(os.Getpid())
 	if err := ioutil.WriteFile(*pidFile, []byte(pid), 0644); err != nil {
-		g.log.Error("Failed to write pidfile", "error", err)
+		g.log.Error("无法写入pid文件", "error", err)
 		os.Exit(1)
 	}
 
-	g.log.Info("Writing PID file", "path", *pidFile, "pid", pid)
+	g.log.Info("写PID文件", "path", *pidFile, "pid", pid)
 }
 
 func sendSystemdNotification(state string) error {
 	notifySocket := os.Getenv("NOTIFY_SOCKET")
 
 	if notifySocket == "" {
-		return fmt.Errorf("NOTIFY_SOCKET environment variable empty or unset")
+		return fmt.Errorf("NOTIFY_SOCKET环境变量为空或未设置")
 	}
 
 	socketAddr := &net.UnixAddr{

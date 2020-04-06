@@ -5,8 +5,8 @@ import (
 	"time"
 )
 
-var ErrInvalidApiKey = errors.New("Invalid API Key")
-var ErrInvalidApiKeyExpiration = errors.New("Negative value for SecondsToLive")
+var ErrInvalidApiKey = errors.New("API密钥无效")
+var ErrInvalidApiKeyExpiration = errors.New("SecondsToLive的负值")
 
 type ApiKey struct {
 	Id      int64

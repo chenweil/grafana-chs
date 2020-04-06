@@ -14,17 +14,17 @@ func (hs *HTTPServer) ProxyDataSourceRequest(c *m.ReqContext) {
 	ds, err := hs.DatasourceCache.GetDatasource(dsId, c.SignedInUser, c.SkipCache)
 	if err != nil {
 		if err == m.ErrDataSourceAccessDenied {
-			c.JsonApiErr(403, "Access denied to datasource", err)
+			c.JsonApiErr(403, "拒绝访问数据源", err)
 			return
 		}
-		c.JsonApiErr(500, "Unable to load datasource meta data", err)
+		c.JsonApiErr(500, "无法加载数据源元数据", err)
 		return
 	}
 
 	// find plugin
 	plugin, ok := plugins.DataSources[ds.Type]
 	if !ok {
-		c.JsonApiErr(500, "Unable to find datasource plugin", err)
+		c.JsonApiErr(500, "无法找到数据源插件", err)
 		return
 	}
 

@@ -20,10 +20,10 @@ var newLDAP = ldap.New
 var ErrInvalidCredentials = ldap.ErrInvalidCredentials
 
 // ErrNoLDAPServers is returned when there is no LDAP servers specified
-var ErrNoLDAPServers = errors.New("No LDAP servers are configured")
+var ErrNoLDAPServers = errors.New("未配置LDAP服务器")
 
 // ErrDidNotFindUser if request for user is unsuccessful
-var ErrDidNotFindUser = errors.New("Did not find a user")
+var ErrDidNotFindUser = errors.New("没找到用户")
 
 // IMultiLDAP is interface for MultiLDAP
 type IMultiLDAP interface {

@@ -19,7 +19,7 @@ func (cr *configReader) readConfig(path string) ([]*DatasourcesAsConfig, error) 
 
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
-		cr.log.Error("can't read datasource provisioning files from directory", "path", path, "error", err)
+		cr.log.Error("无法从目录中读取数据源配置文件", "path", path, "error", err)
 		return datasources, nil
 	}
 
@@ -77,7 +77,7 @@ func (cr *configReader) parseDatasourceConfig(path string, file os.FileInfo) (*D
 		return nil, err
 	}
 
-	cr.log.Warn("[Deprecated] the datasource provisioning config is outdated. please upgrade", "filename", filename)
+	cr.log.Warn("[已弃用]数据源配置配置已过时。 请升级", "filename", filename)
 
 	return v0.mapToDatasourceFromConfig(apiVersion.ApiVersion), nil
 }

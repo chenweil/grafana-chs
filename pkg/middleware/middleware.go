@@ -77,9 +77,9 @@ func GetContextHandler(
 
 		// update last seen every 5min
 		if ctx.ShouldUpdateLastSeenAt() {
-			ctx.Logger.Debug("Updating last user_seen_at", "user_id", ctx.UserId)
+			ctx.Logger.Debug("更新上次user_seen_at", "user_id", ctx.UserId)
 			if err := bus.Dispatch(&models.UpdateUserLastSeenAtCommand{UserId: ctx.UserId}); err != nil {
-				ctx.Logger.Error("Failed to update last_seen_at", "error", err)
+				ctx.Logger.Error("无法更新last_seen_at", "error", err)
 			}
 		}
 	}
@@ -92,7 +92,7 @@ func initContextWithAnonymousUser(ctx *models.ReqContext) bool {
 
 	orgQuery := models.GetOrgByNameQuery{Name: setting.AnonymousOrgName}
 	if err := bus.Dispatch(&orgQuery); err != nil {
-		log.Error(3, "Anonymous access organization error: '%s': %s", setting.AnonymousOrgName, err)
+		log.Error(3, "匿名访问组织错误: '%s': %s", setting.AnonymousOrgName, err)
 		return false
 	}
 
@@ -135,7 +135,7 @@ func initContextWithApiKey(ctx *models.ReqContext) bool {
 
 	// check for expiration
 	if apikey.Expires != nil && *apikey.Expires <= getTime().Unix() {
-		ctx.JsonApiErr(401, "Expired API key", err)
+		ctx.JsonApiErr(401, "过期的API密钥", err)
 		return true
 	}
 
@@ -159,7 +159,7 @@ func initContextWithBasicAuth(ctx *models.ReqContext, orgId int64) bool {
 
 	username, password, err := util.DecodeBasicAuthHeader(header)
 	if err != nil {
-		ctx.JsonApiErr(401, "Invalid Basic Auth Header", err)
+		ctx.JsonApiErr(401, "无效的基本身份验证请求头", err)
 		return true
 	}
 
@@ -218,14 +218,14 @@ func initContextWithToken(authTokenService models.UserTokenService, ctx *models.
 
 	token, err := authTokenService.LookupToken(ctx.Req.Context(), rawToken)
 	if err != nil {
-		ctx.Logger.Error("Failed to look up user based on cookie", "error", err)
+		ctx.Logger.Error("无法根据cookie查找用户", "error", err)
 		WriteSessionCookie(ctx, "", -1)
 		return false
 	}
 
 	query := models.GetSignedInUserQuery{UserId: token.UserId, OrgId: orgID}
 	if err := bus.Dispatch(&query); err != nil {
-		ctx.Logger.Error("Failed to get user with id", "userId", token.UserId, "error", err)
+		ctx.Logger.Error("无法获得具有id的用户", "userId", token.UserId, "error", err)
 		return false
 	}
 
@@ -235,7 +235,7 @@ func initContextWithToken(authTokenService models.UserTokenService, ctx *models.
 
 	rotated, err := authTokenService.TryRotateToken(ctx.Req.Context(), token, ctx.RemoteAddr(), ctx.Req.UserAgent())
 	if err != nil {
-		ctx.Logger.Error("Failed to rotate token", "error", err)
+		ctx.Logger.Error("无法轮换令牌", "error", err)
 		return true
 	}
 
@@ -248,7 +248,7 @@ func initContextWithToken(authTokenService models.UserTokenService, ctx *models.
 
 func WriteSessionCookie(ctx *models.ReqContext, value string, maxLifetimeDays int) {
 	if setting.Env == setting.DEV {
-		ctx.Logger.Info("New token", "unhashed token", value)
+		ctx.Logger.Info("新令牌", "unhashed token", value)
 	}
 
 	var maxAge int

@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	ErrInvalidConfigTooManyDefault = errors.New("Alert notification provisioning config is invalid. Only one alert notification can be marked as default")
+	ErrInvalidConfigTooManyDefault = errors.New("警报通知配置配置无效。 只能将一个警报通知标记为默认值")
 )
 
 func Provision(configDirectory string) error {
@@ -43,7 +43,7 @@ func (dc *NotificationProvisioner) apply(cfg *notificationsAsConfig) error {
 
 func (dc *NotificationProvisioner) deleteNotifications(notificationToDelete []*deleteNotificationConfig) error {
 	for _, notification := range notificationToDelete {
-		dc.log.Info("Deleting alert notification", "name", notification.Name, "uid", notification.Uid)
+		dc.log.Info("删除警报通知", "name", notification.Name, "uid", notification.Uid)
 
 		if notification.OrgId == 0 && notification.OrgName != "" {
 			getOrg := &models.GetOrgByNameQuery{Name: notification.OrgName}
@@ -92,7 +92,7 @@ func (dc *NotificationProvisioner) mergeNotifications(notificationToMerge []*not
 		}
 
 		if cmd.Result == nil {
-			dc.log.Debug("inserting alert notification from configuration", "name", notification.Name, "uid", notification.Uid)
+			dc.log.Debug("从配置中插入警报通知", "name", notification.Name, "uid", notification.Uid)
 			insertCmd := &models.CreateAlertNotificationCommand{
 				Uid:                   notification.Uid,
 				Name:                  notification.Name,
@@ -109,7 +109,7 @@ func (dc *NotificationProvisioner) mergeNotifications(notificationToMerge []*not
 				return err
 			}
 		} else {
-			dc.log.Debug("updating alert notification from configuration", "name", notification.Name)
+			dc.log.Debug("从配置更新警报通知", "name", notification.Name)
 			updateCmd := &models.UpdateAlertNotificationWithUidCommand{
 				Uid:                   notification.Uid,
 				Name:                  notification.Name,

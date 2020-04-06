@@ -19,7 +19,7 @@ func (hs *HTTPServer) GetPluginList(c *m.ReqContext) Response {
 	pluginSettingsMap, err := plugins.GetPluginSettings(c.OrgId)
 
 	if err != nil {
-		return Error(500, "Failed to get list of plugins", err)
+		return Error(500, "无法获得插件列表", err)
 	}
 
 	result := make(dtos.PluginList, 0)
@@ -88,7 +88,7 @@ func GetPluginSettingByID(c *m.ReqContext) Response {
 
 	def, exists := plugins.Plugins[pluginID]
 	if !exists {
-		return Error(404, "Plugin not found, no installed plugin with that id", nil)
+		return Error(404, "未找到插件，没有安装该ID的插件", nil)
 	}
 
 	dto := &dtos.PluginSetting{
@@ -109,7 +109,7 @@ func GetPluginSettingByID(c *m.ReqContext) Response {
 	query := m.GetPluginSettingByIdQuery{PluginId: pluginID, OrgId: c.OrgId}
 	if err := bus.Dispatch(&query); err != nil {
 		if err != m.ErrPluginSettingNotFound {
-			return Error(500, "Failed to get login settings", nil)
+			return Error(500, "无法获得登录设置", nil)
 		}
 	} else {
 		dto.Enabled = query.Result.Enabled
@@ -127,14 +127,14 @@ func UpdatePluginSetting(c *m.ReqContext, cmd m.UpdatePluginSettingCmd) Response
 	cmd.PluginId = pluginID
 
 	if _, ok := plugins.Apps[cmd.PluginId]; !ok {
-		return Error(404, "Plugin not installed.", nil)
+		return Error(404, "没有安装插件。", nil)
 	}
 
 	if err := bus.Dispatch(&cmd); err != nil {
-		return Error(500, "Failed to update plugin setting", err)
+		return Error(500, "无法更新插件设置", err)
 	}
 
-	return Success("Plugin settings updated")
+	return Success("插件设置已更新")
 }
 
 func GetPluginDashboards(c *m.ReqContext) Response {
@@ -146,7 +146,7 @@ func GetPluginDashboards(c *m.ReqContext) Response {
 			return Error(404, notfound.Error(), nil)
 		}
 
-		return Error(500, "Failed to get plugin dashboards", err)
+		return Error(500, "无法获得插件仪表板", err)
 	}
 
 	return JSON(200, list)
@@ -162,14 +162,14 @@ func GetPluginMarkdown(c *m.ReqContext) Response {
 			return Error(404, notfound.Error(), nil)
 		}
 
-		return Error(500, "Could not get markdown file", err)
+		return Error(500, "无法获得mrakdown文件", err)
 	}
 
 	// fallback try readme
 	if len(content) == 0 {
 		content, err = plugins.GetPluginMarkdown(pluginID, "readme")
 		if err != nil {
-			return Error(501, "Could not get markdown file", err)
+			return Error(501, "无法获得mrakdown文件", err)
 		}
 	}
 
@@ -192,7 +192,7 @@ func ImportDashboard(c *m.ReqContext, apiCmd dtos.ImportDashboardCommand) Respon
 	}
 
 	if err := bus.Dispatch(&cmd); err != nil {
-		return Error(500, "Failed to import dashboard", err)
+		return Error(500, "无法导入仪表板", err)
 	}
 
 	return JSON(200, cmd.Result)

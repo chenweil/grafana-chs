@@ -21,7 +21,7 @@ import (
 )
 
 var (
-	ErrFolderNameMissing = errors.New("Folder name missing")
+	ErrFolderNameMissing = errors.New("文件夹名称丢失")
 )
 
 type fileReader struct {
@@ -37,10 +37,10 @@ func NewDashboardFileReader(cfg *DashboardsAsConfig, log log.Logger) (*fileReade
 	if !ok {
 		path, ok = cfg.Options["folder"].(string)
 		if !ok {
-			return nil, fmt.Errorf("Failed to load dashboards. path param is not a string")
+			return nil, fmt.Errorf("无法加载仪表板。 path param不是字符串")
 		}
 
-		log.Warn("[Deprecated] The folder property is deprecated. Please use path instead.")
+		log.Warn("[已弃用]不推荐使用folder属性。 请改用路径。")
 	}
 
 	return &fileReader{
@@ -60,7 +60,7 @@ func (fr *fileReader) pollChanges(ctx context.Context) {
 		select {
 		case <-ticker:
 			if err := fr.startWalkingDisk(); err != nil {
-				fr.log.Error("failed to search for dashboards", "error", err)
+				fr.log.Error("无法搜索仪表板", "error", err)
 			}
 		case <-ctx.Done():
 			return
@@ -71,7 +71,7 @@ func (fr *fileReader) pollChanges(ctx context.Context) {
 // startWalkingDisk traverses the file system for defined path, reads dashboard definition files and applies any change
 // to the database.
 func (fr *fileReader) startWalkingDisk() error {
-	fr.log.Debug("Start walking disk", "path", fr.Path)
+	fr.log.Debug("开始行走磁盘", "path", fr.Path)
 	resolvedPath := fr.resolvedPath()
 	if _, err := os.Stat(resolvedPath); err != nil {
 		return err
@@ -102,7 +102,7 @@ func (fr *fileReader) startWalkingDisk() error {
 		provisioningMetadata, err := fr.saveDashboard(path, folderId, fileInfo, provisionedDashboardRefs)
 		sanityChecker.track(provisioningMetadata)
 		if err != nil {
-			fr.log.Error("failed to save dashboard", "error", err)
+			fr.log.Error("无法保存仪表板", "error", err)
 		}
 	}
 	sanityChecker.logWarnings(fr.log)
@@ -125,19 +125,19 @@ func (fr *fileReader) handleMissingDashboardFiles(provisionedDashboardRefs map[s
 		// If deletion is disabled for the provisioner we just remove provisioning metadata about the dashboard
 		// so afterwards the dashboard is considered unprovisioned.
 		for _, dashboardId := range dashboardToDelete {
-			fr.log.Debug("unprovisioning provisioned dashboard. missing on disk", "id", dashboardId)
+			fr.log.Debug("取消配置的配置仪表板。 丢失的磁盘", "id", dashboardId)
 			err := fr.dashboardProvisioningService.UnprovisionDashboard(dashboardId)
 			if err != nil {
-				fr.log.Error("failed to unprovision dashboard", "dashboard_id", dashboardId, "error", err)
+				fr.log.Error("未能取消设置仪表板", "dashboard_id", dashboardId, "error", err)
 			}
 		}
 	} else {
 		// delete dashboard that are missing json file
 		for _, dashboardId := range dashboardToDelete {
-			fr.log.Debug("deleting provisioned dashboard. missing on disk", "id", dashboardId)
+			fr.log.Debug("删除配置的仪表板。 丢失的磁盘", "id", dashboardId)
 			err := fr.dashboardProvisioningService.DeleteProvisionedDashboard(dashboardId, fr.Cfg.OrgId)
 			if err != nil {
-				fr.log.Error("failed to delete dashboard", "id", dashboardId, "error", err)
+				fr.log.Error("无法删除仪表板", "id", dashboardId, "error", err)
 			}
 		}
 	}
@@ -156,7 +156,7 @@ func (fr *fileReader) saveDashboard(path string, folderId int64, fileInfo os.Fil
 
 	jsonFile, err := fr.readDashboardFromFile(path, resolvedFileInfo.ModTime(), folderId)
 	if err != nil {
-		fr.log.Error("failed to load dashboard from ", "file", path, "error", err)
+		fr.log.Error("无法加载仪表板 ", "file", path, "error", err)
 		return provisioningMetadata, nil
 	}
 
@@ -182,7 +182,7 @@ func (fr *fileReader) saveDashboard(path string, folderId int64, fileInfo os.Fil
 		dash.Dashboard.SetId(provisionedData.DashboardId)
 	}
 
-	fr.log.Debug("saving new dashboard", "provisioner", fr.Cfg.Name, "file", path, "folderId", dash.Dashboard.FolderId)
+	fr.log.Debug("保存新的仪表板", "provisioner", fr.Cfg.Name, "file", path, "folderId", dash.Dashboard.FolderId)
 	dp := &models.DashboardProvisioning{
 		ExternalId: path,
 		Name:       fr.Cfg.Name,
@@ -238,7 +238,7 @@ func getOrCreateFolderId(cfg *DashboardsAsConfig, service dashboards.DashboardPr
 	}
 
 	if !cmd.Result.IsFolder {
-		return 0, fmt.Errorf("got invalid response. expected folder, found dashboard")
+		return 0, fmt.Errorf("无效响应。 预期的文件夹，发现仪表盘")
 	}
 
 	return cmd.Result.Id, nil
@@ -331,22 +331,22 @@ func (fr *fileReader) readDashboardFromFile(path string, lastModified time.Time,
 
 func (fr *fileReader) resolvedPath() string {
 	if _, err := os.Stat(fr.Path); os.IsNotExist(err) {
-		fr.log.Error("Cannot read directory", "error", err)
+		fr.log.Error("无法读取目录", "error", err)
 	}
 
 	path, err := filepath.Abs(fr.Path)
 	if err != nil {
-		fr.log.Error("Could not create absolute path", "path", fr.Path, "error", err)
+		fr.log.Error("无法创建绝对路径", "path", fr.Path, "error", err)
 	}
 
 	path, err = filepath.EvalSymlinks(path)
 	if err != nil {
-		fr.log.Error("Failed to read content of symlinked path", "path", fr.Path, "error", err)
+		fr.log.Error("无法读取符号链接路径的内容", "path", fr.Path, "error", err)
 	}
 
 	if path == "" {
 		path = fr.Path
-		fr.log.Info("falling back to original path due to EvalSymlink/Abs failure")
+		fr.log.Info("由于EvalSymlinks/Abs失败而回到原始路径")
 	}
 	return path
 }
@@ -381,13 +381,13 @@ func (checker provisioningSanityChecker) track(pm provisioningMetadata) {
 func (checker provisioningSanityChecker) logWarnings(log log.Logger) {
 	for uid, times := range checker.uidUsage {
 		if times > 1 {
-			log.Error("the same 'uid' is used more than once", "uid", uid, "provider", checker.provisioningProvider)
+			log.Error("相同的'uid'被使用不止一次", "uid", uid, "provider", checker.provisioningProvider)
 		}
 	}
 
 	for title, times := range checker.titleUsage {
 		if times > 1 {
-			log.Error("the same 'title' is used more than once", "title", title, "provider", checker.provisioningProvider)
+			log.Error("相同的'标题'不止一次使用", "title", title, "provider", checker.provisioningProvider)
 		}
 	}
 }

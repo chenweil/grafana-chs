@@ -103,20 +103,20 @@ func (ps *provisioningServiceImpl) Run(ctx context.Context) error {
 func (ps *provisioningServiceImpl) ProvisionDatasources() error {
 	datasourcePath := path.Join(ps.Cfg.ProvisioningPath, "datasources")
 	err := ps.provisionDatasources(datasourcePath)
-	return errutil.Wrap("Datasource provisioning error", err)
+	return errutil.Wrap("数据源配置错误", err)
 }
 
 func (ps *provisioningServiceImpl) ProvisionNotifications() error {
 	alertNotificationsPath := path.Join(ps.Cfg.ProvisioningPath, "notifiers")
 	err := ps.provisionNotifiers(alertNotificationsPath)
-	return errutil.Wrap("Alert notification provisioning error", err)
+	return errutil.Wrap("警报通知配置错误", err)
 }
 
 func (ps *provisioningServiceImpl) ProvisionDashboards() error {
 	dashboardPath := path.Join(ps.Cfg.ProvisioningPath, "dashboards")
 	dashProvisioner, err := ps.newDashboardProvisioner(dashboardPath)
 	if err != nil {
-		return errutil.Wrap("Failed to create provisioner", err)
+		return errutil.Wrap("无法创建配置程序", err)
 	}
 
 	ps.mutex.Lock()
@@ -127,7 +127,7 @@ func (ps *provisioningServiceImpl) ProvisionDashboards() error {
 	if err := dashProvisioner.Provision(); err != nil {
 		// If we fail to provision with the new provisioner, mutex will unlock and the polling we restart with the
 		// old provisioner as we did not switch them yet.
-		return errutil.Wrap("Failed to provision dashboards", err)
+		return errutil.Wrap("无法配置仪表板", err)
 	}
 	ps.dashboardProvisioner = dashProvisioner
 	return nil
@@ -139,7 +139,7 @@ func (ps *provisioningServiceImpl) GetDashboardProvisionerResolvedPath(name stri
 
 func (ps *provisioningServiceImpl) cancelPolling() {
 	if ps.pollingCtxCancel != nil {
-		ps.log.Debug("Stop polling for dashboard changes")
+		ps.log.Debug("停止轮询仪表板更改")
 		ps.pollingCtxCancel()
 	}
 	ps.pollingCtxCancel = nil

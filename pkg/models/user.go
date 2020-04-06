@@ -7,8 +7,8 @@ import (
 
 // Typed errors
 var (
-	ErrUserNotFound     = errors.New("User not found")
-	ErrLastGrafanaAdmin = errors.New("Cannot remove last grafana admin")
+	ErrUserNotFound     = errors.New("找不到用户")
+	ErrLastGrafanaAdmin = errors.New("无法删除最后一个系统管理员")
 )
 
 type Password string

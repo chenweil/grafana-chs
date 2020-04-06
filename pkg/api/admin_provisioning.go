@@ -26,5 +26,5 @@ func (server *HTTPServer) AdminProvisioningReloadNotifications(c *models.ReqCont
 	if err != nil {
 		return Error(500, "", err)
 	}
-	return Success("Notifications config reloaded")
+	return Success("通知配置已重新加载")
 }

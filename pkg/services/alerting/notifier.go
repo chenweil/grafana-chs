@@ -46,7 +46,7 @@ func (n *notificationService) SendIfNeeded(context *EvalContext) error {
 
 	if notifierStates.ShouldUploadImage() {
 		if err = n.uploadImage(context); err != nil {
-			n.log.Error("Failed to upload alert panel image.", "error", err)
+			n.log.Error("无法上传警报面板图像", "error", err)
 		}
 	}
 
@@ -56,13 +56,13 @@ func (n *notificationService) SendIfNeeded(context *EvalContext) error {
 func (n *notificationService) sendAndMarkAsComplete(evalContext *EvalContext, notifierState *notifierState) error {
 	notifier := notifierState.notifier
 
-	n.log.Debug("Sending notification", "type", notifier.GetType(), "uid", notifier.GetNotifierUID(), "isDefault", notifier.GetIsDefault())
+	n.log.Debug("发送通知", "type", notifier.GetType(), "uid", notifier.GetNotifierUID(), "isDefault", notifier.GetIsDefault())
 	metrics.MAlertingNotificationSent.WithLabelValues(notifier.GetType()).Inc()
 
 	err := notifier.Notify(evalContext)
 
 	if err != nil {
-		n.log.Error("failed to send notification", "uid", notifier.GetNotifierUID(), "error", err)
+		n.log.Error("未能发送通知", "uid", notifier.GetNotifierUID(), "error", err)
 	}
 
 	if evalContext.IsTestRun {
@@ -106,7 +106,7 @@ func (n *notificationService) sendNotifications(evalContext *EvalContext, notifi
 	for _, notifierState := range notifierStates {
 		err := n.sendNotification(evalContext, notifierState)
 		if err != nil {
-			n.log.Error("failed to send notification", "uid", notifierState.notifier.GetNotifierUID(), "error", err)
+			n.log.Error("未能发送通知", "uid", notifierState.notifier.GetNotifierUID(), "error", err)
 		}
 	}
 
@@ -147,7 +147,7 @@ func (n *notificationService) uploadImage(context *EvalContext) (err error) {
 	}
 
 	if context.ImagePublicURL != "" {
-		n.log.Info("uploaded screenshot of alert to external image store", "url", context.ImagePublicURL)
+		n.log.Info("将警报的屏幕截图上传到外部图像时长", "url", context.ImagePublicURL)
 	}
 
 	return nil
@@ -164,7 +164,7 @@ func (n *notificationService) getNeededNotifiers(orgID int64, notificationUids [
 	for _, notification := range query.Result {
 		not, err := InitNotifier(notification)
 		if err != nil {
-			n.log.Error("Could not create notifier", "notifier", notification.Uid, "error", err)
+			n.log.Error("无法创建通知程序", "notifier", notification.Uid, "error", err)
 			continue
 		}
 
@@ -176,7 +176,7 @@ func (n *notificationService) getNeededNotifiers(orgID int64, notificationUids [
 
 		err = bus.DispatchCtx(evalContext.Ctx, query)
 		if err != nil {
-			n.log.Error("Could not get notification state.", "notifier", notification.Id, "error", err)
+			n.log.Error("无法获得通知状态。", "notifier", notification.Id, "error", err)
 			continue
 		}
 
@@ -195,7 +195,7 @@ func (n *notificationService) getNeededNotifiers(orgID int64, notificationUids [
 func InitNotifier(model *models.AlertNotification) (Notifier, error) {
 	notifierPlugin, found := notifierFactories[model.Type]
 	if !found {
-		return nil, errors.New("Unsupported notification type")
+		return nil, errors.New("不支持的通知类型")
 	}
 
 	return notifierPlugin.Factory(model)

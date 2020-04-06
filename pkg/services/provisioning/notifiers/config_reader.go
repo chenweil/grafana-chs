@@ -19,17 +19,17 @@ type configReader struct {
 
 func (cr *configReader) readConfig(path string) ([]*notificationsAsConfig, error) {
 	var notifications []*notificationsAsConfig
-	cr.log.Debug("Looking for alert notification provisioning files", "path", path)
+	cr.log.Debug("寻找警报通知配置文件", "path", path)
 
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
-		cr.log.Error("Can't read alert notification provisioning files from directory", "path", path, "error", err)
+		cr.log.Error("无法从目录中读取警报通知配置文件", "path", path, "error", err)
 		return notifications, nil
 	}
 
 	for _, file := range files {
 		if strings.HasSuffix(file.Name(), ".yaml") || strings.HasSuffix(file.Name(), ".yml") {
-			cr.log.Debug("Parsing alert notifications provisioning file", "path", path, "file.Name", file.Name())
+			cr.log.Debug("解析警报通知配置文件", "path", path, "file.Name", file.Name())
 			notifs, err := cr.parseNotificationConfig(path, file)
 			if err != nil {
 				return nil, err
@@ -103,14 +103,14 @@ func validateRequiredField(notifications []*notificationsAsConfig) error {
 			if notification.Name == "" {
 				errStrings = append(
 					errStrings,
-					fmt.Sprintf("Added alert notification item %d in configuration doesn't contain required field name", index+1),
+					fmt.Sprintf("配置中添加的警报通知项 %d 不包含必填字段名称", index+1),
 				)
 			}
 
 			if notification.Uid == "" {
 				errStrings = append(
 					errStrings,
-					fmt.Sprintf("Added alert notification item %d in configuration doesn't contain required field uid", index+1),
+					fmt.Sprintf("在配置中添加警报通知项 %d 不包含必填字段uid", index+1),
 				)
 			}
 		}
@@ -119,14 +119,14 @@ func validateRequiredField(notifications []*notificationsAsConfig) error {
 			if notification.Name == "" {
 				errStrings = append(
 					errStrings,
-					fmt.Sprintf("Deleted alert notification item %d in configuration doesn't contain required field name", index+1),
+					fmt.Sprintf("配置中已删除的警报通知项 %d 不包含必填字段名称", index+1),
 				)
 			}
 
 			if notification.Uid == "" {
 				errStrings = append(
 					errStrings,
-					fmt.Sprintf("Deleted alert notification item %d in configuration doesn't contain required field uid", index+1),
+					fmt.Sprintf("配置中已删除的警报通知项 %d 不包含必填字段uid", index+1),
 				)
 			}
 		}

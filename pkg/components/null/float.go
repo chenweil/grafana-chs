@@ -61,7 +61,7 @@ func (f *Float) UnmarshalJSON(data []byte) error {
 		f.Valid = false
 		return nil
 	default:
-		err = fmt.Errorf("json: cannot unmarshal %v into Go value of type null.Float", reflect.TypeOf(v).Name())
+		err = fmt.Errorf("json：无法将 %v 解组为类型为null.Float的Go值", reflect.TypeOf(v).Name())
 	}
 	f.Valid = err == nil
 	return err

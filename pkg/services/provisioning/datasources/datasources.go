@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	ErrInvalidConfigToManyDefault = errors.New("datasource.yaml config is invalid. Only one datasource per organization can be marked as default")
+	ErrInvalidConfigToManyDefault = errors.New("datasource.yaml配置无效。 每个组织只能将一个数据源标记为默认值")
 )
 
 func Provision(configDirectory string) error {
@@ -44,13 +44,13 @@ func (dc *DatasourceProvisioner) apply(cfg *DatasourcesAsConfig) error {
 		}
 
 		if err == models.ErrDataSourceNotFound {
-			dc.log.Info("inserting datasource from configuration ", "name", ds.Name)
+			dc.log.Info("从配置中插入数据源 ", "name", ds.Name)
 			insertCmd := createInsertCommand(ds)
 			if err := bus.Dispatch(insertCmd); err != nil {
 				return err
 			}
 		} else {
-			dc.log.Debug("updating datasource from configuration", "name", ds.Name)
+			dc.log.Debug("从配置更新数据源", "name", ds.Name)
 			updateCmd := createUpdateCommand(ds, cmd.Result.Id)
 			if err := bus.Dispatch(updateCmd); err != nil {
 				return err
@@ -84,7 +84,7 @@ func (dc *DatasourceProvisioner) deleteDatasources(dsToDelete []*DeleteDatasourc
 		}
 
 		if cmd.DeletedDatasourcesCount > 0 {
-			dc.log.Info("deleted datasource based on configuration", "name", ds.Name)
+			dc.log.Info("基于配置删除数据源", "name", ds.Name)
 		}
 	}
 

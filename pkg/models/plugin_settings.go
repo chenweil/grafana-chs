@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	ErrPluginSettingNotFound = errors.New("Plugin setting not found")
+	ErrPluginSettingNotFound = errors.New("未找到插件设置")
 )
 
 type PluginSetting struct {

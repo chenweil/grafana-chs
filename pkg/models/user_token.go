@@ -7,7 +7,7 @@ import (
 
 // Typed errors
 var (
-	ErrUserTokenNotFound = errors.New("user token not found")
+	ErrUserTokenNotFound = errors.New("找不到用户令牌")
 )
 
 // UserToken represents a user token

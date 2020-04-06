@@ -38,7 +38,7 @@ func (ns *NotificationService) send(msg *Message) (int, error) {
 
 		e := dialer.DialAndSend(m)
 		if e != nil {
-			err = errutil.Wrapf(e, "Failed to send notification to email address: %s", address)
+			err = errutil.Wrapf(e, "无法向电子邮件地址发送通知: %s", address)
 			continue
 		}
 
@@ -67,7 +67,7 @@ func (ns *NotificationService) createDialer() (*gomail.Dialer, error) {
 	if ns.Cfg.Smtp.CertFile != "" {
 		cert, err := tls.LoadX509KeyPair(ns.Cfg.Smtp.CertFile, ns.Cfg.Smtp.KeyFile)
 		if err != nil {
-			return nil, fmt.Errorf("Could not load cert or key file. error: %v", err)
+			return nil, fmt.Errorf("无法加载证书或密钥文件。 错误: %v", err)
 		}
 		tlsconfig.Certificates = []tls.Certificate{cert}
 	}
@@ -109,7 +109,7 @@ func (ns *NotificationService) buildEmailMessage(cmd *models.SendEmailCommand) (
 		subjectText, hasSubject := subjectData["value"]
 
 		if !hasSubject {
-			return nil, fmt.Errorf("Missing subject in Template %s", cmd.Template)
+			return nil, fmt.Errorf("模板中缺少主题 %s", cmd.Template)
 		}
 
 		subjectTmpl, err := template.New("subject").Parse(subjectText.(string))

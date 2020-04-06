@@ -34,7 +34,7 @@ func getApiKey(c *m.ReqContext) string {
 
 func accessForbidden(c *m.ReqContext) {
 	if c.IsApiRequest() {
-		c.JsonApiErr(403, "Permission denied", nil)
+		c.JsonApiErr(403, "没有权限", nil)
 		return
 	}
 
@@ -43,7 +43,7 @@ func accessForbidden(c *m.ReqContext) {
 
 func notAuthorized(c *m.ReqContext) {
 	if c.IsApiRequest() {
-		c.JsonApiErr(401, "Unauthorized", nil)
+		c.JsonApiErr(401, "未授权", nil)
 		return
 	}
 
@@ -112,7 +112,7 @@ func SnapshotPublicModeOrSignedIn() macaron.Handler {
 
 		_, err := c.Invoke(ReqSignedIn)
 		if err != nil {
-			c.JsonApiErr(500, "Failed to invoke required signed in middleware", err)
+			c.JsonApiErr(500, "无法调用所需的已签名中间件", err)
 		}
 	}
 }

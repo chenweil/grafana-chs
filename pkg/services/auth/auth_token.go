@@ -89,7 +89,7 @@ func (s *UserAuthTokenService) CreateToken(ctx context.Context, userId int64, cl
 
 	userAuthToken.UnhashedToken = token
 
-	s.log.Debug("user auth token created", "tokenId", userAuthToken.Id, "userId", userAuthToken.UserId, "clientIP", userAuthToken.ClientIp, "userAgent", userAuthToken.UserAgent, "authToken", userAuthToken.AuthToken)
+	s.log.Debug("用户身份验证令牌已创建", "tokenId", userAuthToken.Id, "userId", userAuthToken.UserId, "clientIP", userAuthToken.ClientIp, "userAgent", userAuthToken.UserAgent, "authToken", userAuthToken.AuthToken)
 
 	var userToken models.UserToken
 	err = userAuthToken.toUserToken(&userToken)
@@ -100,7 +100,7 @@ func (s *UserAuthTokenService) CreateToken(ctx context.Context, userId int64, cl
 func (s *UserAuthTokenService) LookupToken(ctx context.Context, unhashedToken string) (*models.UserToken, error) {
 	hashedToken := hashToken(unhashedToken)
 	if setting.Env == setting.DEV {
-		s.log.Debug("looking up token", "unhashed", unhashedToken, "hashed", hashedToken)
+		s.log.Debug("查找令牌", "unhashed", unhashedToken, "hashed", hashedToken)
 	}
 
 	var model userAuthToken
@@ -147,9 +147,9 @@ func (s *UserAuthTokenService) LookupToken(ctx context.Context, unhashedToken st
 		}
 
 		if affectedRows == 0 {
-			s.log.Debug("prev seen token unchanged", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent, "authToken", model.AuthToken)
+			s.log.Debug("prev看到令牌不变", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent, "authToken", model.AuthToken)
 		} else {
-			s.log.Debug("prev seen token", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent, "authToken", model.AuthToken)
+			s.log.Debug("上一个令牌", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent, "authToken", model.AuthToken)
 		}
 	}
 
@@ -177,9 +177,9 @@ func (s *UserAuthTokenService) LookupToken(ctx context.Context, unhashedToken st
 		}
 
 		if affectedRows == 0 {
-			s.log.Debug("seen wrong token", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent, "authToken", model.AuthToken)
+			s.log.Debug("看到错误的令牌", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent, "authToken", model.AuthToken)
 		} else {
-			s.log.Debug("seen token", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent, "authToken", model.AuthToken)
+			s.log.Debug("看到令牌", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent, "authToken", model.AuthToken)
 		}
 	}
 
@@ -212,7 +212,7 @@ func (s *UserAuthTokenService) TryRotateToken(ctx context.Context, token *models
 		return false, nil
 	}
 
-	s.log.Debug("token needs rotation", "tokenId", model.Id, "authTokenSeen", model.AuthTokenSeen, "rotatedAt", rotatedAt)
+	s.log.Debug("令牌需要轮换", "tokenId", model.Id, "authTokenSeen", model.AuthTokenSeen, "rotatedAt", rotatedAt)
 
 	clientIP = util.ParseIPAddress(clientIP)
 	newToken, err := util.RandomHex(16)
@@ -249,7 +249,7 @@ func (s *UserAuthTokenService) TryRotateToken(ctx context.Context, token *models
 		return false, err
 	}
 
-	s.log.Debug("auth token rotated", "affected", affected, "auth_token_id", model.Id, "userId", model.UserId)
+	s.log.Debug("身份验证令牌已轮换", "affected", affected, "auth_token_id", model.Id, "userId", model.UserId)
 	if affected > 0 {
 		model.UnhashedToken = newToken
 		model.toUserToken(token)
@@ -278,11 +278,11 @@ func (s *UserAuthTokenService) RevokeToken(ctx context.Context, token *models.Us
 	}
 
 	if rowsAffected == 0 {
-		s.log.Debug("user auth token not found/revoked", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent)
+		s.log.Debug("未找到/撤消用户身份验证令牌", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent)
 		return models.ErrUserTokenNotFound
 	}
 
-	s.log.Debug("user auth token revoked", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent)
+	s.log.Debug("用户身份验证令牌已撤销", "tokenId", model.Id, "userId", model.UserId, "clientIP", model.ClientIp, "userAgent", model.UserAgent)
 
 	return nil
 }
@@ -300,7 +300,7 @@ func (s *UserAuthTokenService) RevokeAllUserTokens(ctx context.Context, userId i
 			return err
 		}
 
-		s.log.Debug("all user tokens for user revoked", "userId", userId, "count", affected)
+		s.log.Debug("用户被撤销的所有用户令牌", "userId", userId, "count", affected)
 
 		return err
 	})
@@ -330,7 +330,7 @@ func (s *UserAuthTokenService) BatchRevokeAllUserTokens(ctx context.Context, use
 			return err
 		}
 
-		s.log.Debug("all user tokens for given users revoked", "usersCount", len(userIds), "count", affected)
+		s.log.Debug("已撤消给定用户的所有用户令牌", "usersCount", len(userIds), "count", affected)
 
 		return err
 	})

@@ -15,10 +15,10 @@ import (
 
 var (
 	// ErrCacheItemNotFound is returned if cache does not exist
-	ErrCacheItemNotFound = errors.New("cache item not found")
+	ErrCacheItemNotFound = errors.New("找不到缓存项")
 
 	// ErrInvalidCacheType is returned if the type is invalid
-	ErrInvalidCacheType = errors.New("invalid remote cache name")
+	ErrInvalidCacheType = errors.New("无效的远程缓存名称")
 
 	defaultMaxCacheExpiration = time.Hour * 24
 )

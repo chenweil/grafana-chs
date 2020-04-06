@@ -78,7 +78,7 @@ func (proxy *DataSourceProxy) HandleRequest() {
 	var err error
 	reverseProxy.Transport, err = proxy.ds.GetHttpTransport()
 	if err != nil {
-		proxy.ctx.JsonApiErr(400, "Unable to load TLS certificate", err)
+		proxy.ctx.JsonApiErr(400, "无法加载TLS证书", err)
 		return
 	}
 
@@ -239,30 +239,30 @@ func (proxy *DataSourceProxy) getDirector() func(req *http.Request) {
 
 func (proxy *DataSourceProxy) validateRequest() error {
 	if !checkWhiteList(proxy.ctx, proxy.targetUrl.Host) {
-		return errors.New("Target url is not a valid target")
+		return errors.New("目标网址不是有效目标")
 	}
 
 	if proxy.ds.Type == m.DS_PROMETHEUS {
 		if proxy.ctx.Req.Request.Method == "DELETE" {
-			return errors.New("Deletes not allowed on proxied Prometheus datasource")
+			return errors.New("删除代理的Prometheus数据源上不允许的内容")
 		}
 		if proxy.ctx.Req.Request.Method == "PUT" {
-			return errors.New("Puts not allowed on proxied Prometheus datasource")
+			return errors.New("不允许在代理的Prometheus数据源上使用")
 		}
 		if proxy.ctx.Req.Request.Method == "POST" && !(proxy.proxyPath == "api/v1/query" || proxy.proxyPath == "api/v1/query_range") {
-			return errors.New("Posts not allowed on proxied Prometheus datasource except on /query and /query_range")
+			return errors.New("除了/ query和/query_range之外，代理的Prometheus数据源上不允许发布帖子")
 		}
 	}
 
 	if proxy.ds.Type == m.DS_ES {
 		if proxy.ctx.Req.Request.Method == "DELETE" {
-			return errors.New("Deletes not allowed on proxied Elasticsearch datasource")
+			return errors.New("在代理的Elasticsearch数据源上删除不允许")
 		}
 		if proxy.ctx.Req.Request.Method == "PUT" {
-			return errors.New("Puts not allowed on proxied Elasticsearch datasource")
+			return errors.New("不允许在代理的Elasticsearch数据源上使用")
 		}
 		if proxy.ctx.Req.Request.Method == "POST" && proxy.proxyPath != "_msearch" {
-			return errors.New("Posts not allowed on proxied Elasticsearch datasource except on /_msearch")
+			return errors.New("除了/_msearch之外，代理Elasticsearch数据源上不允许发布帖子")
 		}
 	}
 
@@ -317,7 +317,7 @@ func (proxy *DataSourceProxy) logRequest() {
 func checkWhiteList(c *m.ReqContext, host string) bool {
 	if host != "" && len(setting.DataProxyWhiteList) > 0 {
 		if _, exists := setting.DataProxyWhiteList[host]; !exists {
-			c.JsonApiErr(403, "Data proxy hostname and ip are not included in whitelist", nil)
+			c.JsonApiErr(403, "数据代理主机名和IP不包含在白名单中", nil)
 			return false
 		}
 	}
@@ -328,14 +328,14 @@ func checkWhiteList(c *m.ReqContext, host string) bool {
 func addOAuthPassThruAuth(c *m.ReqContext, req *http.Request) {
 	authInfoQuery := &m.GetAuthInfoQuery{UserId: c.UserId}
 	if err := bus.Dispatch(authInfoQuery); err != nil {
-		logger.Error("Error feching oauth information for user", "error", err)
+		logger.Error("获取用户的oauth信息时出错", "error", err)
 		return
 	}
 
 	provider := authInfoQuery.Result.AuthModule
 	connect, ok := social.SocialMap[strings.TrimPrefix(provider, "oauth_")] // The socialMap keys don't have "oauth_" prefix, but everywhere else in the system does
 	if !ok {
-		logger.Error("Failed to find oauth provider with given name", "provider", provider)
+		logger.Error("无法找到具有给定名称的oauth提供程序", "provider", provider)
 		return
 	}
 
@@ -347,7 +347,7 @@ func addOAuthPassThruAuth(c *m.ReqContext, req *http.Request) {
 		TokenType:    authInfoQuery.Result.OAuthTokenType,
 	}).Token()
 	if err != nil {
-		logger.Error("Failed to retrieve access token from oauth provider", "provider", authInfoQuery.Result.AuthModule)
+		logger.Error("无法从oauth提供程序检索访问令牌", "provider", authInfoQuery.Result.AuthModule)
 		return
 	}
 
@@ -360,7 +360,7 @@ func addOAuthPassThruAuth(c *m.ReqContext, req *http.Request) {
 			OAuthToken: token,
 		}
 		if err := bus.Dispatch(updateAuthCommand); err != nil {
-			logger.Error("Failed to update access token during token refresh", "error", err)
+			logger.Error("在令牌刷新期间无法更新访问令牌", "error", err)
 			return
 		}
 	}

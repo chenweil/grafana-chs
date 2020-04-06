@@ -18,20 +18,20 @@ func (hs *HTTPServer) QueryMetrics(c *m.ReqContext, reqDto dtos.MetricRequest) R
 	timeRange := tsdb.NewTimeRange(reqDto.From, reqDto.To)
 
 	if len(reqDto.Queries) == 0 {
-		return Error(400, "No queries found in query", nil)
+		return Error(400, "查询中未找到任何查询", nil)
 	}
 
 	datasourceId, err := reqDto.Queries[0].Get("datasourceId").Int64()
 	if err != nil {
-		return Error(400, "Query missing datasourceId", nil)
+		return Error(400, "查询缺少的datasourceId", nil)
 	}
 
 	ds, err := hs.DatasourceCache.GetDatasource(datasourceId, c.SignedInUser, c.SkipCache)
 	if err != nil {
 		if err == m.ErrDataSourceAccessDenied {
-			return Error(403, "Access denied to datasource", err)
+			return Error(403, "拒绝访问数据源", err)
 		}
-		return Error(500, "Unable to load datasource meta data", err)
+		return Error(500, "无法加载数据源元数据", err)
 	}
 
 	request := &tsdb.TsdbQuery{TimeRange: timeRange, Debug: reqDto.Debug}
@@ -48,7 +48,7 @@ func (hs *HTTPServer) QueryMetrics(c *m.ReqContext, reqDto dtos.MetricRequest) R
 
 	resp, err := tsdb.HandleRequest(c.Req.Context(), ds, request)
 	if err != nil {
-		return Error(500, "Metric request error", err)
+		return Error(500, "度量请求错误", err)
 	}
 
 	statusCode := 200
@@ -96,7 +96,7 @@ func GenerateError(c *m.ReqContext) Response {
 // GET /api/tsdb/testdata/gensql
 func GenerateSQLTestData(c *m.ReqContext) Response {
 	if err := bus.Dispatch(&m.InsertSqlTestDataCommand{}); err != nil {
-		return Error(500, "Failed to insert test data", err)
+		return Error(500, "无法插入测试数据", err)
 	}
 
 	return JSON(200, &util.DynMap{"message": "OK"})
@@ -123,7 +123,7 @@ func GetTestDataRandomWalk(c *m.ReqContext) Response {
 
 	resp, err := tsdb.HandleRequest(context.Background(), dsInfo, request)
 	if err != nil {
-		return Error(500, "Metric request error", err)
+		return Error(500, "度量请求错误", err)
 	}
 
 	return JSON(200, &resp)

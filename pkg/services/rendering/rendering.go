@@ -60,7 +60,7 @@ func (rs *RenderingService) Init() error {
 
 func (rs *RenderingService) Run(ctx context.Context) error {
 	if rs.Cfg.RendererUrl != "" {
-		rs.log.Info("Backend rendering via external http server")
+		rs.log.Info("通过外部http服务器进行后端渲染")
 		rs.renderAction = rs.renderViaHttp
 		<-ctx.Done()
 		return nil
@@ -83,7 +83,7 @@ func (rs *RenderingService) Run(ctx context.Context) error {
 	err := rs.watchAndRestartPlugin(ctx)
 
 	if rs.pluginClient != nil {
-		rs.log.Debug("Killing renderer plugin process")
+		rs.log.Debug("杀死渲染器插件进程")
 		rs.pluginClient.Kill()
 	}
 
@@ -106,7 +106,7 @@ func (rs *RenderingService) Render(ctx context.Context, opts Opts) (*RenderResul
 	if rs.renderAction != nil {
 		return rs.renderAction(ctx, opts)
 	}
-	return nil, fmt.Errorf("No renderer found")
+	return nil, fmt.Errorf("找不到渲染器")
 }
 
 func (rs *RenderingService) getFilePathForNewImage() string {

@@ -57,7 +57,7 @@ func (srv *CleanUpService) cleanUpTmpFiles() {
 
 	files, err := ioutil.ReadDir(srv.Cfg.ImagesDir)
 	if err != nil {
-		srv.log.Error("Problem reading image dir", "error", err)
+		srv.log.Error("读取图片目录", "error", err)
 		return
 	}
 
@@ -74,11 +74,11 @@ func (srv *CleanUpService) cleanUpTmpFiles() {
 		fullPath := path.Join(srv.Cfg.ImagesDir, file.Name())
 		err := os.Remove(fullPath)
 		if err != nil {
-			srv.log.Error("Failed to delete temp file", "file", file.Name(), "error", err)
+			srv.log.Error("无法删除临时文件", "file", file.Name(), "error", err)
 		}
 	}
 
-	srv.log.Debug("Found old rendered image to delete", "deleted", len(toDelete), "kept", len(files))
+	srv.log.Debug("找到要删除的旧渲染图像", "deleted", len(toDelete), "kept", len(files))
 }
 
 func (srv *CleanUpService) shouldCleanupTempFile(filemtime time.Time, now time.Time) bool {
@@ -92,18 +92,18 @@ func (srv *CleanUpService) shouldCleanupTempFile(filemtime time.Time, now time.T
 func (srv *CleanUpService) deleteExpiredSnapshots() {
 	cmd := m.DeleteExpiredSnapshotsCommand{}
 	if err := bus.Dispatch(&cmd); err != nil {
-		srv.log.Error("Failed to delete expired snapshots", "error", err.Error())
+		srv.log.Error("无法删除过期的快照", "error", err.Error())
 	} else {
-		srv.log.Debug("Deleted expired snapshots", "rows affected", cmd.DeletedRows)
+		srv.log.Debug("删除过期的快照", "rows affected", cmd.DeletedRows)
 	}
 }
 
 func (srv *CleanUpService) deleteExpiredDashboardVersions() {
 	cmd := m.DeleteExpiredVersionsCommand{}
 	if err := bus.Dispatch(&cmd); err != nil {
-		srv.log.Error("Failed to delete expired dashboard versions", "error", err.Error())
+		srv.log.Error("无法删除过期的仪表板版本", "error", err.Error())
 	} else {
-		srv.log.Debug("Deleted old/expired dashboard versions", "rows affected", cmd.DeletedRows)
+		srv.log.Debug("删除旧/过期的仪表板版本", "rows affected", cmd.DeletedRows)
 	}
 }
 
@@ -116,8 +116,8 @@ func (srv *CleanUpService) deleteOldLoginAttempts() {
 		OlderThan: time.Now().Add(time.Minute * -10),
 	}
 	if err := bus.Dispatch(&cmd); err != nil {
-		srv.log.Error("Problem deleting expired login attempts", "error", err.Error())
+		srv.log.Error("删除过期登录尝试时出现问题", "error", err.Error())
 	} else {
-		srv.log.Debug("Deleted expired login attempts", "rows affected", cmd.DeletedRows)
+		srv.log.Debug("删除过期的登录尝试次数", "rows affected", cmd.DeletedRows)
 	}
 }

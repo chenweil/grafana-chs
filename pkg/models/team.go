@@ -7,12 +7,12 @@ import (
 
 // Typed errors
 var (
-	ErrTeamNotFound                         = errors.New("Team not found")
-	ErrTeamNameTaken                        = errors.New("Team name is taken")
-	ErrTeamMemberNotFound                   = errors.New("Team member not found")
-	ErrLastTeamAdmin                        = errors.New("Not allowed to remove last admin")
-	ErrNotAllowedToUpdateTeam               = errors.New("User not allowed to update team")
-	ErrNotAllowedToUpdateTeamInDifferentOrg = errors.New("User not allowed to update team in another org")
+	ErrTeamNotFound                         = errors.New("团队未找到")
+	ErrTeamNameTaken                        = errors.New("团队名称被使用")
+	ErrTeamMemberNotFound                   = errors.New("未找到团队成员")
+	ErrLastTeamAdmin                        = errors.New("不允许删除上一个管理员")
+	ErrNotAllowedToUpdateTeam               = errors.New("用户不允许更新团队")
+	ErrNotAllowedToUpdateTeamInDifferentOrg = errors.New("用户不允许在另一个团队中更新团队")
 )
 
 // Team model

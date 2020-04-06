@@ -8,9 +8,9 @@ import (
 	"github.com/grafana/grafana/pkg/models"
 )
 
-var ErrTimeout = errors.New("Timeout error. You can set timeout in seconds with &timeout url parameter")
-var ErrNoRenderer = errors.New("No renderer plugin found nor is an external render server configured")
-var ErrPhantomJSNotInstalled = errors.New("PhantomJS executable not found")
+var ErrTimeout = errors.New("超时错误。 您可以使用＆timeout url参数设置超时（以秒为单位）")
+var ErrNoRenderer = errors.New("找不到渲染器插件，也没有配置外部渲染服务器")
+var ErrPhantomJSNotInstalled = errors.New("找不到PhantomJS可执行文件")
 
 type Opts struct {
 	Width           int

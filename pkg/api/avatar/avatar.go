@@ -86,7 +86,7 @@ func (this *Avatar) Encode(wr io.Writer) error {
 func (this *Avatar) Update() (err error) {
 	select {
 	case <-time.After(time.Second * 3):
-		err = fmt.Errorf("get gravatar image %s timeout", this.hash)
+		err = fmt.Errorf("获取gravatar图像 %s 超时", this.hash)
 	case err = <-thunder.GoFetch(gravatarSource+this.hash+"?"+this.reqParams, this):
 	}
 	return err
@@ -111,7 +111,7 @@ func (this *CacheServer) Handler(ctx *macaron.Context) {
 
 	if avatar.Expired() {
 		if err := avatar.Update(); err != nil {
-			log.Trace("avatar update error: %v", err)
+			log.Trace("头像更新错误: %v", err)
 			avatar = this.notFound
 		}
 	}
@@ -131,7 +131,7 @@ func (this *CacheServer) Handler(ctx *macaron.Context) {
 	ctx.Resp.Header().Add("Cache-Control", "private, max-age=3600")
 
 	if err := avatar.Encode(ctx.Resp); err != nil {
-		log.Warn("avatar encode error: %v", err)
+		log.Warn("头像编码错误: %v", err)
 		ctx.WriteHeader(500)
 	}
 }
@@ -152,7 +152,7 @@ func newNotFound() *Avatar {
 	path := filepath.Join(setting.StaticRootPath, "img", "user_profile.png")
 
 	if data, err := ioutil.ReadFile(path); err != nil {
-		log.Error(3, "Failed to read user_profile.png, %v", path)
+		log.Error(3, "无法读取user_profile.png, %v", path)
 	} else {
 		avatar.data = bytes.NewBuffer(data)
 	}
@@ -236,7 +236,7 @@ func (this *thunderTask) fetch() error {
 
 	if err != nil {
 		this.Avatar.notFound = true
-		return fmt.Errorf("gravatar unreachable, %v", err)
+		return fmt.Errorf("头像无法访问, %v", err)
 	}
 
 	defer resp.Body.Close()

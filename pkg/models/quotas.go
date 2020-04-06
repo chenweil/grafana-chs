@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-var ErrInvalidQuotaTarget = errors.New("Invalid quota target")
+var ErrInvalidQuotaTarget = errors.New("配额目标无效")
 
 type Quota struct {
 	Id      int64

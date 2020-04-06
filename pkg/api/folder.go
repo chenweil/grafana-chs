@@ -63,7 +63,7 @@ func (hs *HTTPServer) CreateFolder(c *m.ReqContext, cmd m.CreateFolderCommand) R
 
 	if hs.Cfg.EditorsCanAdmin {
 		if err := dashboards.MakeUserAdmin(hs.Bus, c.OrgId, c.SignedInUser.UserId, cmd.Result.Id, true); err != nil {
-			hs.log.Error("Could not make user admin", "folder", cmd.Result.Title, "user", c.SignedInUser.UserId, "error", err)
+			hs.log.Error("无法使用户管理员", "folder", cmd.Result.Title, "user", c.SignedInUser.UserId, "error", err)
 		}
 	}
 
@@ -91,7 +91,7 @@ func DeleteFolder(c *m.ReqContext) Response {
 
 	return JSON(200, util.DynMap{
 		"title":   f.Title,
-		"message": fmt.Sprintf("Folder %s deleted", f.Title),
+		"message": fmt.Sprintf(" 文件夹 %s 已删除", f.Title),
 	})
 }
 
@@ -137,7 +137,7 @@ func toFolderError(err error) Response {
 	}
 
 	if err == m.ErrFolderAccessDenied {
-		return Error(403, "Access denied", err)
+		return Error(403, "拒绝访问", err)
 	}
 
 	if err == m.ErrFolderNotFound {
@@ -148,5 +148,5 @@ func toFolderError(err error) Response {
 		return JSON(412, util.DynMap{"status": "version-mismatch", "message": m.ErrFolderVersionMismatch.Error()})
 	}
 
-	return Error(500, "Folder API error", err)
+	return Error(500, "文件夹API错误", err)
 }

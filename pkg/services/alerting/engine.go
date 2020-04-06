@@ -66,7 +66,7 @@ func (e *AlertEngine) Run(ctx context.Context) error {
 func (e *AlertEngine) alertingTicker(grafanaCtx context.Context) error {
 	defer func() {
 		if err := recover(); err != nil {
-			e.log.Error("Scheduler Panic: stopping alertingTicker", "error", err, "stack", log.Stack(1))
+			e.log.Error("调度恐慌：停止报警时间", "error", err, "stack", log.Stack(1))
 		}
 	}()
 
@@ -108,7 +108,7 @@ var (
 func (e *AlertEngine) processJobWithRetry(grafanaCtx context.Context, job *Job) error {
 	defer func() {
 		if err := recover(); err != nil {
-			e.log.Error("Alert Panic", "error", err, "stack", log.Stack(1))
+			e.log.Error("警报恐慌", "error", err, "stack", log.Stack(1))
 		}
 	}()
 
@@ -152,7 +152,7 @@ func (e *AlertEngine) endJob(err error, cancelChan chan context.CancelFunc, job 
 func (e *AlertEngine) processJob(attemptID int, attemptChan chan int, cancelChan chan context.CancelFunc, job *Job) {
 	defer func() {
 		if err := recover(); err != nil {
-			e.log.Error("Alert Panic", "error", err, "stack", log.Stack(1))
+			e.log.Error("警报恐慌", "error", err, "stack", log.Stack(1))
 		}
 	}()
 
@@ -167,11 +167,11 @@ func (e *AlertEngine) processJob(attemptID int, attemptChan chan int, cancelChan
 	go func() {
 		defer func() {
 			if err := recover(); err != nil {
-				e.log.Error("Alert Panic", "error", err, "stack", log.Stack(1))
+				e.log.Error("警报恐慌", "error", err, "stack", log.Stack(1))
 				ext.Error.Set(span, true)
 				span.LogFields(
 					tlog.Error(fmt.Errorf("%v", err)),
-					tlog.String("message", "failed to execute alert rule. panic was recovered."),
+					tlog.String("message", "无法执行警报规则。 恐慌得到了恢复。"),
 				)
 				span.Finish()
 				close(attemptChan)
@@ -190,11 +190,11 @@ func (e *AlertEngine) processJob(attemptID int, attemptChan chan int, cancelChan
 			ext.Error.Set(span, true)
 			span.LogFields(
 				tlog.Error(evalContext.Error),
-				tlog.String("message", "alerting execution attempt failed"),
+				tlog.String("message", "警告执行尝试失败"),
 			)
 			if attemptID < setting.AlertingMaxAttempts {
 				span.Finish()
-				e.log.Debug("Job Execution attempt triggered retry", "timeMs", evalContext.GetDurationMs(), "alertId", evalContext.Rule.ID, "name", evalContext.Rule.Name, "firing", evalContext.Firing, "attemptID", attemptID)
+				e.log.Debug("作业执行尝试触发重试", "timeMs", evalContext.GetDurationMs(), "alertId", evalContext.Rule.ID, "name", evalContext.Rule.Name, "firing", evalContext.Firing, "attemptID", attemptID)
 				attemptChan <- (attemptID + 1)
 				return
 			}
@@ -212,7 +212,7 @@ func (e *AlertEngine) processJob(attemptID int, attemptChan chan int, cancelChan
 		evalContext.Rule.State = evalContext.GetNewState()
 		e.resultHandler.handle(evalContext)
 		span.Finish()
-		e.log.Debug("Job Execution completed", "timeMs", evalContext.GetDurationMs(), "alertId", evalContext.Rule.ID, "name", evalContext.Rule.Name, "firing", evalContext.Firing, "attemptID", attemptID)
+		e.log.Debug("工作执行完成", "timeMs", evalContext.GetDurationMs(), "alertId", evalContext.Rule.ID, "name", evalContext.Rule.Name, "firing", evalContext.Firing, "attemptID", attemptID)
 		close(attemptChan)
 	}()
 }

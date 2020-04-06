@@ -56,8 +56,8 @@ func (rs *RenderingService) renderViaHttp(ctx context.Context, opts Opts) (*Rend
 	// make request to renderer server
 	resp, err := netClient.Do(req)
 	if err != nil {
-		rs.log.Error("Failed to send request to remote rendering service.", "error", err)
-		return nil, fmt.Errorf("Failed to send request to remote rendering service. %s", err)
+		rs.log.Error("无法向远程呈现服务发送请求。", "error", err)
+		return nil, fmt.Errorf("无法向远程呈现服务发送请求。 %s", err)
 	}
 
 	// save response to file
@@ -65,14 +65,14 @@ func (rs *RenderingService) renderViaHttp(ctx context.Context, opts Opts) (*Rend
 
 	// check for timeout first
 	if reqContext.Err() == context.DeadlineExceeded {
-		rs.log.Info("Rendering timed out")
+		rs.log.Info("渲染超时")
 		return nil, ErrTimeout
 	}
 
 	// if we didn't get a 200 response, something went wrong.
 	if resp.StatusCode != http.StatusOK {
-		rs.log.Error("Remote rendering request failed", "error", resp.Status)
-		return nil, fmt.Errorf("Remote rendering request failed. %d: %s", resp.StatusCode, resp.Status)
+		rs.log.Error("远程呈现请求失败", "error", resp.Status)
+		return nil, fmt.Errorf("远程呈现请求失败。 %d: %s", resp.StatusCode, resp.Status)
 	}
 
 	out, err := os.Create(filePath)
@@ -84,11 +84,11 @@ func (rs *RenderingService) renderViaHttp(ctx context.Context, opts Opts) (*Rend
 	if err != nil {
 		// check that we didn't timeout while receiving the response.
 		if reqContext.Err() == context.DeadlineExceeded {
-			rs.log.Info("Rendering timed out")
+			rs.log.Info("渲染超时")
 			return nil, ErrTimeout
 		}
-		rs.log.Error("Remote rendering request failed", "error", err)
-		return nil, fmt.Errorf("Remote rendering request failed.  %s", err)
+		rs.log.Error("远程呈现请求失败", "error", err)
+		return nil, fmt.Errorf("远程呈现请求失败。  %s", err)
 	}
 
 	return &RenderResult{FilePath: filePath}, err

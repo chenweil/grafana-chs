@@ -50,7 +50,7 @@ func (e *DashAlertExtractor) lookupDatasourceID(dsName string) (*models.DataSour
 		return query.Result, nil
 	}
 
-	return nil, errors.New("Could not find datasource id for " + dsName)
+	return nil, errors.New("无法找到数据源ID " + dsName)
 }
 
 func findPanelQueryByRefID(panel *simplejson.Json, refID string) *simplejson.Json {
@@ -101,7 +101,7 @@ func (e *DashAlertExtractor) getAlertFromPanels(jsonWithPanels *simplejson.Json,
 
 		panelID, err := panel.Get("id").Int64()
 		if err != nil {
-			return nil, ValidationError{Reason: "A numeric panel id property is missing"}
+			return nil, ValidationError{Reason: "缺少数字面板ID属性"}
 		}
 
 		// backward compatibility check, can be removed later
@@ -120,7 +120,7 @@ func (e *DashAlertExtractor) getAlertFromPanels(jsonWithPanels *simplejson.Json,
 		if rawFor != "" {
 			forValue, err = time.ParseDuration(rawFor)
 			if err != nil {
-				return nil, ValidationError{Reason: "Could not parse for"}
+				return nil, ValidationError{Reason: "无法解析"}
 			}
 		}
 
@@ -144,7 +144,7 @@ func (e *DashAlertExtractor) getAlertFromPanels(jsonWithPanels *simplejson.Json,
 			panelQuery := findPanelQueryByRefID(panel, queryRefID)
 
 			if panelQuery == nil {
-				reason := fmt.Sprintf("Alert on PanelId: %v refers to query(%s) that cannot be found", alert.PanelId, queryRefID)
+				reason := fmt.Sprintf("PanelId上的警报：%v 表示无法找到的查询 (%s)", alert.PanelId, queryRefID)
 				return nil, ValidationError{Reason: reason}
 			}
 
@@ -157,8 +157,8 @@ func (e *DashAlertExtractor) getAlertFromPanels(jsonWithPanels *simplejson.Json,
 
 			datasource, err := e.lookupDatasourceID(dsName)
 			if err != nil {
-				e.log.Debug("Error looking up datasource", "error", err)
-				return nil, ValidationError{Reason: fmt.Sprintf("Data source used by alert rule not found, alertName=%v, datasource=%s", alert.Name, dsName)}
+				e.log.Debug("查找数据源时出错", "error", err)
+				return nil, ValidationError{Reason: fmt.Sprintf("未找到警报规则使用的数据源, alertName=%v, datasource=%s", alert.Name, dsName)}
 			}
 
 			dsFilterQuery := models.DatasourcesPermissionFilterQuery{
@@ -194,7 +194,7 @@ func (e *DashAlertExtractor) getAlertFromPanels(jsonWithPanels *simplejson.Json,
 		}
 
 		if !validateAlertFunc(alert) {
-			return nil, ValidationError{Reason: fmt.Sprintf("Panel id is not correct, alertName=%v, panelId=%v", alert.Name, alert.PanelId)}
+			return nil, ValidationError{Reason: fmt.Sprintf("面板ID不正确, alertName=%v, panelId=%v", alert.Name, alert.PanelId)}
 		}
 
 		alerts = append(alerts, alert)
@@ -242,7 +242,7 @@ func (e *DashAlertExtractor) extractAlerts(validateFunc func(alert *models.Alert
 		alerts = append(alerts, a...)
 	}
 
-	e.log.Debug("Extracted alerts from dashboard", "alertCount", len(alerts))
+	e.log.Debug("从仪表板中提取警报", "alertCount", len(alerts))
 	return alerts, nil
 }
 

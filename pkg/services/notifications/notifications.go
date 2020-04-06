@@ -63,7 +63,7 @@ func (ns *NotificationService) Init() error {
 	}
 
 	if !util.IsEmail(ns.Cfg.Smtp.FromAddress) {
-		return errors.New("Invalid email address for SMTP from_address config")
+		return errors.New("SMTP from_address配置的电子邮件地址无效")
 	}
 
 	if setting.EmailCodeValidMinutes == 0 {
@@ -80,7 +80,7 @@ func (ns *NotificationService) Run(ctx context.Context) error {
 			err := ns.sendWebRequestSync(context.Background(), webhook)
 
 			if err != nil {
-				ns.log.Error("Failed to send webrequest ", "error", err)
+				ns.log.Error("无法发送webrequest ", "error", err)
 			}
 		case msg := <-ns.mailQueue:
 			num, err := ns.send(msg)
@@ -90,9 +90,9 @@ func (ns *NotificationService) Run(ctx context.Context) error {
 				if len(msg.Info) > 0 {
 					info = ", info: " + msg.Info
 				}
-				ns.log.Error(fmt.Sprintf("Async sent email %d succeed, not send emails: %s%s err: %s", num, tos, info, err))
+				ns.log.Error(fmt.Sprintf("异步发送电子邮件 %d 成功，而不是发送电子邮件: %s%s err: %s", num, tos, info, err))
 			} else {
-				ns.log.Debug(fmt.Sprintf("Async sent email %d succeed, sent emails: %s%s", num, tos, info))
+				ns.log.Debug(fmt.Sprintf("异步发送电子邮件 %d 成功，发送电子邮件: %s%s", num, tos, info))
 			}
 		case <-ctx.Done():
 			return ctx.Err()
@@ -181,7 +181,7 @@ func (ns *NotificationService) signUpStartedHandler(evt *events.SignUpStarted) e
 		return nil
 	}
 
-	ns.log.Info("User signup started", "email", evt.Email)
+	ns.log.Info("用户注册已开始", "email", evt.Email)
 
 	if evt.Email == "" {
 		return nil

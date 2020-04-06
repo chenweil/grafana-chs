@@ -28,7 +28,7 @@ func parseRedisConnStr(connStr string) (*redis.Options, error) {
 				// don't log the password
 				rawKeyValue = "password******"
 			}
-			return nil, fmt.Errorf("incorrect redis connection string format detected for '%v', format is key=value,key=value", rawKeyValue)
+			return nil, fmt.Errorf("检测到 '%v' 的redis连接字符串格式不正确 , 格式为 key=value,key=value", rawKeyValue)
 		}
 		connKey := keyValueTuple[0]
 		connVal := keyValueTuple[1]
@@ -40,17 +40,17 @@ func parseRedisConnStr(connStr string) (*redis.Options, error) {
 		case "db":
 			i, err := strconv.ParseInt(connVal, 10, 64)
 			if err != nil {
-				return nil, errutil.Wrap("value for db in redis connection string must be a number", err)
+				return nil, errutil.Wrap("redis连接字符串中db的值必须是数字", err)
 			}
 			options.DB = i
 		case "pool_size":
 			i, err := strconv.Atoi(connVal)
 			if err != nil {
-				return nil, errutil.Wrap("value for pool_size in redis connection string must be a number", err)
+				return nil, errutil.Wrap("redis连接字符串中pool_size的值必须是数字", err)
 			}
 			options.PoolSize = i
 		default:
-			return nil, fmt.Errorf("unrecorgnized option '%v' in redis connection string", connVal)
+			return nil, fmt.Errorf("redis连接字符串中无法识别的选项 '%v' ", connVal)
 		}
 	}
 	return options, nil

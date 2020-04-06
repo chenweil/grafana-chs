@@ -87,7 +87,7 @@ func (w *FileLogWriter) Log(r *log15.Record) error {
 
 func (w *FileLogWriter) Init() error {
 	if len(w.Filename) == 0 {
-		return errors.New("config must have filename")
+		return errors.New("config必须有文件名")
 	}
 	return w.StartLogger()
 }
@@ -125,7 +125,7 @@ func (w *FileLogWriter) createLogFile() (*os.File, error) {
 func (w *FileLogWriter) lineCounter() (int, error) {
 	r, err := os.OpenFile(w.Filename, os.O_RDONLY, 0644)
 	if err != nil {
-		return 0, fmt.Errorf("lineCounter Open File : %s", err)
+		return 0, fmt.Errorf("行计数器打开文件 : %s", err)
 	}
 	buf := make([]byte, 32*1024)
 	count := 0
@@ -150,7 +150,7 @@ func (w *FileLogWriter) initFd() error {
 	fd := w.mw.fd
 	finfo, err := fd.Stat()
 	if err != nil {
-		return fmt.Errorf("get stat: %s", err)
+		return fmt.Errorf("获取状态: %s", err)
 	}
 	w.maxsize_cursize = int(finfo.Size())
 	w.daily_opendate = time.Now().Day()

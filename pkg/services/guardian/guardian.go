@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	ErrGuardianPermissionExists = errors.New("Permission already exists")
-	ErrGuardianOverride         = errors.New("You can only override a permission to be higher")
+	ErrGuardianPermissionExists = errors.New("权限已存在")
+	ErrGuardianOverride         = errors.New("您只能覆盖更高的权限")
 )
 
 // DashboardGuardian to be used for guard against operations without access on dashboard and acl
@@ -84,9 +84,9 @@ func (g *dashboardGuardianImpl) logHasPermissionResult(permission m.PermissionTy
 	}
 
 	if hasPermission {
-		g.log.Debug("User granted access to execute action", "userId", g.user.UserId, "orgId", g.orgId, "uname", g.user.Login, "dashId", g.dashId, "action", permission)
+		g.log.Debug("用户被授予执行操作的权限", "userId", g.user.UserId, "orgId", g.orgId, "uname", g.user.Login, "dashId", g.dashId, "action", permission)
 	} else {
-		g.log.Debug("User denied access to execute action", "userId", g.user.UserId, "orgId", g.orgId, "uname", g.user.Login, "dashId", g.dashId, "action", permission)
+		g.log.Debug("用户拒绝执行操作的权限", "userId", g.user.UserId, "orgId", g.orgId, "uname", g.user.Login, "dashId", g.dashId, "action", permission)
 	}
 
 	return hasPermission, err

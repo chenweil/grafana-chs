@@ -133,7 +133,7 @@ func (hs *HTTPServer) Run(ctx context.Context) error {
 		}
 	default:
 		hs.log.Error("Invalid protocol", "protocol", setting.Protocol)
-		err = errors.New("Invalid Protocol")
+		err = errors.New("无效的协议")
 	}
 
 	return err
@@ -141,19 +141,19 @@ func (hs *HTTPServer) Run(ctx context.Context) error {
 
 func (hs *HTTPServer) listenAndServeTLS(certfile, keyfile string) error {
 	if certfile == "" {
-		return fmt.Errorf("cert_file cannot be empty when using HTTPS")
+		return fmt.Errorf("使用HTTPS时，cert_file不能为空")
 	}
 
 	if keyfile == "" {
-		return fmt.Errorf("cert_key cannot be empty when using HTTPS")
+		return fmt.Errorf("使用HTTPS时，cert_key不能为空")
 	}
 
 	if _, err := os.Stat(setting.CertFile); os.IsNotExist(err) {
-		return fmt.Errorf(`Cannot find SSL cert_file at %v`, setting.CertFile)
+		return fmt.Errorf(`在 %v 找不到SSL cert_file`, setting.CertFile)
 	}
 
 	if _, err := os.Stat(setting.KeyFile); os.IsNotExist(err) {
-		return fmt.Errorf(`Cannot find SSL key_file at %v`, setting.KeyFile)
+		return fmt.Errorf(`在 %v 找不到SSL key_file`, setting.KeyFile)
 	}
 
 	tlsCfg := &tls.Config{

@@ -37,8 +37,8 @@ const (
 	DEV                 = "development"
 	PROD                = "production"
 	TEST                = "test"
-	APP_NAME            = "Grafana"
-	APP_NAME_ENTERPRISE = "Grafana Enterprise"
+	APP_NAME            = "Monitoring System"
+	APP_NAME_ENTERPRISE = "Monitoring System Enterprise"
 )
 
 var (
@@ -327,7 +327,7 @@ func applyEnvVariableOverrides(file *ini.File) error {
 				if shouldRedactURLKey(envKey) {
 					u, err := url.Parse(envValue)
 					if err != nil {
-						return fmt.Errorf("could not parse environment variable. key: %s, value: %s. error: %v", envKey, envValue, err)
+						return fmt.Errorf("无法解析环境变量。 key: %s, value: %s. 错误: %v", envKey, envValue, err)
 					}
 					ui := u.User
 					if ui != nil {
@@ -391,7 +391,7 @@ func getCommandLineProperties(args []string) map[string]string {
 		trimmed := strings.TrimPrefix(arg, "cfg:")
 		parts := strings.Split(trimmed, "=")
 		if len(parts) != 2 {
-			log.Fatal(3, "Invalid command line argument. argument: %v", arg)
+			log.Fatal(3, "命令行参数无效。参数: %v", arg)
 			return nil
 		}
 
@@ -442,7 +442,7 @@ func loadSpecifedConfigFile(configFile string, masterFile *ini.File) error {
 
 	userConfig, err := ini.Load(configFile)
 	if err != nil {
-		return fmt.Errorf("Failed to parse %v, %v", configFile, err)
+		return fmt.Errorf("无法解析 %v, %v", configFile, err)
 	}
 
 	userConfig.BlockMode = false
@@ -478,14 +478,14 @@ func (cfg *Cfg) loadConfiguration(args *CommandLineArgs) (*ini.File, error) {
 
 	// check if config file exists
 	if _, err := os.Stat(defaultConfigFile); os.IsNotExist(err) {
-		fmt.Println("Grafana-server Init Failed: Could not find config defaults, make sure homepath command line parameter is set or working directory is homepath")
+		fmt.Println("系统服务器初始化失败:找不到配置默认值，确保设置了homepath命令行参数或者工作目录是homepath")
 		os.Exit(1)
 	}
 
 	// load defaults
 	parsedFile, err := ini.Load(defaultConfigFile)
 	if err != nil {
-		fmt.Println(fmt.Sprintf("Failed to parse defaults.ini, %v", err))
+		fmt.Println(fmt.Sprintf("无法解析defaults.ini, %v", err))
 		os.Exit(1)
 		return nil, err
 	}
@@ -577,7 +577,7 @@ func (cfg *Cfg) validateStaticRootPath() error {
 	}
 
 	if _, err := os.Stat(path.Join(StaticRootPath, "build")); err != nil {
-		cfg.Logger.Error("Failed to detect generated javascript files in public/build")
+		cfg.Logger.Error("无法检测公共/编译生成的JavaScript文件")
 	}
 
 	return nil
@@ -946,7 +946,7 @@ func (cfg *Cfg) Load(args *CommandLineArgs) error {
 	cfg.readQuotaSettings()
 
 	if VerifyEmailEnabled && !cfg.Smtp.Enabled {
-		log.Warn("require_email_validation is enabled but smtp is disabled")
+		log.Warn("需要电子邮件验证已启用，但SMTP是禁用")
 	}
 
 	// check old key  name
@@ -993,7 +993,7 @@ func (cfg *Cfg) Load(args *CommandLineArgs) error {
 func valueAsString(section *ini.Section, keyName string, defaultValue string) (value string, err error) {
 	defer func() {
 		if err_ := recover(); err_ != nil {
-			err = errors.New("Invalid value for key '" + keyName + "' in configuration file")
+			err = errors.New("密钥值无效 '" + keyName + "' 数据在配置文件中")
 		}
 	}()
 
@@ -1019,7 +1019,7 @@ func (cfg *Cfg) readSessionConfig() {
 
 	if sec != nil {
 		cfg.Logger.Warn(
-			"[Removed] Session setting was removed in v6.2, use remote_cache option instead",
+			"[已删除]会话设置已在v6.2中删除，请改用remote_cache选项",
 		)
 	}
 }

@@ -48,7 +48,7 @@ func (dc *databaseCache) internalRunGC() {
 	})
 
 	if err != nil {
-		dc.log.Error("failed to run garbage collect", "error", err)
+		dc.log.Error("无法运行垃圾收集", "error", err)
 	}
 }
 
@@ -72,7 +72,7 @@ func (dc *databaseCache) Get(key string) (interface{}, error) {
 		if existedButExpired {
 			err = dc.Delete(key) //ignore this error since we will return `ErrCacheItemNotFound` anyway
 			if err != nil {
-				dc.log.Debug("Deletion of expired key failed: %v", err)
+				dc.log.Debug("删除过期密钥失败: %v", err)
 			}
 			return nil, ErrCacheItemNotFound
 		}

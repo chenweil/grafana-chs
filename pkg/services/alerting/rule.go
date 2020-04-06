@@ -13,10 +13,10 @@ import (
 
 var (
 	// ErrFrequencyCannotBeZeroOrLess frequency cannot be below zero
-	ErrFrequencyCannotBeZeroOrLess = errors.New(`"evaluate every" cannot be zero or below`)
+	ErrFrequencyCannotBeZeroOrLess = errors.New(`"evaluate every" 不能为零或以下`)
 
 	// ErrFrequencyCouldNotBeParsed frequency cannot be parsed
-	ErrFrequencyCouldNotBeParsed = errors.New(`"evaluate every" field could not be parsed`)
+	ErrFrequencyCouldNotBeParsed = errors.New(`"evaluate every" 字段无法解析`)
 )
 
 // Rule is the in-memory version of an alert rule.
@@ -65,10 +65,10 @@ func (e ValidationError) Error() string {
 	}
 
 	if e.Err != nil {
-		return fmt.Sprintf("Alert validation error: %s%s", e.Err.Error(), extraInfo)
+		return fmt.Sprintf("警报验证错误: %s%s", e.Err.Error(), extraInfo)
 	}
 
-	return fmt.Sprintf("Alert validation error: %s", extraInfo)
+	return fmt.Sprintf("警报验证错误: %s", extraInfo)
 }
 
 var (
@@ -141,7 +141,7 @@ func NewRuleFromDBAlert(ruleDef *models.Alert) (*Rule, error) {
 		} else {
 			uid, err := jsonModel.Get("uid").String()
 			if err != nil {
-				return nil, ValidationError{Reason: "Neither id nor uid is specified, " + err.Error(), DashboardID: model.DashboardID, AlertID: model.ID, PanelID: model.PanelID}
+				return nil, ValidationError{Reason: "既没有指定id也没有指定uid, " + err.Error(), DashboardID: model.DashboardID, AlertID: model.ID, PanelID: model.PanelID}
 			}
 			model.Notifications = append(model.Notifications, uid)
 		}
@@ -153,7 +153,7 @@ func NewRuleFromDBAlert(ruleDef *models.Alert) (*Rule, error) {
 		conditionType := conditionModel.Get("type").MustString()
 		factory, exist := conditionFactories[conditionType]
 		if !exist {
-			return nil, ValidationError{Reason: "Unknown alert condition: " + conditionType, DashboardID: model.DashboardID, AlertID: model.ID, PanelID: model.PanelID}
+			return nil, ValidationError{Reason: "未知的警报状况: " + conditionType, DashboardID: model.DashboardID, AlertID: model.ID, PanelID: model.PanelID}
 		}
 		queryCondition, err := factory(conditionModel, index)
 		if err != nil {
@@ -163,7 +163,7 @@ func NewRuleFromDBAlert(ruleDef *models.Alert) (*Rule, error) {
 	}
 
 	if len(model.Conditions) == 0 {
-		return nil, ValidationError{Reason: "Alert is missing conditions"}
+		return nil, ValidationError{Reason: "警报缺少条件"}
 	}
 
 	return model, nil

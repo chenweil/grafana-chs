@@ -8,13 +8,13 @@ import (
 
 // Typed errors
 var (
-	ErrFolderNotFound                = errors.New("Folder not found")
-	ErrFolderVersionMismatch         = errors.New("The folder has been changed by someone else")
-	ErrFolderTitleEmpty              = errors.New("Folder title cannot be empty")
-	ErrFolderWithSameUIDExists       = errors.New("A folder/dashboard with the same uid already exists")
-	ErrFolderSameNameExists          = errors.New("A folder or dashboard in the general folder with the same name already exists")
-	ErrFolderFailedGenerateUniqueUid = errors.New("Failed to generate unique folder id")
-	ErrFolderAccessDenied            = errors.New("Access denied to folder")
+	ErrFolderNotFound                = errors.New("找不到文件夹")
+	ErrFolderVersionMismatch         = errors.New("该文件夹已被其他人更改")
+	ErrFolderTitleEmpty              = errors.New("文件夹标题不能为空")
+	ErrFolderWithSameUIDExists       = errors.New("已存在具有相同uid的文件夹/仪表板")
+	ErrFolderSameNameExists          = errors.New("已存在具有相同名称的常规文件夹中的文件夹或仪表板")
+	ErrFolderFailedGenerateUniqueUid = errors.New("无法生成唯一文件夹ID")
+	ErrFolderAccessDenied            = errors.New("拒绝访问文件夹")
 )
 
 type Folder struct {

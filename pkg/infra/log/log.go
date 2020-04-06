@@ -145,7 +145,7 @@ func getLogLevelFromString(levelName string) log15.Lvl {
 	level, ok := logLevels[levelName]
 
 	if !ok {
-		Root.Error("Unknown log level", "level", levelName)
+		Root.Error("未知的日志级别", "level", levelName)
 		return log15.LvlError
 	}
 
@@ -193,7 +193,7 @@ func ReadLoggingConfig(modes []string, logsPath string, cfg *ini.File) {
 		mode = strings.TrimSpace(mode)
 		sec, err := cfg.GetSection("log." + mode)
 		if err != nil {
-			Root.Error("Unknown log mode", "mode", mode)
+			Root.Error("未知的日志模式", "mode", mode)
 		}
 
 		// Log level.

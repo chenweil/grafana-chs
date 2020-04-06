@@ -69,10 +69,10 @@ const UsersMaxRequest = 500
 var (
 
 	// ErrInvalidCredentials is returned if username and password do not match
-	ErrInvalidCredentials = errors.New("Invalid Username or Password")
+	ErrInvalidCredentials = errors.New("账号密码错误")
 
 	// ErrCouldNotFindUser is returned when username hasn't been found (not username+password)
-	ErrCouldNotFindUser = errors.New("Can't find user in LDAP")
+	ErrCouldNotFindUser = errors.New("在LDAP中找不到用户")
 )
 
 // New creates the new LDAP auth
@@ -95,7 +95,7 @@ func (server *Server) Dial() error {
 				return err
 			}
 			if !certPool.AppendCertsFromPEM(pem) {
-				return errors.New("Failed to append CA certificate " + caCertFile)
+				return errors.New("无法附加CA证书 " + caCertFile)
 			}
 		}
 	}
@@ -267,7 +267,7 @@ func (server *Server) Users(logins []string) (
 	}
 
 	server.log.Debug(
-		"LDAP users found", "users", spew.Sdump(serializedUsers),
+		"找到LDAP用户", "users", spew.Sdump(serializedUsers),
 	)
 
 	return serializedUsers, nil
@@ -304,7 +304,7 @@ func (server *Server) users(logins []string) (
 func (server *Server) validateGrafanaUser(user *models.ExternalUserInfo) error {
 	if len(server.Config.Groups) > 0 && len(user.OrgRoles) < 1 {
 		server.log.Error(
-			"user does not belong in any of the specified LDAP groups",
+			"用户不属于任何指定的LDAP组",
 			"username", user.Login,
 			"groups", user.Groups,
 		)
@@ -408,7 +408,7 @@ func (server *Server) UserBind(username, password string) error {
 	err := server.userBind(username, password)
 	if err != nil {
 		server.log.Error(
-			fmt.Sprintf("Cannot authentificate user %s in LDAP", username),
+			fmt.Sprintf("无法在LDAP中验证用户", username),
 			"error",
 			err,
 		)
@@ -423,7 +423,7 @@ func (server *Server) AuthAdmin() error {
 	err := server.userBind(server.Config.BindDN, server.Config.BindPassword)
 	if err != nil {
 		server.log.Error(
-			"Cannot authentificate admin user in LDAP",
+			"无法在LDAP中验证管理员用户",
 			"error",
 			err,
 		)
@@ -470,7 +470,7 @@ func (server *Server) requestMemberOf(entry *ldap.Entry) ([]string, error) {
 			-1,
 		)
 
-		server.log.Info("Searching for user's groups", "filter", filter)
+		server.log.Info("搜索用户的组", "filter", filter)
 
 		// support old way of reading settings
 		groupIDAttribute := config.Attr.MemberOf

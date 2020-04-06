@@ -14,13 +14,13 @@ import (
 
 // Error values returned when validation functions fail
 var (
-	ErrNotNull        = errors.New("is not null")
-	ErrNotArray       = errors.New("Not an array")
-	ErrNotNumber      = errors.New("not a number")
-	ErrNotBool        = errors.New("no bool")
-	ErrNotObject      = errors.New("not an object")
-	ErrNotObjectArray = errors.New("not an object array")
-	ErrNotString      = errors.New("not a string")
+	ErrNotNull        = errors.New("不是空的")
+	ErrNotArray       = errors.New("不是数组")
+	ErrNotNumber      = errors.New("不是数字")
+	ErrNotBool        = errors.New("不是布尔")
+	ErrNotObject      = errors.New("不是对象")
+	ErrNotObjectArray = errors.New("不是对象数组")
+	ErrNotString      = errors.New("不是字符串")
 )
 
 type KeyNotFoundError struct {
@@ -29,10 +29,10 @@ type KeyNotFoundError struct {
 
 func (k KeyNotFoundError) Error() string {
 	if k.Key != "" {
-		return fmt.Sprintf("key '%s' not found", k.Key)
+		return fmt.Sprintf("秘钥 '%s' 未找到", k.Key)
 	}
 
-	return "key not found"
+	return "未找到秘钥"
 }
 
 // Value represents an arbitrary JSON value.

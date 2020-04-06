@@ -19,7 +19,7 @@ func Search(c *m.ReqContext) Response {
 	permission := m.PERMISSION_VIEW
 
 	if limit > 5000 {
-		return Error(422, "Limit is above maximum allowed (5000), use page parameter to access hits beyond limit", nil)
+		return Error(422, "限制高于允许的最大值（5000），使用页面参数访问超出限制的命中", nil)
 	}
 
 	if c.Query("permission") == "Edit" {
@@ -58,7 +58,7 @@ func Search(c *m.ReqContext) Response {
 
 	err := bus.Dispatch(&searchQuery)
 	if err != nil {
-		return Error(500, "Search failed", err)
+		return Error(500, "搜索失败", err)
 	}
 
 	c.TimeRequest(metrics.MApiDashboardSearch)

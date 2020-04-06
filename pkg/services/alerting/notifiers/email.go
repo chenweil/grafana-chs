@@ -15,16 +15,16 @@ import (
 func init() {
 	alerting.RegisterNotifier(&alerting.NotifierPlugin{
 		Type:        "email",
-		Name:        "Email",
-		Description: "Sends notifications using Grafana server configured SMTP settings",
+		Name:        "邮件",
+		Description: "使用服务器配置的SMTP设置发送通知",
 		Factory:     NewEmailNotifier,
 		OptionsTemplate: `
-      <h3 class="page-heading">Email addresses</h3>
+      <h3 class="page-heading">邮件地址</h3>
       <div class="gf-form">
          <textarea rows="7" class="gf-form-input width-27" required ng-model="ctrl.model.settings.addresses"></textarea>
       </div>
       <div class="gf-form">
-      <span>You can enter multiple email addresses using a ";" separator</span>
+      <span>您可以使用“;”分隔输入多个电子邮件地址</span>
       </div>
     `,
 	})
@@ -44,7 +44,7 @@ func NewEmailNotifier(model *models.AlertNotification) (alerting.Notifier, error
 	addressesString := model.Settings.Get("addresses").MustString()
 
 	if addressesString == "" {
-		return nil, alerting.ValidationError{Reason: "Could not find addresses in settings"}
+		return nil, alerting.ValidationError{Reason: "无法在设置中找到地址"}
 	}
 
 	// split addresses with a few different ways
@@ -65,11 +65,11 @@ func NewEmailNotifier(model *models.AlertNotification) (alerting.Notifier, error
 
 // Notify sends the alert notification.
 func (en *EmailNotifier) Notify(evalContext *alerting.EvalContext) error {
-	en.log.Info("Sending alert notification to", "addresses", en.Addresses)
+	en.log.Info("发送警报通知", "addresses", en.Addresses)
 
 	ruleURL, err := evalContext.GetRuleURL()
 	if err != nil {
-		en.log.Error("Failed get rule link", "error", err)
+		en.log.Error("获取规则链接失败", "error", err)
 		return err
 	}
 
@@ -113,7 +113,7 @@ func (en *EmailNotifier) Notify(evalContext *alerting.EvalContext) error {
 	err = bus.DispatchCtx(evalContext.Ctx, cmd)
 
 	if err != nil {
-		en.log.Error("Failed to send alert notification email", "error", err)
+		en.log.Error("无法发送警报通知电子邮件", "error", err)
 		return err
 	}
 
