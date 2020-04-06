@@ -57,7 +57,7 @@ export class MysqlQueryCtrl extends QueryCtrl {
     this.metaBuilder = new MysqlMetaQuery(this.target, this.queryModel);
     this.updateProjection();
 
-    this.formats = [{ text: 'Time series', value: 'time_series' }, { text: 'Table', value: 'table' }];
+    this.formats = [{ text: '时间序列', value: 'time_series' }, { text: '表', value: 'table' }];
 
     if (!this.target.rawSql) {
       // special handling when in table panel
@@ -130,16 +130,16 @@ export class MysqlQueryCtrl extends QueryCtrl {
   buildSelectMenu() {
     this.selectMenu = [];
     const aggregates = {
-      text: 'Aggregate Functions',
+      text: '聚合函数',
       value: 'aggregate',
       submenu: [
-        { text: 'Average', value: 'avg' },
-        { text: 'Count', value: 'count' },
-        { text: 'Maximum', value: 'max' },
-        { text: 'Minimum', value: 'min' },
-        { text: 'Sum', value: 'sum' },
-        { text: 'Standard deviation', value: 'stddev' },
-        { text: 'Variance', value: 'variance' },
+        { text: '平均', value: 'avg' },
+        { text: '总计', value: 'count' },
+        { text: '最大值', value: 'max' },
+        { text: '最小值', value: 'min' },
+        { text: '求和', value: 'sum' },
+        { text: '标准偏差', value: 'stddev' },
+        { text: '方差', value: 'variance' },
       ],
     };
 

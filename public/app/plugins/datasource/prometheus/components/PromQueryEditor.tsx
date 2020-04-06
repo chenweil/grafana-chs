@@ -13,9 +13,9 @@ import PromLink from './PromLink';
 export type Props = QueryEditorProps<PrometheusDatasource, PromQuery, PromOptions>;
 
 const FORMAT_OPTIONS: Array<SelectableValue<string>> = [
-  { label: 'Time series', value: 'time_series' },
-  { label: 'Table', value: 'table' },
-  { label: 'Heatmap', value: 'heatmap' },
+  { label: '时间序列', value: 'time_series' },
+  { label: '表', value: 'table' },
+  { label: '热图', value: 'heatmap' },
 ];
 
 const INTERVAL_FACTOR_OPTIONS: Array<SelectableValue<number>> = _.map([1, 2, 3, 4, 5, 10], (value: number) => ({
@@ -112,15 +112,14 @@ export class PromQueryEditor extends PureComponent<Props, State> {
           <div className="gf-form">
             <FormLabel
               width={7}
-              tooltip="Controls the name of the time series, using name or pattern. For example
-        {{hostname}} will be replaced with label value for the label hostname."
+              tooltip="使用名称或模式控制时间系列的名称。 例如{{hostname}}将替换为标签主机名的标签值。"
             >
-              Legend
+              图标
             </FormLabel>
             <input
               type="text"
               className="gf-form-input"
-              placeholder="legend format"
+              placeholder="图标格式"
               value={legendFormat}
               onChange={this.onLegendChange}
             />
@@ -129,11 +128,9 @@ export class PromQueryEditor extends PureComponent<Props, State> {
           <div className="gf-form">
             <FormLabel
               width={7}
-              tooltip="Leave blank for auto handling based on time range and panel width.
-            Note that the actual dates used in the query will be adjusted
-        to a multiple of the interval step."
+              tooltip="根据时间范围和面板宽度留空以进行自动处理。请注意，将调整查询中使用的实际日期到间隔步长的倍数。"
             >
-              Min step
+              最小步骤
             </FormLabel>
             <input
               type="text"
@@ -145,7 +142,7 @@ export class PromQueryEditor extends PureComponent<Props, State> {
           </div>
 
           <div className="gf-form">
-            <div className="gf-form-label">Resolution</div>
+            <div className="gf-form-label">解析度</div>
             <Select
               isSearchable={false}
               options={INTERVAL_FACTOR_OPTIONS}
@@ -155,11 +152,11 @@ export class PromQueryEditor extends PureComponent<Props, State> {
           </div>
 
           <div className="gf-form">
-            <div className="gf-form-label">Format</div>
+            <div className="gf-form-label">格式化</div>
             <Select isSearchable={false} options={FORMAT_OPTIONS} onChange={this.onFormatChange} value={formatOption} />
-            <Switch label="Instant" checked={instant} onChange={this.onInstantChange} />
+            <Switch label="瞬间" checked={instant} onChange={this.onInstantChange} />
 
-            <FormLabel width={10} tooltip="Link to Graph in Prometheus">
+            <FormLabel width={10} tooltip="链接到普罗米修斯的图表">
               <PromLink
                 datasource={datasource}
                 query={this.query} // Use modified query

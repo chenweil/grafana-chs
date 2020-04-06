@@ -8,12 +8,12 @@ import { Column, TableData } from '@grafana/data';
 const transformers: { [key: string]: TableTransform } = {};
 
 transformers['timeseries_to_rows'] = {
-  description: 'Time series to rows',
+  description: '时间序列到行',
   getColumns: () => {
     return [];
   },
   transform: (data, panel, model) => {
-    model.columns = [{ text: 'Time', type: 'date' }, { text: 'Metric' }, { text: 'Value' }];
+    model.columns = [{ text: '时间', type: 'date' }, { text: '指标' }, { text: 'Value' }];
 
     for (let i = 0; i < data.length; i++) {
       const series = data[i];
@@ -26,12 +26,12 @@ transformers['timeseries_to_rows'] = {
 };
 
 transformers['timeseries_to_columns'] = {
-  description: 'Time series to columns',
+  description: '时间序列到列',
   getColumns: () => {
     return [];
   },
   transform: (data, panel, model) => {
-    model.columns.push({ text: 'Time', type: 'date' });
+    model.columns.push({ text: '时间', type: 'date' });
 
     // group by time
     const points: any = {};
@@ -68,20 +68,20 @@ transformers['timeseries_to_columns'] = {
 };
 
 transformers['timeseries_aggregations'] = {
-  description: 'Time series aggregations',
+  description: '时间序列汇总',
   getColumns: () => {
     return [
-      { text: 'Avg', value: 'avg' },
-      { text: 'Min', value: 'min' },
-      { text: 'Max', value: 'max' },
-      { text: 'Total', value: 'total' },
-      { text: 'Current', value: 'current' },
-      { text: 'Count', value: 'count' },
+      { text: '平均', value: 'avg' },
+      { text: '最小', value: 'min' },
+      { text: '最大', value: 'max' },
+      { text: '总计', value: 'total' },
+      { text: '当前', value: 'current' },
+      { text: '统计', value: 'count' },
     ];
   },
   transform: (data, panel, model) => {
     let i, y;
-    model.columns.push({ text: 'Metric' });
+    model.columns.push({ text: '指标' });
 
     for (i = 0; i < panel.columns.length; i++) {
       model.columns.push({ text: panel.columns[i].text });
@@ -106,15 +106,15 @@ transformers['timeseries_aggregations'] = {
 };
 
 transformers['annotations'] = {
-  description: 'Annotations',
+  description: '注解',
   getColumns: () => {
     return [];
   },
   transform: (data, panel, model) => {
-    model.columns.push({ text: 'Time', type: 'date' });
-    model.columns.push({ text: 'Title' });
-    model.columns.push({ text: 'Text' });
-    model.columns.push({ text: 'Tags' });
+    model.columns.push({ text: '时间', type: 'date' });
+    model.columns.push({ text: '标题' });
+    model.columns.push({ text: '文本' });
+    model.columns.push({ text: '标签' });
 
     if (!data || !data.annotations || data.annotations.length === 0) {
       return;

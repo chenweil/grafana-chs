@@ -11,7 +11,7 @@ import { PieChartOptions } from './types';
 
 const labelWidth = 8;
 
-const pieChartOptions = [{ value: PieChartType.PIE, label: 'Pie' }, { value: PieChartType.DONUT, label: 'Donut' }];
+const pieChartOptions = [{ value: PieChartType.PIE, label: '派' }, { value: PieChartType.DONUT, label: '甜甜圈' }];
 
 export class PieChartOptionsBox extends PureComponent<PanelEditorProps<PieChartOptions>> {
   onPieTypeChange = (pieType: any) => this.props.onOptionsChange({ ...this.props.options, pieType: pieType.value });
@@ -25,7 +25,7 @@ export class PieChartOptionsBox extends PureComponent<PanelEditorProps<PieChartO
     return (
       <PanelOptionsGroup title="PieChart">
         <div className="gf-form">
-          <FormLabel width={labelWidth}>Type</FormLabel>
+          <FormLabel width={labelWidth}>类型</FormLabel>
           <Select
             width={12}
             options={pieChartOptions}
@@ -35,7 +35,7 @@ export class PieChartOptionsBox extends PureComponent<PanelEditorProps<PieChartO
         </div>
         <div className="gf-form">
           <FormField
-            label="Divider width"
+            label="分频器宽度"
             labelWidth={labelWidth}
             onChange={this.onStrokeWidthChange}
             value={strokeWidth}

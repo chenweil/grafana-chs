@@ -7,7 +7,7 @@
   "skipDataQuery": true,
 
   "info": {
-    "description": "List annotations",
+    "description": "列出注释",
     "author": {
       "name": "Grafana Project",
       "url": "https://grafana.com"

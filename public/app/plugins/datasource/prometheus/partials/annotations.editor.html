@@ -1,38 +1,38 @@
 <div class="gf-form-group">
 	<div class="gf-form">
-		<span class="gf-form-label width-10">Search expression</span>
-		<input type="text" class="gf-form-input" ng-model='ctrl.annotation.expr' placeholder="ALERTS"></input>
+		<span class="gf-form-label width-10">搜索表达</span>
+		<input type="text" class="gf-form-input" ng-model='ctrl.annotation.expr' placeholder="警报"></input>
 	</div>
 	<div class="gf-form">
-		<span class="gf-form-label width-10">step</span>
+		<span class="gf-form-label width-10">步</span>
 		<input type="text" class="gf-form-input max-width-6" ng-model='ctrl.annotation.step' placeholder="60s"></input>
 	</div>
 </div>
 
 <div class="gf-form-group">
-	<h5 class="section-heading">Field formats</h5>
+	<h5 class="section-heading">格式化列</h5>
 	<div class="gf-form-inline">
 		<div class="gf-form">
-			<span class="gf-form-label width-5">Title</span>
-			<input type="text" class="gf-form-input max-width-9" ng-model='ctrl.annotation.titleFormat' placeholder="alertname"></input>
+			<span class="gf-form-label width-5">标题</span>
+			<input type="text" class="gf-form-input max-width-9" ng-model='ctrl.annotation.titleFormat' placeholder="警报名称"></input>
 		</div>
 		<div class="gf-form">
-			<span class="gf-form-label width-5">Tags</span>
-			<input type="text" class="gf-form-input max-width-9" ng-model='ctrl.annotation.tagKeys' placeholder="label1,label2"></input>
+			<span class="gf-form-label width-5">标签</span>
+			<input type="text" class="gf-form-input max-width-9" ng-model='ctrl.annotation.tagKeys' placeholder="标签1，标签2"></input>
 		</div>
 		<div class="gf-form-inline">
 			<div class="gf-form">
-				<span class="gf-form-label width-5">Text</span>
-				<input type="text" class="gf-form-input max-width-9" ng-model='ctrl.annotation.textFormat' placeholder="instance"></input>
+				<span class="gf-form-label width-5">文本</span>
+				<input type="text" class="gf-form-input max-width-9" ng-model='ctrl.annotation.textFormat' placeholder="实例"></input>
 			</div>
 		</div>
 	</div>
 
-	<h5 class="section-heading">Other options</h5>
+	<h5 class="section-heading">其他设置</h5>
 	<div class="gf-form-inline">
 		<div class="gf-form">
-			<gf-form-switch class="gf-form" label="Series value as timestamp" label-class="width-14" checked="ctrl.annotation.useValueForTime"
-			 tooltip="The unit of timestamp is milliseconds. If the unit of the series value is seconds, multiply its range vector by 1000.">
+			<gf-form-switch class="gf-form" label="系列值作为时间戳" label-class="width-14" checked="ctrl.annotation.useValueForTime"
+			 tooltip="时间戳的单位是毫秒。 如果系列值的单位是秒，则将其范围向量乘以1000。">
 			</gf-form-switch>
 		</div>
 	</div>

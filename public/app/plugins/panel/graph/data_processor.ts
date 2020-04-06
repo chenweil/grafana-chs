@@ -145,11 +145,11 @@ export class DataProcessor {
     switch (this.panel.xaxis.mode) {
       case 'series': {
         return [
-          { text: 'Avg', value: 'avg' },
-          { text: 'Min', value: 'min' },
-          { text: 'Max', value: 'max' },
-          { text: 'Total', value: 'total' },
-          { text: 'Count', value: 'count' },
+          { text: '平均值', value: 'avg' },
+          { text: '最小', value: 'min' },
+          { text: '最大', value: 'max' },
+          { text: '总计', value: 'total' },
+          { text: '累计', value: 'count' },
         ];
       }
     }

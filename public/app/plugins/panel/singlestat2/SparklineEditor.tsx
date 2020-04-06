@@ -24,9 +24,9 @@ export class SparklineEditor extends PureComponent<Props> {
 
     return (
       <PanelOptionsGroup title="Sparkline">
-        <Switch label="Show" labelClass={`width-${labelWidth}`} checked={show} onChange={this.onToggleShow} />
+        <Switch label="显示" labelClass={`width-${labelWidth}`} checked={show} onChange={this.onToggleShow} />
 
-        <Switch label="Full Height" labelClass={`width-${labelWidth}`} checked={full} onChange={this.onToggleFull} />
+        <Switch label="完整高度" labelClass={`width-${labelWidth}`} checked={full} onChange={this.onToggleFull} />
       </PanelOptionsGroup>
     );
   }

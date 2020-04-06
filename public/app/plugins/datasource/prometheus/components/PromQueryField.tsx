@@ -28,7 +28,7 @@ function getChooserText(hasSyntax: boolean, datasourceStatus: DataSourceStatus) 
     return '(Disconnected)';
   }
   if (!hasSyntax) {
-    return 'Loading metrics...';
+    return '加载指标...';
   }
   return 'Metrics';
 }
@@ -38,7 +38,7 @@ export function groupMetricsByPrefix(metrics: string[], delimiter = '_'): Cascad
   const ruleRegex = /:\w+:/;
   const ruleNames = metrics.filter(metric => ruleRegex.test(metric));
   const rulesOption = {
-    label: 'Recording rules',
+    label: '录制规则',
     value: RECORDING_RULES_GROUP,
     children: ruleNames
       .slice()
@@ -198,7 +198,7 @@ class PromQueryField extends React.PureComponent<PromQueryFieldProps, PromQueryF
       .then(() => this.onUpdateLanguage())
       .catch(({ isCanceled }) => {
         if (isCanceled) {
-          console.warn('PromQueryField has unmounted, language provider intialization was canceled');
+          console.warn('PromQueryField已卸载，语言提供程序初始化被取消');
         }
       });
   };
@@ -263,7 +263,7 @@ class PromQueryField extends React.PureComponent<PromQueryFieldProps, PromQueryF
     const metricsOptions =
       histogramMetrics.length > 0
         ? [
-            { label: 'Histograms', value: HISTOGRAM_GROUP, children: histogramOptions, isLeaf: false },
+            { label: '直方图', value: HISTOGRAM_GROUP, children: histogramOptions, isLeaf: false },
             ...metricsByPrefix,
           ]
         : metricsByPrefix;
@@ -321,7 +321,7 @@ class PromQueryField extends React.PureComponent<PromQueryFieldProps, PromQueryF
               onWillApplySuggestion={willApplySuggestion}
               onChange={this.onChangeQuery}
               onRunQuery={this.props.onRunQuery}
-              placeholder="Enter a PromQL query"
+              placeholder="输入PromQL查询"
               portalOrigin="prometheus"
               syntaxLoaded={syntaxLoaded}
             />

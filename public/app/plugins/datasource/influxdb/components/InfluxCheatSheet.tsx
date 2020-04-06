@@ -2,9 +2,9 @@ import React from 'react';
 
 const CHEAT_SHEET_ITEMS = [
   {
-    title: 'Getting started',
+    title: '入门',
     label:
-      'Start by selecting a measurement and field from the dropdown above. You can then use the tag selector to further narrow your search.',
+      '通过从上方的下拉菜单中选择一个测量和字段开始。 然后，您可以使用标签选择器进一步缩小搜索范围。',
   },
 ];
 

@@ -97,7 +97,7 @@ export class TestDataDatasource extends DataSourceApi<TestDataQuery> {
       events.push({
         annotation: options.annotation,
         time: timeWalker,
-        text: 'This is the text, <a href="https://grafana.com">Grafana.com</a>',
+        text: '这是文字, <a href="https://grafana.com">Grafana.com</a>',
         tags: ['text', 'server'],
       });
       timeWalker += step;
@@ -115,7 +115,7 @@ export class TestDataDatasource extends DataSourceApi<TestDataQuery> {
   testDatasource() {
     return Promise.resolve({
       status: 'success',
-      message: 'Data source is working',
+      message: '数据源正在运行',
     });
   }
 

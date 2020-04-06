@@ -38,7 +38,7 @@ export class TablePanelEditorCtrl {
         break;
       }
       case 'table': {
-        this.columnsHelpMessage = 'Columns and their order are determined by the data query';
+        this.columnsHelpMessage = '列和它们的顺序是由数据查询确定';
       }
     }
   }
@@ -69,7 +69,7 @@ export class TablePanelEditorCtrl {
   transformChanged() {
     this.panel.columns = [];
     if (this.panel.transform === 'timeseries_aggregations') {
-      this.panel.columns.push({ text: 'Avg', value: 'avg' });
+      this.panel.columns.push({ text: '平均值', value: 'avg' });
     }
 
     this.updateTransformHints();

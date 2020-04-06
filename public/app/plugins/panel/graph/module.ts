@@ -158,17 +158,17 @@ class GraphCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
-    this.addEditorTab('Display options', 'public/app/plugins/panel/graph/tab_display.html');
-    this.addEditorTab('Axes', axesEditorComponent);
-    this.addEditorTab('Legend', 'public/app/plugins/panel/graph/tab_legend.html');
-    this.addEditorTab('Thresholds & Time Regions', 'public/app/plugins/panel/graph/tab_thresholds_time_regions.html');
-    this.addEditorTab('Data link', 'public/app/plugins/panel/graph/tab_drilldown_links.html');
+    this.addEditorTab('显示选项', 'public/app/plugins/panel/graph/tab_display.html');
+    this.addEditorTab('轴', axesEditorComponent);
+    this.addEditorTab('图标', 'public/app/plugins/panel/graph/tab_legend.html');
+    this.addEditorTab('阈值和时区', 'public/app/plugins/panel/graph/tab_thresholds_time_regions.html');
+    this.addEditorTab('数据链接', 'public/app/plugins/panel/graph/tab_drilldown_links.html');
     this.subTabIndex = 0;
   }
 
   onInitPanelActions(actions: any[]) {
-    actions.push({ text: 'Export CSV', click: 'ctrl.exportCsv()' });
-    actions.push({ text: 'Toggle legend', click: 'ctrl.toggleLegend()', shortcut: 'p l' });
+    actions.push({ text: '导出CSV', click: 'ctrl.exportCsv()' });
+    actions.push({ text: '切换图例', click: 'ctrl.toggleLegend()', shortcut: 'p l' });
   }
 
   issueQueries(datasource: any) {
@@ -230,15 +230,15 @@ class GraphCtrl extends MetricsPanelCtrl {
 
     if (datapointsCount === 0) {
       this.dataWarning = {
-        title: 'No data points',
-        tip: 'No datapoints returned from data query',
+        title: '没有数据点',
+        tip: '数据查询没有返回数据点',
       };
     } else {
       for (const series of this.seriesList) {
         if (series.isOutsideRange) {
           this.dataWarning = {
-            title: 'Data points outside time range',
-            tip: 'Can be caused by timezone mismatch or missing time filter in query',
+            title: '数据点超出时间范围',
+            tip: '可能由查询中的时区不匹配或缺少时间过滤器引起',
           };
           break;
         }

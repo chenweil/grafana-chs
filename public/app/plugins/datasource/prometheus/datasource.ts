@@ -593,7 +593,7 @@ export class PrometheusDatasource extends DataSourceApi<PromQuery, PromOptions> 
     const query = { expr: '1+1' } as PromQueryRequest;
     return this.performInstantQuery(query, now / 1000).then((response: any) => {
       if (response.data.status === 'success') {
-        return { status: 'success', message: 'Data source is working' };
+        return { status: 'success', message: '数据源正在工作' };
       } else {
         return { status: 'error', message: response.error };
       }

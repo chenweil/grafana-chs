@@ -118,7 +118,7 @@ export default class ResponseParser {
         timeColumnIndex = i;
       } else if (table.columns[i].text === 'title') {
         return this.$q.reject({
-          message: 'The title column for annotations is deprecated, now only a column named text is returned',
+          message: '不推荐使用注释的标题列，现在只返回名为text的列',
         });
       } else if (table.columns[i].text === 'text') {
         textColumnIndex = i;

@@ -35,17 +35,17 @@ class SingleStatCtrl extends MetricsPanelCtrl {
   panel: any;
   events: any;
   valueNameOptions: any[] = [
-    { value: 'min', text: 'Min' },
-    { value: 'max', text: 'Max' },
-    { value: 'avg', text: 'Average' },
-    { value: 'current', text: 'Current' },
-    { value: 'total', text: 'Total' },
-    { value: 'name', text: 'Name' },
-    { value: 'first', text: 'First' },
-    { value: 'delta', text: 'Delta' },
-    { value: 'diff', text: 'Difference' },
-    { value: 'range', text: 'Range' },
-    { value: 'last_time', text: 'Time of last point' },
+    { value: 'min', text: '最小' },
+    { value: 'max', text: '最大' },
+    { value: 'avg', text: '平均' },
+    { value: 'current', text: '当前' },
+    { value: 'total', text: '总计' },
+    { value: 'name', text: '名字' },
+    { value: 'first', text: '第一' },
+    { value: 'delta', text: '三角' },
+    { value: 'diff', text: '差异' },
+    { value: 'range', text: '范围' },
+    { value: 'last_time', text: '最后时间点' },
   ];
   tableColumnOptions: any;
 
@@ -62,7 +62,7 @@ class SingleStatCtrl extends MetricsPanelCtrl {
     postfix: '',
     nullText: null,
     valueMaps: [{ value: 'null', op: '=', text: 'N/A' }],
-    mappingTypes: [{ name: 'value to text', value: 1 }, { name: 'range to text', value: 2 }],
+    mappingTypes: [{ name: '文本值', value: 1 }, { name: '范围值', value: 2 }],
     rangeMaps: [{ from: 'null', to: 'null', text: 'N/A' }],
     mappingType: 1,
     nullPointMode: 'connected',
@@ -108,8 +108,8 @@ class SingleStatCtrl extends MetricsPanelCtrl {
 
   onInitEditMode() {
     this.fontSizes = ['20%', '30%', '50%', '70%', '80%', '100%', '110%', '120%', '150%', '170%', '200%'];
-    this.addEditorTab('Options', 'public/app/plugins/panel/singlestat/editor.html', 2);
-    this.addEditorTab('Value Mappings', 'public/app/plugins/panel/singlestat/mappings.html', 3);
+    this.addEditorTab('选项', 'public/app/plugins/panel/singlestat/editor.html', 2);
+    this.addEditorTab('值映射', 'public/app/plugins/panel/singlestat/mappings.html', 3);
     this.unitFormats = kbn.getUnitFormats();
   }
 

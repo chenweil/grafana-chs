@@ -6,7 +6,7 @@
   "skipDataQuery": true,
 
   "info": {
-    "description": "List of dynamic links to other dashboards",
+    "description": "其他仪表板的动态链接列表",
     "author": {
       "name": "Grafana Project",
       "url": "https://grafana.com"
