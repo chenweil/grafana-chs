@@ -1,6 +1,6 @@
 # grafana-chs
 
-**汉化分非 master 请切换到汉化分之。**
+**汉化分非 master 请切换到汉化分支：v6.3.4-chs。**
 
 ## grafana 的前端与后端均以汉化处理。
 * 前端目录为 public
